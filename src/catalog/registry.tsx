@@ -1,4 +1,5 @@
 import type { CatalogGroup } from './types';
+import { Palette, Boxes, MonitorSmartphone } from '@tamagui/lucide-icons';
 import { ColorsPage } from '../pages/foundations/colors-page';
 import { TypographyPage } from '../pages/foundations/typography-page';
 import { SpacingPage } from '../pages/foundations/spacing-page';
@@ -25,6 +26,8 @@ export const catalog: CatalogGroup[] = [
   {
     id: 'foundations',
     label: 'Foundations',
+    icon: Palette,
+    description: 'Colors, type scale, spacing, elevation and icons — the visual primitives every screen is built from.',
     entries: [
       { slug: 'colors', title: 'Colors', Component: ColorsPage },
       { slug: 'typography', title: 'Typography', Component: TypographyPage },
@@ -36,6 +39,8 @@ export const catalog: CatalogGroup[] = [
   {
     id: 'components',
     label: 'Components',
+    icon: Boxes,
+    description: 'Ready-to-use UI building blocks from @gl/elements — buttons, inputs, overlays, navigation and more.',
     entries: [
       { slug: 'buttons', title: 'Buttons', Component: ButtonsPage },
       { slug: 'inputs', title: 'Inputs', Component: InputsPage },
@@ -59,6 +64,8 @@ export const catalog: CatalogGroup[] = [
   {
     id: 'prototypes',
     label: 'Prototypes',
+    icon: MonitorSmartphone,
+    description: 'Full-screen mockups composed from components and patterns — copy one to start a new screen.',
     entries: [
       { slug: 'prototypes', title: 'Overview', Component: PrototypesIndex },
       { slug: 'proto-login', title: 'Login screen', Component: LoginPrototype },
