@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GL Design Repository</title>
+    <!--
+      React Native libraries (here, @tamagui/animations-react-native's Animated
+      layer) reference the Node/RN `global` object, which the browser doesn't
+      define. Alias it to window before any module loads, or animated
+      components throw `ReferenceError: global is not defined` at render time.
+      (jsdom defines `global`, so unit tests don't catch this — only the browser does.)
+    -->
+    <script>
+      window.global = window.global || window;
+    </script>
   </head>
   <body>
     <div id="root"></div>
