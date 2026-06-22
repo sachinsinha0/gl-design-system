@@ -13,6 +13,7 @@ import { TabsPage } from '../pages/components/tabs-page';
 import { AccordionPage } from '../pages/components/accordion-page';
 import { DialogsPage } from '../pages/components/dialogs-page';
 import { SheetPage } from '../pages/components/sheet-page';
+import { FeedbackPage } from '../pages/components/feedback-page';
 export const catalog: CatalogGroup[] = [
   {
     id: 'foundations',
@@ -41,7 +42,8 @@ export const catalog: CatalogGroup[] = [
       { slug: 'tabs', title: 'Tabs', Component: TabsPage },
       { slug: 'accordion', title: 'Accordion', Component: AccordionPage },
       { slug: 'dialogs', title: 'Dialogs', Component: DialogsPage },
-      { slug: 'sheet', title: 'Sheet & Drawer', Component: SheetPage }
+      { slug: 'sheet', title: 'Sheet & Drawer', Component: SheetPage },
+      { slug: 'feedback', title: 'Feedback', Component: FeedbackPage }
     ]
   },
   { id: 'prototypes', label: 'Prototypes', entries: [] }
