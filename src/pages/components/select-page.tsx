@@ -40,7 +40,7 @@ export function SelectPage() {
           <MultiSelect
             options={OPTIONS}
             value={multi}
-            onValueChange={(v) => setMulti(v as string[])}
+            onValueChange={(v: string[]) => setMulti(v)}
             placeholder="Select tracks"
           />
         </VariantCell>
