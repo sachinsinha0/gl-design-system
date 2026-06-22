@@ -20,6 +20,7 @@ import { GridPage } from '../pages/components/grid-page';
 import { PrototypesIndex } from '../pages/prototypes/prototypes-index';
 import { LoginPrototype } from '../pages/prototypes/login-prototype';
 import { FeedPrototype } from '../pages/prototypes/feed-prototype';
+import { DetailPrototype } from '../pages/prototypes/detail-prototype';
 export const catalog: CatalogGroup[] = [
   {
     id: 'foundations',
@@ -61,7 +62,8 @@ export const catalog: CatalogGroup[] = [
     entries: [
       { slug: 'prototypes', title: 'Overview', Component: PrototypesIndex },
       { slug: 'proto-login', title: 'Login screen', Component: LoginPrototype },
-      { slug: 'proto-feed', title: 'Feed screen', Component: FeedPrototype }
+      { slug: 'proto-feed', title: 'Feed screen', Component: FeedPrototype },
+      { slug: 'proto-detail', title: 'Detail screen', Component: DetailPrototype }
     ]
   }
 ];
