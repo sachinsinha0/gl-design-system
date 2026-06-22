@@ -6,6 +6,7 @@ import { ElevationPage } from '../pages/foundations/elevation-page';
 import { IconsPage } from '../pages/foundations/icons-page';
 import { ButtonsPage } from '../pages/components/buttons-page';
 import { InputsPage } from '../pages/components/inputs-page';
+import { SelectPage } from '../pages/components/select-page';
 export const catalog: CatalogGroup[] = [
   {
     id: 'foundations',
@@ -23,7 +24,8 @@ export const catalog: CatalogGroup[] = [
     label: 'Components',
     entries: [
       { slug: 'buttons', title: 'Buttons', Component: ButtonsPage },
-      { slug: 'inputs', title: 'Inputs', Component: InputsPage }
+      { slug: 'inputs', title: 'Inputs', Component: InputsPage },
+      { slug: 'select', title: 'Select & MultiSelect', Component: SelectPage }
     ]
   },
   { id: 'prototypes', label: 'Prototypes', entries: [] }
