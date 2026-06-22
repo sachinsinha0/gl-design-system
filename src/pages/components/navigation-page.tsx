@@ -37,10 +37,14 @@ export function NavigationPage() {
 
       <DemoBlock
         title="Bottom Navigation"
-        description="Bottom tab bar. BottomNavigationAction takes a label + Lucide icon and an active flag for the selected tab. Rendered inside a relative wrapper here (the component pins itself to the bottom in a real screen).">
+        description="Bottom tab bar. BottomNavigationAction takes a label + Lucide icon and an active flag for the selected tab. The component hard-pins itself to the bottom (position:fixed on web) in a real screen; here it is rendered inside a transformed wrapper so the demo bar stays in the card.">
         <YStack width="100%">
-          <Stack position="relative" width="100%">
-            <BottomNavigation separator style={{ position: 'relative' }}>
+          {/* The DS BottomNavigation hardcodes position:fixed on web with no prop
+              to override it. A CSS transform on an ancestor establishes a new
+              containing block, so the fixed bar resolves to this wrapper instead
+              of the viewport. The explicit height gives the bar room to sit in. */}
+          <Stack position="relative" height={72} width="100%" style={{ transform: 'translateZ(0)' }}>
+            <BottomNavigation separator>
               <BottomNavigationAction label="Home" icon={<Home />} active />
               <BottomNavigationAction label="Courses" icon={<BookOpen />} />
               <BottomNavigationAction label="Alerts" icon={<Bell />} badge={3} />

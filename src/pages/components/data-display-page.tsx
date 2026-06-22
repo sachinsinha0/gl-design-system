@@ -1,7 +1,6 @@
 import {
   YStack,
   XStack,
-  Stack,
   Typography,
   Avatar,
   Separator,
