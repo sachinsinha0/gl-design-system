@@ -15,6 +15,7 @@ import { DialogsPage } from '../pages/components/dialogs-page';
 import { SheetPage } from '../pages/components/sheet-page';
 import { FeedbackPage } from '../pages/components/feedback-page';
 import { DataDisplayPage } from '../pages/components/data-display-page';
+import { NavigationPage } from '../pages/components/navigation-page';
 export const catalog: CatalogGroup[] = [
   {
     id: 'foundations',
@@ -45,7 +46,8 @@ export const catalog: CatalogGroup[] = [
       { slug: 'dialogs', title: 'Dialogs', Component: DialogsPage },
       { slug: 'sheet', title: 'Sheet & Drawer', Component: SheetPage },
       { slug: 'feedback', title: 'Feedback', Component: FeedbackPage },
-      { slug: 'data-display', title: 'Data display', Component: DataDisplayPage }
+      { slug: 'data-display', title: 'Data display', Component: DataDisplayPage },
+      { slug: 'navigation', title: 'Navigation', Component: NavigationPage }
     ]
   },
   { id: 'prototypes', label: 'Prototypes', entries: [] }
