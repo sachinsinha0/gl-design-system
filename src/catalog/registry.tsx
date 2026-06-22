@@ -19,6 +19,7 @@ import { NavigationPage } from '../pages/components/navigation-page';
 import { GridPage } from '../pages/components/grid-page';
 import { PrototypesIndex } from '../pages/prototypes/prototypes-index';
 import { LoginPrototype } from '../pages/prototypes/login-prototype';
+import { FeedPrototype } from '../pages/prototypes/feed-prototype';
 export const catalog: CatalogGroup[] = [
   {
     id: 'foundations',
@@ -59,7 +60,8 @@ export const catalog: CatalogGroup[] = [
     label: 'Prototypes',
     entries: [
       { slug: 'prototypes', title: 'Overview', Component: PrototypesIndex },
-      { slug: 'proto-login', title: 'Login screen', Component: LoginPrototype }
+      { slug: 'proto-login', title: 'Login screen', Component: LoginPrototype },
+      { slug: 'proto-feed', title: 'Feed screen', Component: FeedPrototype }
     ]
   }
 ];
