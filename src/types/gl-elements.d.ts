@@ -40,9 +40,50 @@ declare module '@gl/elements' {
   export const ScrollView: AnyComponent;
   export const View: AnyComponent;
   export const Text: AnyComponent;
+  export const Separator: AnyComponent;
 
   export type ButtonProps = Record<string, any>;
   export type TypographyProps = Record<string, any>;
+
+  // Theme surface used by the app shell (mirrors the vendored lib's contract;
+  // values resolve through the permissive component signatures at runtime).
+  export type GLTheme =
+    | 'blue'
+    | 'deeporange'
+    | 'darkteal'
+    | 'gold'
+    | 'eggplant'
+    | 'glapremium'
+    | 'olive'
+    | 'ocean'
+    | 'stormblue'
+    | 'ink'
+    | 'midnight'
+    | 'rust'
+    | 'mint'
+    | 'cyan'
+    | 'deeppurple'
+    | 'green'
+    | 'lightblue'
+    | 'orange'
+    | 'pink'
+    | 'purple'
+    | 'rose'
+    | 'lime';
+
+  export type ColorScheme = 'light' | 'dark';
+
+  export type ThemeSettingsContextType = {
+    theme: GLTheme | null;
+    colorScheme: ColorScheme;
+    setTheme: (theme: GLTheme) => void;
+    setColorScheme: (colorScheme: ColorScheme) => void;
+  };
+
+  export function useThemeSetting(): ThemeSettingsContextType;
+
+  // Tamagui's useTheme returns an indexable record of token accessors.
+  export function useTheme(): Record<string, any>;
 }
 
 declare module '@gl/elements/icons' {
