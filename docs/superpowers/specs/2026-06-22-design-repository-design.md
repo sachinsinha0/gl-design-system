@@ -88,8 +88,14 @@ These are the concrete changes needed to make the vendored code render under Vit
 2. **[BLOCKER] Platform file resolution.** Vite has no Metro resolver. Files like `libs/select/LockScroll.native.tsx` and `dialog.ios.tsx` must not be chosen for web. **Fix:** set Vite `resolve.extensions` to prefer `.web.tsx → .web.ts → .tsx → .ts → .web.js → .js` and **exclude `.native.*` / `.ios.*`** so the web/base variant always wins.
 3. **`react-native-edge-to-edge/SystemBars`** (imported unconditionally in `components/status-bar.tsx`, used only on native) → alias `react-native-edge-to-edge` to a stub in `src/shims/`.
 4. **`@react-native-async-storage/async-storage`** → has a web build (localStorage backend); install it, or alias to a tiny localStorage shim. With fix #1 the theme path no longer depends on it for first paint.
-5. **Vector icon fonts** → load `MaterialIcons.ttf` and `MaterialCommunityIcons.ttf` (from `react-native-vector-icons/Fonts/`) via `@font-face` so `components/icon.tsx` renders Material glyphs on web.
-6. **safe-area-context** → works on web; ensure the app is wrapped so `useSafeAreaInsets()` returns zeros rather than throwing.
+5. **Material vector icons** → the `react-native-vector-icons/dist/MaterialIcons` + `MaterialCommunityIcons` minified CJS bundles fail esbuild's JSX transform, so they are aliased to a **no-op shim** (`src/shims/react-native-vector-icon.tsx`). Material string-name icons (`<Icon icon="home"/>`) therefore render nothing on web — **use Lucide icons** (`@tamagui/lucide-icons`) and the custom SVG set in `@gl/elements/icons`, both of which render. (The font `.ttf`s are still imported in `main.tsx`, but the glyph component is the shim.)
+6. **safe-area-context** → wrap the app (and the test render helper) in `SafeAreaProvider` (with `initialWindowMetrics`); `Sheet`/`Footer` call `useSafeAreaInsets()` and throw without a provider.
+7. **[BLOCKER] `global` is not defined** → React Native's Animated layer (via `@tamagui/animations-react-native`) references the Node/RN `global` object, which the browser does not define; animated components (e.g. `Button`) crash at render time. **Fix:** alias it before any module loads with `<script>window.global = window.global || window;</script>` in `index.html`. (jsdom defines `global`, so unit tests do NOT catch this — only a real browser does. Confirm via browser, not just `npm test`/`curl`.)
+8. **Test-env polyfills** → `vitest.setup.ts` must polyfill `matchMedia` (RNW media driver) and `ResizeObserver` (Tamagui `Tabs`), which jsdom lacks.
+
+**Typing note:** the vendored library produces ~260 errors under this app's `strict` tsconfig. Rather than rewrite it, `src/design-system` is excluded from `tsc` and `@gl/elements` is declared as a **body-less ambient module** (`src/types/gl-elements.d.ts`) so all design-system imports resolve to `any`. App code stays strict-checked; the per-unit render tests are the safety net for design-system prop correctness.
+
+**Verification note:** because jsdom + curl both miss client-side render crashes (#7) and visual regressions, the final gate MUST include driving the running app in a real browser and confirming representative pages render and theme-switching works.
 
 ### 6.2 Runtime deps to install in the web app
 
