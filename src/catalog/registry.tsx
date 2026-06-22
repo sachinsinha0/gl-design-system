@@ -8,6 +8,9 @@ import { ButtonsPage } from '../pages/components/buttons-page';
 import { InputsPage } from '../pages/components/inputs-page';
 import { SelectPage } from '../pages/components/select-page';
 import { SelectionControlsPage } from '../pages/components/selection-controls-page';
+import { ChipsPage } from '../pages/components/chips-page';
+import { TabsPage } from '../pages/components/tabs-page';
+import { AccordionPage } from '../pages/components/accordion-page';
 export const catalog: CatalogGroup[] = [
   {
     id: 'foundations',
@@ -31,7 +34,10 @@ export const catalog: CatalogGroup[] = [
         slug: 'selection-controls',
         title: 'Selection controls',
         Component: SelectionControlsPage
-      }
+      },
+      { slug: 'chips', title: 'Chips', Component: ChipsPage },
+      { slug: 'tabs', title: 'Tabs', Component: TabsPage },
+      { slug: 'accordion', title: 'Accordion', Component: AccordionPage }
     ]
   },
   { id: 'prototypes', label: 'Prototypes', entries: [] }
