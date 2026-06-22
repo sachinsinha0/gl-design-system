@@ -4,6 +4,7 @@ import { TypographyPage } from '../pages/foundations/typography-page';
 import { SpacingPage } from '../pages/foundations/spacing-page';
 import { ElevationPage } from '../pages/foundations/elevation-page';
 import { IconsPage } from '../pages/foundations/icons-page';
+import { ButtonsPage } from '../pages/components/buttons-page';
 export const catalog: CatalogGroup[] = [
   {
     id: 'foundations',
@@ -16,7 +17,11 @@ export const catalog: CatalogGroup[] = [
       { slug: 'icons', title: 'Icons', Component: IconsPage }
     ]
   },
-  { id: 'components', label: 'Components', entries: [] },
+  {
+    id: 'components',
+    label: 'Components',
+    entries: [{ slug: 'buttons', title: 'Buttons', Component: ButtonsPage }]
+  },
   { id: 'prototypes', label: 'Prototypes', entries: [] }
 ];
 export function allEntries(): CatalogGroup['entries'] { return catalog.flatMap((g) => g.entries); }
