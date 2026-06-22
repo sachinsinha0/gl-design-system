@@ -1,12 +1,10 @@
-import { Provider, Button, Typography, YStack } from '@gl/elements';
-import { Home } from '@tamagui/lucide-icons';
+import { RouterProvider } from 'react-router-dom';
+import { Provider } from '@gl/elements';
+import { router } from './router';
 export function App() {
   return (
     <Provider>
-      <YStack gap="$3" padding="$4">
-        <Typography variant="h3">GL Design Repository</Typography>
-        <Button variant="contained" startIcon={Home}>It renders</Button>
-      </YStack>
+      <RouterProvider router={router} />
     </Provider>
   );
 }
