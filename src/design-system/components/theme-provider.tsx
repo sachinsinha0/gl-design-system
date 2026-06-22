@@ -33,6 +33,15 @@ export const ThemeSettingsContext: Context<ThemeSettingsContextType> = createCon
 const ThemeStorageKey = '@elements-theme';
 const ColorSchemeStorageKey = '@elements-color-scheme';
 
+const readStored = <T,>(key: string, fallback: T): T => {
+  try {
+    const v = typeof window !== 'undefined' ? window.localStorage.getItem(key) : null;
+    return (v as unknown as T) || fallback;
+  } catch {
+    return fallback;
+  }
+};
+
 export function ThemeProvider({
   children,
   onChangeTheme,
@@ -42,8 +51,12 @@ export function ThemeProvider({
   onChangeTheme: (theme: GLTheme) => void;
   onChangeColorScheme: (colorScheme: ColorScheme) => void;
 }) {
-  const [theme, setTheme] = useState<GLTheme | null>(null);
-  const [colorScheme, setColorScheme] = useState<ColorScheme | null>();
+  const [theme, setTheme] = useState<GLTheme | null>(() =>
+    readStored<GLTheme>(ThemeStorageKey, 'blue')
+  );
+  const [colorScheme, setColorScheme] = useState<ColorScheme | null>(() =>
+    readStored<ColorScheme>(ColorSchemeStorageKey, 'light')
+  );
 
   const setThemeWithStorage = useCallback((t: GLTheme) => {
     (async function () {
@@ -69,13 +82,27 @@ export function ThemeProvider({
     };
   }, [theme, colorScheme, setThemeWithStorage, setColorSchemeWithStorage]);
 
+  // On mount, synchronously push the seeded values to the parent Provider so
+  // the TamaguiProvider mounts immediately on first paint (no blank flash).
+  useEffect(() => {
+    if (theme) {
+      onChangeTheme(theme);
+    }
+    if (colorScheme) {
+      onChangeColorScheme(colorScheme);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Reconcile against persisted (async) storage after first paint.
   useEffect(() => {
     (async function () {
       const storedTheme = await loadString(ThemeStorageKey);
       const storedColorScheme = await loadString(ColorSchemeStorageKey);
-      setThemeWithStorage((storedTheme || 'blue') as GLTheme);
-      setColorSchemeWithStorage((storedColorScheme || 'light') as ColorScheme);
+      setThemeWithStorage((storedTheme || theme || 'blue') as GLTheme);
+      setColorSchemeWithStorage((storedColorScheme || colorScheme || 'light') as ColorScheme);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
