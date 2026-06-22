@@ -79,13 +79,23 @@ The vendored design system is exposed via a path alias **`@gl/elements` → `src
 
 - Copy `packages/elements/src/**` verbatim into `src/design-system/`.
 - Reuse the existing `Provider` component (Tamagui + theme context + portal host).
-- Provide **web shims only where needed.** Audited native usage in `elements/src` and its web story:
-  - `@react-native-async-storage/async-storage` → works on web (localStorage backend).
-  - `react-native-safe-area-context` → works on web (insets resolve to 0).
-  - `react-helmet` → web-native.
-  - `react-native-vector-icons` (MaterialIcons, MaterialCommunityIcons) → works on web with the icon font CSS loaded.
-  - `@tamagui/lucide-icons`, `expo-linear-gradient` → have web support on RNW.
-  - `burnt` (toasts) is the one likely native-only peer dep → **stub in `src/shims/`** if any vendored code imports it.
+
+### 6.1 Required web-compatibility fixes (confirmed by source audit)
+
+These are the concrete changes needed to make the vendored code render under Vite + react-native-web. The first two are **blockers** (the app won't render correctly without them):
+
+1. **[BLOCKER] Provider first-paint.** `components/provider.tsx` only mounts `TamaguiProvider` once `theme && colorScheme` are non-null, and `theme-provider.tsx` populates them in an async `useEffect` after reading async storage — so a fresh web load can paint blank/hang until storage resolves. **Fix:** initialize `theme`/`colorScheme` **synchronously** in `useState` (read `localStorage` directly, defaulting to `'blue'` / `'light'`), so the provider mounts on first render.
+2. **[BLOCKER] Platform file resolution.** Vite has no Metro resolver. Files like `libs/select/LockScroll.native.tsx` and `dialog.ios.tsx` must not be chosen for web. **Fix:** set Vite `resolve.extensions` to prefer `.web.tsx → .web.ts → .tsx → .ts → .web.js → .js` and **exclude `.native.*` / `.ios.*`** so the web/base variant always wins.
+3. **`react-native-edge-to-edge/SystemBars`** (imported unconditionally in `components/status-bar.tsx`, used only on native) → alias `react-native-edge-to-edge` to a stub in `src/shims/`.
+4. **`@react-native-async-storage/async-storage`** → has a web build (localStorage backend); install it, or alias to a tiny localStorage shim. With fix #1 the theme path no longer depends on it for first paint.
+5. **Vector icon fonts** → load `MaterialIcons.ttf` and `MaterialCommunityIcons.ttf` (from `react-native-vector-icons/Fonts/`) via `@font-face` so `components/icon.tsx` renders Material glyphs on web.
+6. **safe-area-context** → works on web; ensure the app is wrapped so `useSafeAreaInsets()` returns zeros rather than throwing.
+
+### 6.2 Runtime deps to install in the web app
+
+`tamagui` + `@tamagui/*` (core, shorthands, font-inter, lucide-icons, animations-react-native, react-native-media-driver), `react-native-web`, `react-native-svg`, `react-native-safe-area-context`, `react-native-vector-icons`, `@react-native-async-storage/async-storage`, `ramda`, `react-helmet`, `react-portal`, `@react-spring/web` (+ `@react-spring/native` aliased to web), `@floating-ui/react` (used by `LockScroll.tsx`'s web impl), `react-router-dom`. Peer deps `burnt` and `expo-linear-gradient` are listed upstream but **not used** in `elements/src` — install only if a vendored import surfaces; otherwise stub.
+
+A **"render one Button under `Provider`" smoke test** (phase 1) validates all of the above before the full catalog is ported.
 
 ## 7. App shell & navigation
 
@@ -97,28 +107,29 @@ The vendored design system is exposed via a path alias **`@gl/elements` → `src
 
 One page per category. Seeded by **porting the corresponding demo sections** out of the existing `elements-screen.tsx`, stripped of Redux / i18n / env / external-URL dependencies and switched to local mock data.
 
-Categories (covers the spec's required list):
+**Important:** demos are built against the real **`@gl/elements` exports**, not the app-level wrappers the source page sometimes used. The source page imports `Badges`, `Breadcrumb`, and `Selects` from `packages/app/src/components` (custom wrappers); the catalog instead demos the design-system exports `Badge`, `Breadcrumbs`, and `Select` directly. Source audit found ~18 sections port cleanly and ~5 need trivial mocks (`t()` stub, a `useToggle` hook, a static image URL).
+
+Categories (covers the spec's required list plus exports the kitchen-sink page omitted):
 
 - Buttons, IconButtons
 - Inputs (TextField), TextArea
-- Selects, MultiSelect
+- Select, MultiSelect
 - Checkbox, Radio / RadioGroup, Switch
 - Chips
 - Tabs
 - Accordion
-- Dialogs, AlertDialog, ConfirmDialog
-- Sheets (bottom sheets)
+- Dialog, AlertDialog, ConfirmDialog
+- Sheet (bottom sheets), Drawer
 - Tooltip
 - Badge
 - Breadcrumbs
 - Avatars
-- Progress, Spinners, RadialProgress (loaders/feedback)
+- Progress, Spinner, RadialProgress (loaders/feedback)
 - Alerts
 - Separator
 - Container / Surface (cards)
 - Grid
-- Bottom Navigation
-- App Bar
+- Bottom Navigation, App Bar, Footer
 
 ## 9. Foundations pages
 
@@ -139,8 +150,8 @@ Rendered live from the vendored tokens/theme so they always reflect the real sys
 ## 11. Mocking strategy
 
 - All data is local mock data in `src/mocks/`.
-- A trivial `t()` i18n stub returns the key/default string, so ported demo code that calls `t()` keeps working without an i18n runtime.
-- **Omitted, not ported:** demo sections from the source page that depend on external services (video playback, presigned-URL uploads). They are dropped or replaced with static placeholders.
+- A trivial `t()` i18n stub returns the key/default string, so ported demo code that calls `t()` keeps working without an i18n runtime. A trivial `useToggle` hook covers the few demos that used it.
+- **Omitted, not ported** (depend on Redux, navigation, backend, or external services, and several are app-level components not in `@gl/elements`): **Videos** (HLS/Wistia), **Uploader** (S3 presigned URLs / Uploady), **StepProgressBar**, **Pagination** + its `react-hook-form` demo, and **Logout** (Redux/auth). These are dropped or replaced with static placeholders.
 
 ## 12. Non-goals (explicit)
 
@@ -156,9 +167,11 @@ Rendered live from the vendored tokens/theme so they always reflect the real sys
 
 | Risk | Mitigation |
 |---|---|
-| Tamagui runtime mode + RNW + React 19 Vite wiring (aliasing, `optimizeDeps`, JSX) | Well-trodden path; validate with a minimal "render one Button" smoke test before porting the full catalog. |
-| `Provider` renders children only after theme + colorScheme initialize from storage | Ensure sane defaults (light + a default GL theme) so first paint is never blank. |
-| Hidden native-only imports surfacing during vendoring | Build incrementally; stub any native-only module (e.g. `burnt`) in `src/shims/` as it appears. |
+| Tamagui runtime mode + RNW + React 19 Vite wiring (aliasing, `optimizeDeps`, JSX) | Well-trodden path; validate with a minimal "render one Button" smoke test (phase 1) before porting the full catalog. |
+| **[confirmed] `Provider` paints blank until async storage resolves** | Initialize `theme`/`colorScheme` synchronously from `localStorage` with `'blue'`/`'light'` defaults (see §6.1 #1). |
+| **[confirmed] Vite picks `.native.tsx` / `.ios.tsx` over web variant** | Configure `resolve.extensions` to prefer `.web.*`→base and exclude `.native.*`/`.ios.*` (see §6.1 #2). |
+| **[confirmed] Unconditional native import** (`react-native-edge-to-edge` in `status-bar.tsx`) | Alias to a stub in `src/shims/` (see §6.1 #3). |
+| Hidden native-only imports surfacing during vendoring | Build incrementally; stub any native-only module in `src/shims/` as it appears. |
 | Catalog drift from a single 2,600-line source page | Port section-by-section into discrete category pages; do not lift the monolith wholesale. |
 
 ## 14. Implementation phasing (high level — full plan to follow)
