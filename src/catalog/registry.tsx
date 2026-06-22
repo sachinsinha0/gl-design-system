@@ -17,6 +17,7 @@ import { FeedbackPage } from '../pages/components/feedback-page';
 import { DataDisplayPage } from '../pages/components/data-display-page';
 import { NavigationPage } from '../pages/components/navigation-page';
 import { GridPage } from '../pages/components/grid-page';
+import { PrototypesIndex } from '../pages/prototypes/prototypes-index';
 export const catalog: CatalogGroup[] = [
   {
     id: 'foundations',
@@ -52,6 +53,10 @@ export const catalog: CatalogGroup[] = [
       { slug: 'grid', title: 'Grid', Component: GridPage }
     ]
   },
-  { id: 'prototypes', label: 'Prototypes', entries: [] }
+  {
+    id: 'prototypes',
+    label: 'Prototypes',
+    entries: [{ slug: 'prototypes', title: 'Overview', Component: PrototypesIndex }]
+  }
 ];
 export function allEntries(): CatalogGroup['entries'] { return catalog.flatMap((g) => g.entries); }
