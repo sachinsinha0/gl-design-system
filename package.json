@@ -1,8 +1,14 @@
 {
-  "name": "gl-app-native-design",
+  "name": "gl-design-system",
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "packageManager": "yarn@4.5.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "ai/*"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -12,17 +18,17 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@floating-ui/react": "^0.26.28",
+    "@floating-ui/react": "0.26.28",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-spring/native": "^9.7.5",
     "@react-spring/web": "^9.7.5",
-    "@tamagui/animations-react-native": "^1.126.4",
-    "@tamagui/core": "^1.126.4",
-    "@tamagui/font-inter": "^1.126.4",
-    "@tamagui/lucide-icons": "^1.126.4",
-    "@tamagui/portal": "^1.126.4",
-    "@tamagui/react-native-media-driver": "^1.126.4",
-    "@tamagui/shorthands": "^1.126.4",
+    "@tamagui/animations-react-native": "1.126.4",
+    "@tamagui/core": "1.126.4",
+    "@tamagui/font-inter": "1.126.4",
+    "@tamagui/lucide-icons": "1.126.4",
+    "@tamagui/portal": "1.126.4",
+    "@tamagui/react-native-media-driver": "1.126.4",
+    "@tamagui/shorthands": "1.126.4",
     "pascalcase": "^2.0.0",
     "ramda": "^0.28.0",
     "react": "^19.0.0",
@@ -34,10 +40,10 @@
     "react-native-web": "^0.20.0",
     "react-portal": "^4.3.0",
     "react-router-dom": "^6.30.4",
-    "tamagui": "^1.126.4"
+    "tamagui": "1.126.4"
   },
   "devDependencies": {
-    "@tamagui/vite-plugin": "^1.126.4",
+    "@tamagui/vite-plugin": "1.126.4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -52,5 +58,16 @@
     "typescript": "~5.8.3",
     "vite": "^5.4.21",
     "vitest": "^2.1.9"
+  },
+  "resolutions": {
+    "tamagui": "1.126.4",
+    "@tamagui/core": "1.126.4",
+    "@tamagui/animations-react-native": "1.126.4",
+    "@tamagui/font-inter": "1.126.4",
+    "@tamagui/lucide-icons": "1.126.4",
+    "@tamagui/portal": "1.126.4",
+    "@tamagui/react-native-media-driver": "1.126.4",
+    "@tamagui/shorthands": "1.126.4",
+    "@floating-ui/react": "0.26.28"
   }
 }

@@ -1,0 +1,9 @@
+{
+  "name": "@gl/glds-web",
+  "version": "0.0.0",
+  "description": "GLDS-Web design system (HTML + CSS recipes only). Scaffold — recipes arrive in GLDS-PKG phase.",
+  "main": "src/index.js",
+  "files": [
+    "src"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@gl/ai-magna",
+  "version": "0.0.0",
+  "description": "AI assets for the Magna design system: Claude skill, guidelines, component definitions, tokens.",
+  "files": [
+    "skills",
+    "guidelines",
+    "components",
+    "tokens",
+    "README.md"
+  ]
+}

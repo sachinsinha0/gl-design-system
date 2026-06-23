@@ -1,0 +1,12 @@
+{
+  "name": "@gl/ai-glds-web",
+  "version": "0.0.0",
+  "description": "AI assets for the GLDS-Web design system: Claude skill, guidelines, component definitions, tokens.",
+  "files": [
+    "skills",
+    "guidelines",
+    "components",
+    "tokens",
+    "README.md"
+  ]
+}

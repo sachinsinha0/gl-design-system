@@ -1,0 +1,12 @@
+{
+  "name": "@gl/ai-jedi",
+  "version": "0.0.0",
+  "description": "AI assets for the Jedi design system: Claude skill, guidelines, component definitions, tokens.",
+  "files": [
+    "skills",
+    "guidelines",
+    "components",
+    "tokens",
+    "README.md"
+  ]
+}

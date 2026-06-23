@@ -1,0 +1,19 @@
+{
+  "name": "@gl/jedi",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Jedi design system (MUI v6 based). Scaffold — components/theme arrive in JEDI-PKG phase.",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0",
+    "@mui/material": "^6.0.0",
+    "react": ">=18",
+    "react-dom": ">=18"
+  }
+}
