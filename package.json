@@ -18,9 +18,16 @@
     "typecheck": "yarn workspaces foreach --all --topological run typecheck",
     "ai:tokens:sync": "tsx scripts/sync-tokens.ts",
     "ai:tokens:check": "tsx scripts/check-tokens.ts",
-    "ai:lint": "tsx scripts/validate-ai.ts"
+    "ai:lint": "tsx scripts/validate-ai.ts",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
+    "release": "yarn build && changeset publish",
+    "pack:all": "yarn workspaces foreach -A --no-private --include '@gl/*' exec yarn pack --dry-run"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.9",
     "ajv": "^8.17.1",
     "tsx": "^4.19.2"
   },

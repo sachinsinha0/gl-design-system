@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  build:
+    name: typecheck · test · build · pack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Enable Corepack & install
+        run: |
+          corepack enable
+          yarn install --immutable
+
+      - name: Typecheck @gl/jedi
+        run: yarn workspace @gl/jedi typecheck
+
+      - name: Typecheck @gl/glds-web
+        run: yarn workspace @gl/glds-web typecheck
+
+      - name: Typecheck @gl/showcase
+        run: yarn workspace @gl/showcase typecheck
+
+      - name: Test @gl/showcase
+        run: yarn workspace @gl/showcase test --run
+
+      - name: Build @gl/showcase
+        run: yarn workspace @gl/showcase build
+
+      - name: Check AI tokens are in sync
+        run: yarn ai:tokens:check
+
+      - name: Lint AI assets
+        run: yarn ai:lint
+
+      - name: Pack all publishable packages (dry run)
+        run: yarn pack:all

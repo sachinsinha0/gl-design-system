@@ -1,215 +1,85 @@
-# GL App Native — Design Repository
+# GL Design Systems Platform
 
-A **web-only design & prototyping environment** that replicates the
-`gl-app-native` (`@gl/elements`) Tamagui design system. It is two things at once:
+A Yarn 4 monorepo that hosts Great Learning's three first-party design systems — **Magna** (learner-facing, Tamagui + Material 3), **Jedi** (internal & partner tools, MUI v6), and **GLDS-Web** (marketing site, vanilla HTML + CSS recipes) — alongside their **AI guidance packages** and a single **prototyping catalog** that renders every system side by side.
 
-- A browsable **component catalog** (the GL equivalent of an `/elements` page).
-- A **screen-prototyping playground** for designers, developers, and AI-assisted UI work.
+## Repo layout
 
-> ⚠️ **Not for production.** Nothing here ships. There is no Redux, RTK Query,
-> React Navigation, analytics, i18n infrastructure, env config, or native code —
-> deliberately. The priorities are fast HMR, visual parity with `gl-app-native`,
-> and an easy surface for prompt-driven UI.
+```
+apps/
+  showcase/             # @gl/showcase — Vite catalog with per-DS sidebars + routes
+packages/
+  elements/             # @gl/elements   — Magna runtime (Tamagui, RN-Web, M3)
+  jedi/                 # @gl/jedi       — Jedi runtime (MUI v6, jediTheme, Inter)
+  glds-web/             # @gl/glds-web   — GLDS-Web runtime (HTML + CSS recipes, Poppins)
+ai/
+  magna/                # @gl/ai-magna     — Magna skill + components + tokens
+  jedi/                 # @gl/ai-jedi      — Jedi skill + components + tokens
+  glds-web/             # @gl/ai-glds-web  — GLDS-Web skill + components + tokens
+  _schema/              # JSON schema for component definitions
+scripts/                # ai:tokens:sync, ai:tokens:check, ai:lint
+docs/superpowers/       # design + implementation plans + specs
+.changeset/             # pending release notes (Changesets)
+.github/workflows/      # ci.yml + release.yml
+```
 
-The full design and rationale live in the spec:
-[`docs/superpowers/specs/2026-06-22-design-repository-design.md`](docs/superpowers/specs/2026-06-22-design-repository-design.md).
+## Packages
 
-> 🎨 **Designing or styling UI here?** Use the **`magna-design-system`** skill
-> ([`.claude/skills/magna-design-system/`](.claude/skills/magna-design-system/)) — the
-> Material-3 role/typography rules for the learner-facing `@gl/elements` system, with
-> verified token names. In Claude Code it's auto-discovered; the rules apply to all UI work.
+| Package          | Description                                                              | Stack                                  |
+| ---------------- | ------------------------------------------------------------------------ | -------------------------------------- |
+| `@gl/elements`   | Magna design system                                                      | Tamagui · React-Native-Web · M3        |
+| `@gl/jedi`       | Jedi design system                                                       | MUI v6 · Inter                         |
+| `@gl/glds-web`   | GLDS-Web recipes                                                         | HTML + CSS · Poppins                   |
+| `@gl/ai-magna`   | AI guidance: skill, components, guidelines, tokens for Magna             | docs-only                              |
+| `@gl/ai-jedi`    | AI guidance: skill, components, guidelines, tokens for Jedi              | docs-only                              |
+| `@gl/ai-glds-web`| AI guidance: skill, components, guidelines, tokens for GLDS-Web          | docs-only                              |
+| `@gl/showcase`   | Multi-DS prototyping catalog (private, never published)                  | Vite + React                           |
 
----
-
-## Quick start
+## Commands
 
 ```bash
-npm install --legacy-peer-deps   # legacy peer deps are required
-npm run dev                      # start Vite, opens the catalog at http://localhost:5173
+yarn install                              # install everything (Yarn 4, immutable in CI)
+yarn workspace @gl/showcase dev           # run the catalog at http://localhost:5173
+yarn workspace @gl/showcase test --run    # vitest suite for the catalog
+yarn workspace @gl/showcase typecheck     # tsc --noEmit for the showcase
+yarn workspace @gl/jedi typecheck         # tsc --noEmit for Jedi
+yarn workspace @gl/glds-web typecheck     # tsc --noEmit for GLDS-Web
+
+yarn ai:tokens:sync                       # regenerate every ai/<ds>/tokens/tokens.json from source
+yarn ai:tokens:check                      # fail if any AI token snapshot is stale
+yarn ai:lint                              # validate ai/<ds>/components/*.json against the schema
+
+yarn pack:all                             # dry-run tarballs for all publishable @gl/* packages
+yarn changeset                            # add a release note
+yarn release                              # build + publish (changesets-driven; CI runs this)
 ```
 
-Other scripts:
+## Adding a design system
 
-```bash
-npm test          # run the full Vitest suite (the type-safety net — see Conventions)
-npm run typecheck # tsc --noEmit
-npm run build     # tsc --noEmit && vite build
-npm run preview   # serve the production build
-```
+The showcase routes every DS through a small platform layer — adding a fourth DS is a registry update, not a fork.
 
----
+1. Register the DS in [`apps/showcase/src/platform/ds-registry.ts`](apps/showcase/src/platform/ds-registry.ts) (id, label, Provider, theme switcher hook).
+2. Create a catalog folder at `apps/showcase/src/catalogs/<ds>/` with a `registry.tsx` that drives both the sidebar and routes for that system.
+3. Add `packages/<ds>/` with the runtime (and `ai/<ds>/` with skill + components if the system needs AI guidance).
+4. Add a changeset and open a PR.
 
-## What's inside
+Background and full rationale: [`docs/superpowers/plans/2026-06-23-multi-design-system-platform.md`](docs/superpowers/plans/2026-06-23-multi-design-system-platform.md) and the implementation plan at [`docs/superpowers/plans/2026-06-23-multi-design-system-platform-implementation.md`](docs/superpowers/plans/2026-06-23-multi-design-system-platform-implementation.md).
 
-The catalog SPA has a sidebar with three groups plus a top-bar **theme switcher**
-(light/dark × the 22 GL color themes):
+## AI packages
 
-**Foundations** — Colors, Typography, Spacing, Elevation, Icons.
+Each `ai/<ds>/` ships a complete bundle that lets Claude, Cursor, or Copilot generate on-brand UI for that design system without re-discovering the rules:
 
-**Components** (13 pages):
+- `skills/<ds>-design-system/SKILL.md` — full skill with YAML frontmatter; the canonical rules (allowed components, token vocabulary, icons, anti-patterns).
+- `skills/<ds>-design-system/context.md` — lean, session-loadable summary of the same rules.
+- `skills/<ds>-design-system/reference.md` — long-form reference for deep dives.
+- `components/<component>.json` — one definition per component (props, variants, examples). Conforms to [`ai/_schema/component.schema.json`](ai/_schema/component.schema.json), enforced by `yarn ai:lint`.
+- `guidelines/*.mdx` — MDX docs for color, typography, spacing, accessibility, usage.
+- `tokens/tokens.json` — generated snapshot of the runtime tokens; regenerate with `yarn ai:tokens:sync`, verify with `yarn ai:tokens:check`.
 
-- Buttons
-- Inputs
-- Select & MultiSelect
-- Selection controls
-- Chips
-- Tabs
-- Accordion
-- Dialogs
-- Sheet & Drawer
-- Feedback
-- Data display
-- Navigation
-- Grid
+## Contributing
 
-**Prototypes** — Overview, Login screen, Feed screen, Detail screen.
+1. Branch off `main`.
+2. Make your change. If it affects a publishable package, run `yarn changeset` and describe the bump.
+3. Make sure `yarn workspace @gl/showcase test --run`, the relevant typechecks, `yarn ai:tokens:check`, `yarn ai:lint`, and `yarn pack:all` all pass — this is what CI gates on (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+4. Open a PR. Merging changesets to `main` triggers the release workflow at [`.github/workflows/release.yml`](.github/workflows/release.yml), which opens a Version PR and publishes on merge.
 
-The sidebar and routes are both generated from a single registry
-(`src/catalog/registry.tsx`), so adding an entry there wires up both.
-
----
-
-## Project structure
-
-```
-src/
-├── main.tsx              # entry: loads vector-icon fonts, mounts <App/>
-├── App.tsx               # SafeAreaProvider + @gl/elements Provider + RouterProvider
-├── router.tsx            # builds react-router routes from the catalog registry
-├── design-system/        # VENDORED copy of @gl/elements/src (alias: @gl/elements)
-│   └── components/ theme/ hooks/ icons/ css/ utils/ libs/ types/
-├── catalog/              # registry.tsx — single source for sidebar groups + routes
-├── shell/                # AppShell layout, Sidebar, TopBar, ThemeSwitcher
-├── showcase-kit/         # DemoBlock, VariantCell, Swatch — catalog page primitives
-├── pages/
-│   ├── foundations/      # Colors, Typography, Spacing, Elevation, Icons pages
-│   ├── components/       # one page per component category
-│   └── prototypes/       # full-screen mockups built from the design system
-├── patterns/             # composed blocks: InfoCard, ListItem, ScreenAppBar, EmptyState
-├── mocks/                # i18n stub, useToggle, sample data
-├── shims/                # web stubs (react-native-vector-icons, react-native-edge-to-edge)
-├── types/                # gl-elements.d.ts (ambient module decl for @gl/elements)
-└── test/                 # render.tsx (renderWithProvider helper)
-```
-
-Every page has a colocated `*.test.tsx`.
-
----
-
-## How to add a component page
-
-1. Create `src/pages/components/<name>-page.tsx`. Compose the demo with
-   `DemoBlock` / `VariantCell` from `src/showcase-kit` and import the components
-   you're showing from `@gl/elements`:
-
-   ```tsx
-   import { DemoBlock, VariantCell } from '../../showcase-kit';
-   import { Button } from '@gl/elements';
-
-   export function MyThingPage() {
-     return (
-       <DemoBlock title="My thing" description="What it does">
-         <VariantCell label="Default">
-           <Button>Press me</Button>
-         </VariantCell>
-       </DemoBlock>
-     );
-   }
-   ```
-
-2. Add **one** entry to the `components` group in `src/catalog/registry.tsx`:
-
-   ```tsx
-   { slug: 'my-thing', title: 'My thing', Component: MyThingPage }
-   ```
-
-   The sidebar item and the `/my-thing` route are generated automatically. Keep
-   slugs unique (a test enforces this).
-
-3. Add a render test next to the page (`<name>-page.test.tsx`) using
-   `renderWithProvider` from `src/test/render`:
-
-   ```tsx
-   import { renderWithProvider } from '../../test/render';
-   import { MyThingPage } from './my-thing-page';
-
-   test('My thing page renders', () => {
-     renderWithProvider(<MyThingPage />);
-   });
-   ```
-
----
-
-## How to add a prototype
-
-1. Copy an existing file in `src/pages/prototypes/` (e.g. `login-prototype.tsx`)
-   as a starting point.
-2. Compose the screen from `@gl/elements` primitives plus the reusable blocks in
-   `src/patterns/` (`InfoCard`, `ListItem`, `ScreenAppBar`, `EmptyState`).
-3. Add a registry entry to the **`prototypes`** group in
-   `src/catalog/registry.tsx` (e.g.
-   `{ slug: 'proto-thing', title: 'Thing screen', Component: ThingPrototype }`).
-4. Add a colocated render test.
-
----
-
-## Conventions & gotchas
-
-- **Icons: Lucide only.** Use `@tamagui/lucide-icons` or the custom SVG icons in
-  `@gl/elements/icons`. The legacy Material font-icon API
-  (`<Icon icon="some-name" />`, string names) is **a no-op on web** — it's
-  shimmed (`src/shims/react-native-vector-icon.tsx`). Don't rely on it.
-- **Use `@gl/elements`, not raw `react-native`.** Build UI from the vendored
-  design system so it stays on-theme.
-- **Token props, not hardcoded pixels.** Use Tamagui tokens (spacing, color,
-  size) instead of raw numeric values so themes apply correctly.
-- **Named exports only.** No default exports for pages/components.
-- **`@gl/elements` is untyped under tsc.** It's declared as an ambient module in
-  `src/types/gl-elements.d.ts`, so `tsc` won't catch prop mistakes inside it —
-  **render tests are the safety net.** Always add one.
-- **`SafeAreaProvider` is required** (sheets, footers, and `useSafeAreaInsets`
-  depend on it). It's already wired in `App.tsx` and in `renderWithProvider`, so
-  you don't add it per-page.
-
----
-
-## Re-syncing the design system from gl-app-native
-
-The `src/design-system/` tree is a **one-time vendored copy**, not a live sync.
-To pull updates from the source monorepo:
-
-```bash
-cp -R ../gl-app-native/packages/elements/src/. src/design-system/
-```
-
-Then **re-apply the web-compatibility fixes** (they get overwritten by the copy):
-
-1. **Synchronous Provider first-paint seed** in
-   `src/design-system/components/theme-provider.tsx` — initialize
-   `theme`/`colorScheme` synchronously in `useState` by reading `localStorage`
-   directly (defaults `'blue'` / `'light'`), so the provider mounts on first
-   render instead of painting blank until async storage resolves.
-2. Confirm the **shims and aliases in `vite.config.ts`** are still in place: the
-   `react-native-vector-icons/dist/*` shims, the `react-native-edge-to-edge`
-   stub, `react-native → react-native-web`, and the platform-aware
-   `resolve.extensions` (prefer `.web.*` / base, never `.native.*` / `.ios.*`).
-
-Both fixes — and the rest of the required web-compat changes — are documented in
-the spec **§6.1**. After re-syncing, run `npm test` to confirm everything still
-renders.
-
----
-
-## AI / prompt-driven UI
-
-This repo is designed to be an easy surface for generating new screens by prompt:
-
-- **Browse the catalog** (`npm run dev`) to discover which components and
-  variants exist before composing.
-- Build new screens from the **reusable blocks in `src/patterns/`**
-  (`InfoCard`, `ListItem`, `ScreenAppBar`, `EmptyState`) plus `@gl/elements`
-  primitives.
-- Use the **prototype templates** in `src/pages/prototypes/`
-  (`login-prototype.tsx`, `feed-prototype.tsx`, `detail-prototype.tsx`) as
-  starting points — copy one and adapt it, then register it (see
-  [How to add a prototype](#how-to-add-a-prototype)).
+See [`.changeset/README.md`](.changeset/README.md) for the changeset flow.
