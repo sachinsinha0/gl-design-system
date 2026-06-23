@@ -2,6 +2,7 @@ import { GLDSProvider } from '@gl/glds-web';
 import { registerDesignSystem } from '../../platform/ds-registry';
 import { catalog } from './registry';
 import { HomePage } from './home-page';
+import { GLDSShell } from './shell/glds-shell';
 
 registerDesignSystem({
   id: 'glds-web',
@@ -9,11 +10,7 @@ registerDesignSystem({
   tagline: 'Marketing & public site',
   tech: 'html-css',
   Provider: GLDSProvider,
+  Shell: GLDSShell,
   registry: catalog,
-  homePage: HomePage,
-  chrome: {
-    fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    accent: '#FFF1E6',
-    accentText: '#B8531A'
-  }
+  homePage: HomePage
 });

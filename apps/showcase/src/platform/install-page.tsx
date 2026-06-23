@@ -114,7 +114,7 @@ function AssetCard({ asset }: { asset: InstallAsset }) {
   );
 }
 
-function CodeBlock({ children }: { children: string }) {
+export function CodeBlock({ children }: { children: string }) {
   return (
     <Stack
       tag="pre"
@@ -213,4 +213,4 @@ export function InstallPage(props: InstallPageProps) {
   );
 }
 
-export const ASSET_ICONS = { FileCode, FileText, Package, Download };
+export const ASSET_ICONS = { FileCode, FileText, Package };

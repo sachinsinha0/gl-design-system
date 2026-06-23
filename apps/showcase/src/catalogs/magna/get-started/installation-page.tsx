@@ -1,26 +1,9 @@
-import { YStack, XStack, Stack, Typography, Separator } from '@gl/elements';
-import { InstallPage, ASSET_ICONS } from '../../../platform/install-page';
+import { YStack, XStack, Typography, Separator } from '@gl/elements';
+import { InstallPage, ASSET_ICONS, CodeBlock } from '../../../platform/install-page';
 import skillUrl from '../../../../../../ai/magna/skills/magna-design-system/SKILL.md?url';
 import contextUrl from '../../../../../../ai/magna/skills/magna-design-system/context.md?url';
 import referenceUrl from '../../../../../../ai/magna/skills/magna-design-system/reference.md?url';
 import pkgJsonUrl from '../../../../../../ai/magna/package.json?url';
-
-function Code({ children }: { children: string }) {
-  return (
-    <Stack
-      tag="pre"
-      backgroundColor="$surfaceContainerHigh"
-      borderRadius={10}
-      padding="$3"
-      marginTop="$2"
-      overflow="hidden"
-    >
-      <Typography variant="caption1" fontFamily="$monospace" color="$onSurface">
-        {children}
-      </Typography>
-    </Stack>
-  );
-}
 
 export function InstallationPage() {
   return (
@@ -45,7 +28,7 @@ export function InstallationPage() {
           body: (
             <YStack gap="$2">
               <Typography variant="body2">Drop the file into your project at:</Typography>
-              <Code>{'.claude/skills/magna-design-system/SKILL.md'}</Code>
+              <CodeBlock>{'.claude/skills/magna-design-system/SKILL.md'}</CodeBlock>
               <Typography variant="caption2" color="$onSurfaceVariant">
                 Claude reads the frontmatter and triggers it on any "learner-facing UI / M3 / Tamagui" task.
               </Typography>
@@ -108,9 +91,9 @@ export function InstallationPage() {
           body: (
             <YStack gap="$2">
               <Typography variant="body2">Install:</Typography>
-              <Code>{'npm install -D @gl/ai-magna\n# or\nyarn add -D @gl/ai-magna'}</Code>
+              <CodeBlock>{'npm install -D @gl/ai-magna\n# or\nyarn add -D @gl/ai-magna'}</CodeBlock>
               <Typography variant="body2">Then point your assistant at the installed assets:</Typography>
-              <Code>{'# .claude/skills/magna-design-system  →  copy or symlink from:\nnode_modules/@gl/ai-magna/skills/magna-design-system/\n\n# AGENTS.md\nSee design rules in node_modules/@gl/ai-magna/skills/magna-design-system/SKILL.md'}</Code>
+              <CodeBlock>{'# .claude/skills/magna-design-system  →  copy or symlink from:\nnode_modules/@gl/ai-magna/skills/magna-design-system/\n\n# AGENTS.md\nSee design rules in node_modules/@gl/ai-magna/skills/magna-design-system/SKILL.md'}</CodeBlock>
               <Separator marginVertical="$2" />
               <XStack gap="$2" flexWrap="wrap" alignItems="center">
                 <Typography variant="caption2" color="$onSurfaceVariant">Ships:</Typography>

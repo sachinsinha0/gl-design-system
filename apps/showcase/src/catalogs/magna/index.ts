@@ -3,6 +3,7 @@ import { registerDesignSystem } from '../../platform/ds-registry';
 import { catalog } from './registry';
 import { HomePage } from './home-page';
 import { magnaThemes } from './themes';
+import { MagnaShell } from './shell/magna-shell';
 
 registerDesignSystem({
   id: 'magna',
@@ -10,12 +11,8 @@ registerDesignSystem({
   tagline: 'Learner product UI',
   tech: 'tamagui',
   Provider: MagnaProvider,
+  Shell: MagnaShell,
   registry: catalog,
   homePage: HomePage,
-  themes: magnaThemes,
-  chrome: {
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    accent: '#E8F0FE',
-    accentText: '#0B57D0'
-  }
+  themes: magnaThemes
 });

@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode
 } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
   type DSId,
   type DesignSystemDescriptor,
@@ -74,14 +74,18 @@ export function useActiveDS(): DesignSystemDescriptor {
 
 export function useSetActiveDS(): (id: DSId) => void {
   const { setActiveId } = useDSContext();
-  const navigate = useNavigate();
   const location = useLocation();
   return useCallback(
     (id: DSId) => {
       setActiveId(id);
+      // Each DS owns its own native chrome (Magna=Tamagui, Jedi=MUI, GLDS-Web=HTML+CSS).
+      // To avoid mounting multiple framework providers simultaneously, switching DSes
+      // hard-reloads the page so only the destination DS's Shell + Provider mount fresh.
+      if (typeof window === 'undefined') return;
       const first = location.pathname.split('/')[1];
-      if (first && hasDesignSystem(first)) navigate(`/${id}`);
+      const target = first && hasDesignSystem(first) ? `/${id}` : `/${id}`;
+      window.location.assign(target);
     },
-    [setActiveId, navigate, location.pathname]
+    [setActiveId, location.pathname]
   );
 }

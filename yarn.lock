@@ -1387,6 +1387,7 @@ __metadata:
     "@gl/jedi": "workspace:*"
     "@mdx-js/react": "npm:^3.0.1"
     "@mdx-js/rollup": "npm:^3.0.1"
+    "@mui/icons-material": "npm:^6"
     "@mui/material": "npm:^6.1.0"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
     "@react-spring/native": "npm:^9.7.5"
@@ -1629,6 +1630,22 @@ __metadata:
   version: 6.5.0
   resolution: "@mui/core-downloads-tracker@npm:6.5.0"
   checksum: 10c0/dea763c8d4b4f9415d6c6ac3a04115d04c249461ce5635f0012a75b91c38f43c0d0411201664a77c7ff10ff11ea12a0bfeea6562ec22ceec6bac82478b6384c3
+  languageName: node
+  linkType: hard
+
+"@mui/icons-material@npm:^6":
+  version: 6.5.0
+  resolution: "@mui/icons-material@npm:6.5.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.26.0"
+  peerDependencies:
+    "@mui/material": ^6.5.0
+    "@types/react": ^17.0.0 || ^18.0.0 || ^19.0.0
+    react: ^17.0.0 || ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/0afec2280e8dde4ff34686481497c4b3ced8193f0038bf8984fd502808c053ba8464c35409def0380424cade1d282f647fac1db7c55046b2b232b0d2c52a589d
   languageName: node
   linkType: hard
 

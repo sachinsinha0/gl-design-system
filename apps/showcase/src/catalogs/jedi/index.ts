@@ -2,6 +2,7 @@ import { JediProvider } from '@gl/jedi';
 import { registerDesignSystem } from '../../platform/ds-registry';
 import { catalog } from './registry';
 import { HomePage } from './home-page';
+import { JediShell } from './shell/jedi-shell';
 
 registerDesignSystem({
   id: 'jedi',
@@ -9,11 +10,7 @@ registerDesignSystem({
   tagline: 'Internal & partner tools',
   tech: 'mui',
   Provider: JediProvider,
+  Shell: JediShell,
   registry: catalog,
-  homePage: HomePage,
-  chrome: {
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    accent: '#EEF1F6',
-    accentText: '#1F3A93'
-  }
+  homePage: HomePage
 });
