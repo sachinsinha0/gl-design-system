@@ -1,13 +1,27 @@
 import { XStack, Stack, Icon } from '@gl/elements';
 import { Layers } from '@tamagui/lucide-icons';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useActiveDSId, useSetActiveDS } from '../platform/ds-context';
-import { listDesignSystems, type DSId } from '../platform/ds-registry';
+import { listDesignSystems, hasDesignSystem, type DSId } from '../platform/ds-registry';
+import { equivalentSlug } from '../platform/ds-equivalence';
 
 export function DSSwitcher() {
   const activeId = useActiveDSId();
   const setActive = useSetActiveDS();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const systems = listDesignSystems();
   if (systems.length <= 1) return null;
+
+  function switchTo(newId: DSId) {
+    const parts = pathname.split('/').filter(Boolean);
+    const [first, ...rest] = parts;
+    const currentSlug = first && hasDesignSystem(first) && rest.length > 0 ? rest.join('/') : 'home';
+    setActive(newId);
+    const targetSlug = equivalentSlug(activeId, currentSlug, newId);
+    navigate(targetSlug === 'home' ? `/${newId}` : `/${newId}/${targetSlug}`);
+  }
+
   return (
     <XStack
       alignItems="center"
@@ -25,7 +39,7 @@ export function DSSwitcher() {
         <select
           aria-label="Design system"
           value={activeId}
-          onChange={(e) => setActive(e.target.value as DSId)}
+          onChange={(e) => switchTo(e.target.value as DSId)}
           style={{
             border: 'none',
             background: 'transparent',

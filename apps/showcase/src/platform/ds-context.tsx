@@ -28,6 +28,9 @@ const DSContext = createContext<DSContextValue | null>(null);
 
 function readInitialActiveId(): DSId {
   if (typeof window === 'undefined') return DEFAULT_DS;
+  // URL wins on first paint: /:dsId/...
+  const urlFirst = window.location.pathname.split('/')[1];
+  if (urlFirst && hasDesignSystem(urlFirst)) return urlFirst;
   const stored = window.localStorage.getItem(STORAGE_KEY);
   if (stored && hasDesignSystem(stored)) return stored;
   return DEFAULT_DS;

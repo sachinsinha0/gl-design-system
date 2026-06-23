@@ -1,5 +1,5 @@
 import type { CatalogGroup } from '../_shared/types';
-import { Palette, Boxes, MonitorSmartphone } from '@tamagui/lucide-icons';
+import { Palette, Boxes, MonitorSmartphone, BookOpen } from '@tamagui/lucide-icons';
 import { ColorsPage } from './foundations/colors-page';
 import { TypographyPage } from './foundations/typography-page';
 import { SpacingPage } from './foundations/spacing-page';
@@ -22,6 +22,21 @@ import { PrototypesIndex } from './prototypes/prototypes-index';
 import { LoginPrototype } from './prototypes/login-prototype';
 import { FeedPrototype } from './prototypes/feed-prototype';
 import { DetailPrototype } from './prototypes/detail-prototype';
+import { MagnaMDXProvider } from '../../platform/mdx-providers/magna-mdx-provider';
+import ColorGuide from '../../../../../ai/magna/guidelines/color.mdx';
+import TypeGuide from '../../../../../ai/magna/guidelines/typography.mdx';
+import SpacingGuide from '../../../../../ai/magna/guidelines/spacing.mdx';
+import AccessibilityGuide from '../../../../../ai/magna/guidelines/accessibility.mdx';
+import UsageGuide from '../../../../../ai/magna/guidelines/usage.mdx';
+
+const wrap = (Mdx: React.ComponentType) =>
+  function GuidelinePage() {
+    return (
+      <MagnaMDXProvider>
+        <Mdx />
+      </MagnaMDXProvider>
+    );
+  };
 export const catalog: CatalogGroup[] = [
   {
     id: 'foundations',
@@ -71,6 +86,19 @@ export const catalog: CatalogGroup[] = [
       { slug: 'proto-login', title: 'Login', Component: LoginPrototype },
       { slug: 'proto-feed', title: 'Learner home', Component: FeedPrototype },
       { slug: 'proto-detail', title: 'Course detail', Component: DetailPrototype }
+    ]
+  },
+  {
+    id: 'guidelines',
+    label: 'Guidelines',
+    icon: BookOpen,
+    description: 'Magna design rules — color, typography, spacing, accessibility, usage.',
+    entries: [
+      { slug: 'guidelines/color', title: 'Color', Component: wrap(ColorGuide) },
+      { slug: 'guidelines/typography', title: 'Typography', Component: wrap(TypeGuide) },
+      { slug: 'guidelines/spacing', title: 'Spacing', Component: wrap(SpacingGuide) },
+      { slug: 'guidelines/accessibility', title: 'Accessibility', Component: wrap(AccessibilityGuide) },
+      { slug: 'guidelines/usage', title: 'Usage', Component: wrap(UsageGuide) }
     ]
   }
 ];
