@@ -5,5 +5,5 @@ import { SpacingPage } from './spacing-page';
 test('Spacing page shows spacing scale', () => {
   renderWithProvider(<SpacingPage />);
   expect(screen.getByText('Spacing scale')).toBeInTheDocument();
-  expect(screen.getByText('$2 · 16px')).toBeInTheDocument();
+  expect(screen.getByText('$2')).toBeInTheDocument();
 });

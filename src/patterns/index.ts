@@ -6,3 +6,7 @@ export { ScreenAppBar } from './screen-app-bar';
 export type { ScreenAppBarProps } from './screen-app-bar';
 export { EmptyState } from './empty-state';
 export type { EmptyStateProps } from './empty-state';
+export { ProgressBar } from './progress-bar';
+export type { ProgressBarProps } from './progress-bar';
+export { CourseCard } from './course-card';
+export type { CourseCardProps } from './course-card';

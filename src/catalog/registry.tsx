@@ -68,9 +68,9 @@ export const catalog: CatalogGroup[] = [
     description: 'Full-screen mockups composed from components and patterns — copy one to start a new screen.',
     entries: [
       { slug: 'prototypes', title: 'Overview', Component: PrototypesIndex },
-      { slug: 'proto-login', title: 'Login screen', Component: LoginPrototype },
-      { slug: 'proto-feed', title: 'Feed screen', Component: FeedPrototype },
-      { slug: 'proto-detail', title: 'Detail screen', Component: DetailPrototype }
+      { slug: 'proto-login', title: 'Login', Component: LoginPrototype },
+      { slug: 'proto-feed', title: 'Learner home', Component: FeedPrototype },
+      { slug: 'proto-detail', title: 'Course detail', Component: DetailPrototype }
     ]
   }
 ];

@@ -5,21 +5,21 @@ import { InfoCard } from '../../patterns';
 const PROTOTYPES = [
   {
     slug: 'proto-login',
-    title: 'Login screen',
-    subtitle: 'Auth template',
-    body: 'A centered sign-in card with email + password fields and primary action.'
+    title: 'Sign in',
+    subtitle: 'Auth screen',
+    body: 'A branded split-panel sign-in with value props, email/password, and social login.'
   },
   {
     slug: 'proto-feed',
-    title: 'Feed screen',
-    subtitle: 'List + tabs',
-    body: 'An app-bar, segmented tabs, and a scrollable list of course rows.'
+    title: 'Learner home',
+    subtitle: 'Dashboard',
+    body: 'A greeting, a continue-learning hero with progress, learning stats, and course rails.'
   },
   {
     slug: 'proto-detail',
-    title: 'Detail screen',
-    subtitle: 'Hero + content',
-    body: 'A back-navigable detail view with hero, topic chips, and an empty section.'
+    title: 'Course detail',
+    subtitle: 'Detail + curriculum',
+    body: 'A course hero, mentor & rating, resume CTA, and tabbed overview / curriculum / reviews.'
   }
 ];
 
