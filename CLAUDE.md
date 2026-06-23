@@ -4,7 +4,9 @@ A **web-only**, standalone design & prototyping catalog for the `@gl/elements` (
 
 ## Designing or styling any UI → use the `magna-design-system` skill
 
-Any task that picks colors, typography, spacing, components, or component states **must** follow the **`magna-design-system`** skill at [`.claude/skills/magna-design-system/SKILL.md`](.claude/skills/magna-design-system/SKILL.md) (full details in `reference.md` beside it). Core rules: use Tamagui **role tokens, never raw hex**; pair every role with its `on-` role; build from `@gl/elements`, never raw React-Native primitives; **Lucide icons only**; real `Typography` variants are `h1`–`h5` / `subtitle1`/`2` / `body1`/`2` / `caption1`/`2` / `overline` (no `headline*`/`caption`/`buttonMedium`).
+Any task that picks colors, typography, spacing, components, or component states **must** follow the **`magna-design-system`** skill at [`ai/magna/skills/magna-design-system/SKILL.md`](ai/magna/skills/magna-design-system/SKILL.md) (full details in `reference.md` beside it). Core rules: use Tamagui **role tokens, never raw hex**; pair every role with its `on-` role; build from `@gl/elements`, never raw React-Native primitives; **Lucide icons only**; real `Typography` variants are `h1`–`h5` / `subtitle1`/`2` / `body1`/`2` / `caption1`/`2` / `overline` (no `headline*`/`caption`/`buttonMedium`).
+
+Jedi and GLDS-Web have parallel AI packages under [`ai/jedi/`](ai/jedi/) and [`ai/glds-web/`](ai/glds-web/) with their own design-system skills.
 
 ## Commands
 

@@ -1,12 +1,25 @@
 {
   "name": "@gl/ai-glds-web",
-  "version": "0.0.0",
-  "description": "AI assets for the GLDS-Web design system: Claude skill, guidelines, component definitions, tokens.",
+  "version": "0.0.1",
+  "description": "AI assets for the GL GLDS-Web design system (HTML + CSS recipes). Includes Claude/Cursor/Copilot skill, MDX guidelines, JSON component definitions, and token snapshot.",
+  "keywords": [
+    "design-system",
+    "ai",
+    "claude-skill",
+    "glds-web",
+    "html",
+    "css"
+  ],
   "files": [
     "skills",
     "guidelines",
     "components",
     "tokens",
     "README.md"
-  ]
+  ],
+  "scripts": {
+    "typecheck": "echo 'no-op for AI package'",
+    "test": "echo 'no-op for AI package'",
+    "build": "echo 'no-op for AI package'"
+  }
 }

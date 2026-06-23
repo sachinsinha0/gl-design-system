@@ -1,12 +1,24 @@
 {
   "name": "@gl/ai-magna",
-  "version": "0.0.0",
-  "description": "AI assets for the Magna design system: Claude skill, guidelines, component definitions, tokens.",
+  "version": "0.0.1",
+  "description": "AI assets for the GL Magna design system (Tamagui, Material-3 role tokens). Includes Claude/Cursor/Copilot skill, MDX guidelines, JSON component definitions, and token snapshot.",
+  "keywords": [
+    "design-system",
+    "ai",
+    "claude-skill",
+    "magna",
+    "tamagui"
+  ],
   "files": [
     "skills",
     "guidelines",
     "components",
     "tokens",
     "README.md"
-  ]
+  ],
+  "scripts": {
+    "typecheck": "echo 'no-op for AI package'",
+    "test": "echo 'no-op for AI package'",
+    "build": "echo 'no-op for AI package'"
+  }
 }
