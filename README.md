@@ -14,6 +14,11 @@ A **web-only design & prototyping environment** that replicates the
 The full design and rationale live in the spec:
 [`docs/superpowers/specs/2026-06-22-design-repository-design.md`](docs/superpowers/specs/2026-06-22-design-repository-design.md).
 
+> 🎨 **Designing or styling UI here?** Use the **`magna-design-system`** skill
+> ([`.claude/skills/magna-design-system/`](.claude/skills/magna-design-system/)) — the
+> Material-3 role/typography rules for the learner-facing `@gl/elements` system, with
+> verified token names. In Claude Code it's auto-discovered; the rules apply to all UI work.
+
 ---
 
 ## Quick start
