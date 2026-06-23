@@ -1,0 +1,48 @@
+---
+title: Typography
+dsId: jedi
+tags: [foundations, typography, inter]
+---
+
+# Typography
+
+**Single family: Inter.** Weights 400 / 500 / 600 — load only those three. Hierarchy comes from weight and size, not color: headings are the same ink as body.
+
+## Variants
+
+`h1`–`h5` (no `h6`), `subtitle1`/`2`, `body1`/`2`, `caption`, `overline`, `button`. The variant `h6` does not exist — if a sixth heading level feels necessary, the page hierarchy is too deep.
+
+```tsx
+import { Typography, Stack } from '@mui/material';
+
+<Stack spacing={2}>
+  <Typography variant="h2">Cohort overview</Typography>
+  <Typography variant="subtitle1">January 2026 batch</Typography>
+  <Typography variant="body1">42 learners, 3 program managers, 9 courses.</Typography>
+</Stack>
+```
+
+## SemiBold, negative tracking
+
+Headings are 600 weight with **-0.4px letter-spacing** — compact, modern, product-y. Keep headlines short; tight tracking punishes long ones.
+
+## UPPERCASE only on buttons and overlines
+
+Everything else is sentence/title case. No uppercase headings.
+
+## Dark-mode buttons step up to 600
+
+Light strokes on dark surfaces read thinner — the Button override flips weight automatically in dark mode. Don't ask devs to remember it; trust the theme.
+
+## Mobile body shrinks (unlike Magna)
+
+Below `md`, `body1` → 14px / 20px, `body2` → 12px / 16px. Letter-spacing also relaxes to 0 on mobile — tight tracking hurts small-screen legibility.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| `<Typography variant="h5">` for the deepest heading | `<Typography variant="h6">` (doesn't exist) |
+| Use `subtitle1`/`subtitle2` for labels | Use `body1` bolded as a label |
+| Stick to Inter | Set `fontFamily: 'Roboto'` |
+| UPPERCASE only on buttons + overline | Uppercase headings or chips |

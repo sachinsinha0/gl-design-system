@@ -1,0 +1,38 @@
+---
+title: Spacing
+dsId: magna
+tags: [foundations, spacing, layout]
+---
+
+# Spacing
+
+Magna uses Tamagui's spacing tokens. Reach for the `$`-prefixed scale (`$xs`, `$sm`, `$md`, `$lg`, `$xl`, `$1`–`$10`) rather than raw pixel numbers, so layouts stay on-grid across web and native.
+
+```tsx
+import { YStack, XStack, Surface, Typography } from '@gl/elements';
+
+// Page section
+<YStack gap="$lg" padding="$xl">
+  <Typography variant="h3">Your enrolled courses</Typography>
+  <XStack gap="$md" flexWrap="wrap">
+    {courses.map((c) => <CourseCard key={c.id} {...c} />)}
+  </XStack>
+</YStack>
+```
+
+## Learner-first density
+
+Magna surfaces breathe — don't pack content. This is the deliberate inverse of Jedi's density allowance. Generous spacing between cards (`$md`+ gap), `$lg`+ section padding, and `$xl` between page bands keeps the learner's eye relaxed.
+
+## Touch targets
+
+Touch targets are **≥ 48×48dp** on Magna (M3 standard; larger than Jedi's 44 because Magna is mobile-first for learners). Spacing between targets is ≥ 8dp.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| `gap="$md"` between cards | `gap={11}` |
+| `padding="$lg"` for section padding | `paddingLeft: '17px'` |
+| Use `YStack` / `XStack` with `gap` | Add `marginBottom` between siblings |
+| Target ≥ 48×48dp | Ship a 32px tap target on mobile |

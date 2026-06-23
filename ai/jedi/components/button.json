@@ -1,0 +1,60 @@
+{
+  "id": "button",
+  "name": "Button",
+  "dsId": "jedi",
+  "summary": "MUI Button restricted to the Jedi role system. Use `contained` for the principal action (exactly one per view — Behavioral rule B4), `outlined`/`text` for supporting actions. Labels are UPPERCASE; in dark mode the font-weight steps up to 600.",
+  "anatomy": [
+    { "part": "root", "description": "MUI Button root with `disableElevation` (flat system).", "required": true },
+    { "part": "startIcon", "description": "Optional MUI icon." },
+    { "part": "label", "description": "Typography `button` (14/24, 0.4px, UPPERCASE)." },
+    { "part": "endIcon", "description": "Optional MUI icon." }
+  ],
+  "props": [
+    { "name": "variant", "type": "'contained' | 'outlined' | 'text'", "default": "contained" },
+    { "name": "color", "type": "'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'", "default": "primary" },
+    { "name": "size", "type": "'small' | 'medium' | 'large'", "default": "medium" },
+    { "name": "disabled", "type": "boolean", "default": false },
+    { "name": "startIcon", "type": "ReactNode" },
+    { "name": "endIcon", "type": "ReactNode" },
+    { "name": "onClick", "type": "(e: MouseEvent) => void", "required": true },
+    { "name": "fullWidth", "type": "boolean", "default": false }
+  ],
+  "variants": [
+    { "axis": "variant", "values": ["contained", "outlined", "text"], "default": "contained" },
+    { "axis": "color", "values": ["primary", "secondary", "error", "warning", "info", "success"], "default": "primary" },
+    { "axis": "size", "values": ["small", "medium", "large"], "default": "medium" }
+  ],
+  "states": [
+    { "name": "default", "description": "Resting; uses `primary.main` for contained." },
+    { "name": "hover", "description": "MUI state layer at 4% (light) / 8% (dark)." },
+    { "name": "focus-visible", "description": "Visible focus ring — never suppress." },
+    { "name": "active", "description": "Pressed; deeper state-layer overlay." },
+    { "name": "disabled", "description": "`action.disabled` + `action.disabled-background`; never `opacity: 0.5`." }
+  ],
+  "a11y": [
+    "Buttons act; if the control navigates (changes URL), use a link instead.",
+    "`IconButton` and icon-only Buttons require `aria-label`.",
+    "Never suppress the focus ring; keyboard navigation is first-class.",
+    "Touch targets ≥ 44×44px on partner-facing surfaces."
+  ],
+  "examples": [
+    {
+      "label": "Principal contained action",
+      "language": "tsx",
+      "snippet": "import { Button } from '@gl/jedi';\n\n<Button onClick={save}>Save changes</Button>"
+    },
+    {
+      "label": "Secondary outlined + tertiary text",
+      "language": "tsx",
+      "snippet": "import { Stack, Button } from '@mui/material';\n\n<Stack direction=\"row\" spacing={1}>\n  <Button variant=\"contained\" onClick={save}>Save</Button>\n  <Button variant=\"outlined\" onClick={cancel}>Cancel</Button>\n  <Button variant=\"text\" color=\"error\" onClick={discard}>Discard</Button>\n</Stack>"
+    }
+  ],
+  "doNot": [
+    "Render two `contained` buttons in the same view — exactly one per view (B4).",
+    "Use `color=\"warning\"` as text — warning has no text-safe solid in light mode; use the 160p/190p tint recipe.",
+    "Use `color=\"secondary\"` (orange) to mean caution — that's `warning`'s job.",
+    "Suppress the focus ring or replace `:focus` styles with `outline: none`.",
+    "Apply manual `opacity: 0.5` to fake disabled state."
+  ],
+  "tokensUsed": ["primary.main", "primary.dark", "secondary.main", "error.dark", "action.hover", "action.disabled", "action.disabled-background"]
+}

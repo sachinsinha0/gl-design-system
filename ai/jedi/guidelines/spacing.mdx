@@ -1,0 +1,54 @@
+---
+title: Spacing
+dsId: jedi
+tags: [foundations, spacing, layout]
+---
+
+# Spacing
+
+Jedi's spacing scale is **indexed and non-linear**: `[0, 4, 8, 16, 24, 32, 40, 48, 64, 96, 128]`. `theme.spacing(3)` returns **16px**, NOT MUI's default 24px (`8 × n`). The non-linear jump (`…48 → 64 → 96 → 128`) exists so large layout gaps come from a sanctioned set, not arbitrary multiples.
+
+```tsx
+import { Stack, Box, useTheme } from '@mui/material';
+
+const t = useTheme();
+t.spacing(0); // '0px'
+t.spacing(1); // '4px'
+t.spacing(2); // '8px'
+t.spacing(3); // '16px'  ⚠️ NOT 24px
+t.spacing(4); // '24px'
+
+<Stack spacing={3} sx={{ p: 4 }}>
+  ...
+</Stack>
+```
+
+## Density by posture
+
+- **Internal** (staff/admin): density allowed; compact tables, dense menu items.
+- **Partner** (semi-external): standard density; extra legibility.
+
+Never mix densities in one view.
+
+## Touch targets ≥ 44×44px
+
+On partner-facing surfaces, every interactive element must be at least 44×44px. Small Buttons (12px label) belong in internal data-dense views only.
+
+## Magic numbers are forbidden
+
+```tsx
+// ❌ off-grid magic numbers
+<Box sx={{ mt: '20px', pl: '13px' }}>...</Box>
+
+// ✅ indexed scale
+<Box sx={{ mt: 4, pl: 2 }}>...</Box>
+```
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| `sx={{ p: 4 }}` (= 24px) | `sx={{ p: '24px' }}` |
+| `<Stack spacing={3}>` (= 16px gap) | Hand-spaced `<Box mt="16px">` between siblings |
+| Use `sm`/`md`/`lg` Button per posture | Ship 12px labels on a partner-facing page |
+| Match the array exactly | Reach for 13/15/17/22px |

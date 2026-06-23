@@ -1,0 +1,63 @@
+{
+  "id": "button",
+  "name": "Button",
+  "dsId": "magna",
+  "summary": "Primary tappable action surface. Built on Tamagui's Button; resolves to a pressable region with M3 role tokens for fill and content. Use `$primary`/`onPrimary` for the principal CTA, `$secondaryContainer`/`$onSecondaryContainer` for tonal supporting actions, and the outline/text variants for low-emphasis actions.",
+  "anatomy": [
+    { "part": "container", "description": "Pressable surface with role-fill, paired with its `on-` role for content.", "required": true },
+    { "part": "label", "description": "`Typography` variant `subtitle1` or `buttonLarge`/`buttonMedium`/`buttonSmall` in Title Case." },
+    { "part": "leading-icon", "description": "Optional Lucide icon (color = matching `on-` role)." },
+    { "part": "trailing-icon", "description": "Optional Lucide icon for forward navigation or status." }
+  ],
+  "props": [
+    { "name": "variant", "type": "'filled' | 'tonal' | 'outlined' | 'text'", "default": "filled", "description": "Visual emphasis. Maps to M3 role pairs.", "required": false },
+    { "name": "size", "type": "'sm' | 'md' | 'lg'", "default": "md" },
+    { "name": "disabled", "type": "boolean", "default": false },
+    { "name": "loading", "type": "boolean", "default": false, "description": "Renders spinner; keeps width." },
+    { "name": "onPress", "type": "() => void", "required": true },
+    { "name": "icon", "type": "ReactNode", "description": "Lucide icon component reference (not a string)." }
+  ],
+  "variants": [
+    { "axis": "variant", "values": ["filled", "tonal", "outlined", "text"], "default": "filled", "description": "Emphasis. Only one filled per view." },
+    { "axis": "size", "values": ["sm", "md", "lg"], "default": "md" }
+  ],
+  "states": [
+    { "name": "default", "description": "Resting state — role fill at full opacity." },
+    { "name": "hover", "description": "8% state-layer overlay (matching `on-` role)." },
+    { "name": "focus", "description": "12% state-layer overlay + visible focus ring." },
+    { "name": "pressed", "description": "12% state-layer overlay." },
+    { "name": "disabled", "description": "38% opacity over surface; never custom grey." },
+    { "name": "loading", "description": "Spinner; label hidden but width preserved." }
+  ],
+  "a11y": [
+    "Always reachable by keyboard; never hide the focus ring.",
+    "Use `accessibilityLabel` (or label child) — icon-only buttons must carry an accessible name.",
+    "Touch target ≥ 48×48dp (M3 standard).",
+    "Disabled buttons use `disabled` + reduced emphasis tokens, never opacity 0.5."
+  ],
+  "examples": [
+    {
+      "label": "Primary CTA",
+      "language": "tsx",
+      "snippet": "import { Button } from '@gl/elements';\n\n<Button onPress={enroll}>Enroll in course</Button>"
+    },
+    {
+      "label": "Tonal supporting action",
+      "language": "tsx",
+      "snippet": "<Button variant=\"tonal\" onPress={saveDraft}>Save for later</Button>"
+    },
+    {
+      "label": "With leading icon",
+      "language": "tsx",
+      "snippet": "import { Play } from '@tamagui/lucide-icons';\nimport { Button } from '@gl/elements';\n\n<Button icon={<Play />} onPress={resume}>Resume</Button>"
+    }
+  ],
+  "doNot": [
+    "Two filled (`primary`) buttons in the same view — there must be exactly one principal CTA.",
+    "Hex/raw colors on `backgroundColor` — use role tokens (`$primary`, `$secondaryContainer`) only.",
+    "Material string-name icons (`icon=\"play_arrow\"`) — they render nothing on web; use Lucide.",
+    "Icon-only buttons without an accessible name.",
+    "UPPERCASE labels — Magna buttons are Title Case (only `overline` is uppercased)."
+  ],
+  "tokensUsed": ["$primary", "$onPrimary", "$secondaryContainer", "$onSecondaryContainer", "$outline", "$surface", "$onSurface"]
+}

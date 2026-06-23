@@ -1,0 +1,57 @@
+---
+title: Spacing
+dsId: glds-web
+tags: [foundations, spacing, layout, breakpoints]
+---
+
+# Spacing
+
+Base-8 rhythm with named tokens: `xsm 8 · sm 16 · md 24 · lg 32 · xl 48 · 2xl 64`. Continue the 8px rhythm for any in-between values; never invent off-grid spacing per-component.
+
+```css
+[data-ds="glds-web"] .glds-section {
+  padding: var(--glds-space-2xl) var(--glds-space-md);
+}
+[data-ds="glds-web"] .glds-stack { display: flex; flex-direction: column; gap: var(--glds-space-sm); }
+```
+
+## Breakpoints — variables, not magic numbers
+
+Three device bands:
+
+- **Mobile:** below **768px**
+- **Tablet:** **768px – 1024px**
+- **Desktop:** above **1024px**
+
+Define `$breakpoint-md: 768px` and `$breakpoint-lg: 1024px` once and reference them everywhere — never hardcode the numbers per-component.
+
+```scss
+@use 'breakpoints' as *;
+
+.glds-section { padding: var(--glds-space-lg) var(--glds-space-md); }
+@media (min-width: $breakpoint-md) {
+  .glds-section { padding: var(--glds-space-2xl) var(--glds-space-lg); }
+}
+@media (min-width: $breakpoint-lg) {
+  .glds-section { padding: var(--glds-space-2xl) 0; }
+}
+```
+
+## Mobile-first
+
+- CTAs are thumb-reachable; tap targets **≥ 48px**, ≥ 8px apart.
+- The hero value proposition + primary CTA must be visible **without scrolling** on a typical phone viewport.
+- No hover-dependent content — touch has no hover; anything behind a hover must also be reachable on tap/focus.
+
+## Layout = bands
+
+Marketing sections are full-width bands with a centered max-width content column. Alternate Primary Surface (`#FFFFFF`) and Secondary Surface (`#F8F8F8`) to separate bands rather than drawing dividers.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| `padding: var(--glds-space-lg)` | `padding: 33px` |
+| `@media (min-width: $breakpoint-md)` | `@media (min-width: 760px)` |
+| Alternate `#FFFFFF` / `#F8F8F8` bands | Draw `<hr>` between sections |
+| Tap targets ≥ 48px on mobile | 32px tap targets on a mobile CTA |

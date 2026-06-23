@@ -15,7 +15,14 @@
     "preview": "yarn workspace @gl/showcase preview",
     "test": "yarn workspace @gl/showcase test",
     "test:watch": "yarn workspace @gl/showcase test:watch",
-    "typecheck": "yarn workspaces foreach --all --topological run typecheck"
+    "typecheck": "yarn workspaces foreach --all --topological run typecheck",
+    "ai:tokens:sync": "tsx scripts/sync-tokens.ts",
+    "ai:tokens:check": "tsx scripts/check-tokens.ts",
+    "ai:lint": "tsx scripts/validate-ai.ts"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "tsx": "^4.19.2"
   },
   "resolutions": {
     "tamagui": "1.126.4",

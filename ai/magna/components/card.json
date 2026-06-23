@@ -1,0 +1,49 @@
+{
+  "id": "card",
+  "name": "Card",
+  "dsId": "magna",
+  "summary": "Tonal-surface container for a single logical unit (course tile, lesson summary, settings group). M3 expresses elevation through `surfaceContainer*` tonal steps, not shadows. The default Magna card is `surfaceContainer`; raise to `surfaceContainerHigh` only when the card needs to read as raised.",
+  "anatomy": [
+    { "part": "container", "description": "`Surface` at a `surfaceContainer*` tonal level; `$outline` border optional.", "required": true },
+    { "part": "media", "description": "Optional image/thumbnail; honors the container border-radius." },
+    { "part": "header", "description": "Title (`Typography subtitle1` in `$onSurface`) + optional supporting text in `$onSurfaceVariant`." },
+    { "part": "body", "description": "Free-form content using `body1` / `body2`." },
+    { "part": "actions", "description": "Trailing action row — buttons (text/tonal); follows the one-primary-action rule." }
+  ],
+  "props": [
+    { "name": "elevation", "type": "'surface' | 'low' | 'default' | 'high' | 'highest'", "default": "default", "description": "Maps to M3 `surface` → `surfaceContainerHighest` tonal steps." },
+    { "name": "outlined", "type": "boolean", "default": false, "description": "Adds a `$outline` 1px border." },
+    { "name": "onPress", "type": "() => void", "description": "If provided, the whole card becomes a pressable region." },
+    { "name": "padding", "type": "'sm' | 'md' | 'lg'", "default": "md" }
+  ],
+  "variants": [
+    { "axis": "elevation", "values": ["surface", "low", "default", "high", "highest"], "default": "default" },
+    { "axis": "outlined", "values": ["true", "false"], "default": "false" }
+  ],
+  "states": [
+    { "name": "static", "description": "Non-interactive container." },
+    { "name": "interactive-rest", "description": "When `onPress` is set; default tonal level." },
+    { "name": "hover", "description": "State-layer overlay `$onSurface` at 8%." },
+    { "name": "pressed", "description": "State-layer overlay `$onSurface` at 12%." },
+    { "name": "focus", "description": "Visible focus ring in `$primary`." }
+  ],
+  "a11y": [
+    "If interactive, the whole card is a single tab stop with a clear accessible name (title or summary).",
+    "Do not nest two interactive elements inside the same card without separating them as distinct tab stops.",
+    "Image content needs `alt`; decorative images get `alt=\"\"`."
+  ],
+  "examples": [
+    {
+      "label": "Course summary card",
+      "language": "tsx",
+      "snippet": "import { Surface, YStack, Typography } from '@gl/elements';\n\n<Surface backgroundColor=\"$surfaceContainer\" borderRadius=\"$lg\" padding=\"$md\">\n  <YStack gap=\"$sm\">\n    <Typography variant=\"subtitle1\">React fundamentals</Typography>\n    <Typography variant=\"body2\" color=\"$onSurfaceVariant\">12 lessons · 4h 30m</Typography>\n  </YStack>\n</Surface>"
+    }
+  ],
+  "doNot": [
+    "Use `box-shadow` / heavy elevation to denote importance — use a higher `surfaceContainer*` tone instead.",
+    "Apply `$primary` as a card background to make it pop.",
+    "Stack two filled buttons inside a card — only one primary action per card.",
+    "Hardcode a hex grey for the card background."
+  ],
+  "tokensUsed": ["$surface", "$surfaceContainer", "$surfaceContainerHigh", "$surfaceContainerHighest", "$onSurface", "$onSurfaceVariant", "$outline"]
+}

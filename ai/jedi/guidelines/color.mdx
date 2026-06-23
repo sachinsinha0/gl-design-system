@@ -1,0 +1,49 @@
+---
+title: Color
+dsId: jedi
+tags: [foundations, color, mui, tokens]
+---
+
+# Color
+
+Jedi is **one loud blue, calm ink**. Near-black `#212121` ink at high alpha, quiet 6% dividers, white paper — Primary blue carries every interactive moment. Secondary orange appears rarely as warmth, **never** as a competing voice or a status meaning.
+
+Source of truth: `getColors(mode)`. Never paste a hex into component code.
+
+```tsx
+import { useTheme, Stack, Typography, Alert } from '@mui/material';
+
+const theme = useTheme();
+const primary = theme.palette.primary.main; // -> #196AE5 (light)
+
+// ✅ Status text uses .dark (AA on white)
+<Typography color="error.dark">Could not save changes.</Typography>
+
+// ✅ Tinted alert uses 160p/190p
+<Alert severity="success">Application submitted.</Alert>
+```
+
+## Status: text-safe colors are `.dark`
+
+`primary.main` (4.96:1) and `error.dark` (5.55:1) pass AA on white. **`error.main`, `success.main`, `warning.main` and `warning.dark` do NOT pass for text** — use them for fills/icons/large text only. Colored text in light mode uses the `.dark` variant.
+
+## Tinted surfaces (alerts, banners)
+
+Standard recipe: background `shades-190-p`, text/icon `shades-160-p`. All pairs measured AA+. Use `<Alert>` and let it pick the right tokens.
+
+## Secondary is orange — and it's decorative
+
+`secondary` is the warm support accent. It is **not a status color** — caution belongs to `warning` via the 160/190 tint recipe. Never reach for `secondary` to mean "be careful".
+
+## Dividers are 6% by design
+
+Light-mode `other.divider` is 6% — lighter than MUI's default 12%. Don't "darken" it. Default to whitespace; reach for a divider only when grouping cannot be achieved by spacing or an outlined surface.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| `color="error.dark"` for inline error text | `color="error.main"` for inline error text |
+| Use `<Alert severity="warning">` for amber notices | Set `color="warning.main"` on `<Typography>` (1.65:1 — fails) |
+| Use `secondary` for decorative warmth | Use `secondary` to mean caution |
+| Keep dividers sparse | Add a `<Divider>` between every list item |

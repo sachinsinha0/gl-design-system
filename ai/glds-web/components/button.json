@@ -1,0 +1,69 @@
+{
+  "id": "button",
+  "name": "Button",
+  "dsId": "glds-web",
+  "summary": "HTML+CSS button. Variant axes match the Figma Components page exactly: configuration (linkbutton|text|outlined|filled|tonal) × icon (no-icon|with-icon-left|with-icon-right) × size (Small|Medium|Large) × color (primary). A `filled` button is the single CTA per section; supporting actions use `outlined`/`text`/`linkbutton`.",
+  "anatomy": [
+    { "part": "container", "description": "Real `<button>` element with `class=\"glds-btn glds-btn--{configuration} glds-btn--{size}\"`.", "required": true },
+    { "part": "leading-icon", "description": "Material Icons span before label (optional)." },
+    { "part": "label", "description": "Poppins SemiBold; UPPERCASE per the Button type style.", "required": true },
+    { "part": "trailing-icon", "description": "Material Icons span after label (optional)." }
+  ],
+  "props": [
+    { "name": "configuration", "type": "'linkbutton' | 'text' | 'outlined' | 'filled' | 'tonal'", "default": "filled", "description": "Visual style; not an HTML attribute — emit as CSS modifier class." },
+    { "name": "size", "type": "'Small' | 'Medium' | 'Large'", "default": "Medium" },
+    { "name": "iconPosition", "type": "'no-icon' | 'with-icon-left' | 'with-icon-right'", "default": "no-icon" },
+    { "name": "color", "type": "'primary'", "default": "primary" },
+    { "name": "disabled", "type": "boolean", "default": false, "description": "Sets `disabled` attribute; never replace with `aria-disabled` alone." },
+    { "name": "type", "type": "'button' | 'submit' | 'reset'", "default": "button" }
+  ],
+  "variants": [
+    { "axis": "configuration", "values": ["linkbutton", "text", "outlined", "filled", "tonal"], "default": "filled" },
+    { "axis": "size", "values": ["Small", "Medium", "Large"], "default": "Medium" },
+    { "axis": "icon", "values": ["no-icon", "with-icon-left", "with-icon-right"], "default": "no-icon" },
+    { "axis": "color", "values": ["primary"], "default": "primary" }
+  ],
+  "states": [
+    { "name": "enabled", "description": "Resting; filled = Primary 500 bg, white label." },
+    { "name": "hovered", "description": "filled → Primary 600 bg; outlined → Primary 50 bg fill." },
+    { "name": "pressed", "description": "filled → Primary 700; outlined → Primary 100." },
+    { "name": "disabled", "description": "Disabled Text `#A19F9D` + muted fill; never lower whole-element opacity." },
+    { "name": "focus-visible", "description": "Always include a visible focus ring — never `outline: none` without a replacement." }
+  ],
+  "a11y": [
+    "Always use a real `<button>`; never an `<a>` with a JS click handler for an action.",
+    "`linkbutton` looks like a link but IS a button — `<button class=\"glds-btn glds-btn--linkbutton\">`.",
+    "Material icon-only controls (rare in this set) MUST carry `aria-label`.",
+    "Keep `:focus-visible` ring; tap targets ≥ 48px on mobile."
+  ],
+  "examples": [
+    {
+      "label": "Primary CTA (filled)",
+      "language": "html",
+      "snippet": "<button class=\"glds-btn glds-btn--filled glds-btn--medium\">Start free trial</button>"
+    },
+    {
+      "label": "Tonal secondary CTA",
+      "language": "html",
+      "snippet": "<button class=\"glds-btn glds-btn--tonal glds-btn--medium\">Book a demo</button>"
+    },
+    {
+      "label": "Outlined with leading icon",
+      "language": "html",
+      "snippet": "<button class=\"glds-btn glds-btn--outlined glds-btn--medium\">\n  <span class=\"material-icons\" aria-hidden=\"true\">download</span>\n  Download brochure\n</button>"
+    },
+    {
+      "label": "Inline link-styled button",
+      "language": "html",
+      "snippet": "<button class=\"glds-btn glds-btn--linkbutton\">Show more</button>"
+    }
+  ],
+  "doNot": [
+    "Use an `<a>` with a JS handler for an action — use `linkbutton`.",
+    "Use a `<button>` for plain navigation — use `<a href>`.",
+    "Place two `filled` buttons next to each other (competing primaries).",
+    "Hide the focus ring without a visible replacement.",
+    "Use vague labels like 'Submit' or 'Click here' — write action+value (`Enroll now`)."
+  ],
+  "tokensUsed": ["--glds-primary-500", "--glds-primary-600", "--glds-primary-700", "--glds-primary-50", "--glds-primary-100", "--glds-grey-disabled-text", "--glds-purity-white"]
+}

@@ -1,0 +1,48 @@
+---
+title: Accessibility
+dsId: glds-web
+tags: [a11y, contrast, wcag]
+---
+
+# Accessibility
+
+Marketing pages are mostly static, so the rules are lighter than the app systems — but these still hold.
+
+## The rules
+
+1. **One primary call-to-action per section** (one `filled` button; supporting actions are outlined/text/linkbutton).
+2. **Links navigate, buttons act.** A link goes to a URL (`<a href>`); an action that looks like a link is a **linkbutton** (`<button>` styled as a link), **never** an `<a>` with a JS click handler.
+3. **Material icon-only controls require an `aria-label`.**
+4. **Interaction states are mandatory:** every interactive element defines `:hover`, `:focus-visible` (visible ring — never `outline: none` without a replacement), `:active`, and `[disabled]`.
+5. **Forms:** real `<label>` per field; validate on blur; errors pair color + message (never color alone) and preserve entered values on failed submit.
+6. **Feedback color is never text color.** Error/Alert/Success message text is grey 800; the 500 color is for icon/border/accent only.
+7. **Body text uses Primary Text `#323130`** (≈12:1 on white). Never set body copy in a brand accent or feedback color.
+8. **Heading order:** one `<h1>` per page (usually the hero), descend without skipping levels.
+9. **Respect `prefers-reduced-motion`;** marketing animation must degrade gracefully and never block content.
+
+## Examples
+
+```html
+<!-- ✅ Inline action that looks like a link -->
+<button class="glds-btn glds-btn--linkbutton" type="button">Show more</button>
+
+<!-- ✅ Real navigation -->
+<a href="/courses/data-science" class="glds-link">View course</a>
+
+<!-- ❌ A non-navigating anchor with onclick -->
+<a href="#" onclick="showMore()">Show more</a>
+
+<!-- ✅ Icon-only control with aria-label -->
+<button class="glds-icon-btn" aria-label="Close menu" type="button">
+  <span class="material-icons" aria-hidden="true">close</span>
+</button>
+```
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| Real `<label for>` on every input | Placeholder used as label |
+| `:focus-visible` ring on every interactive element | `outline: none` without a replacement |
+| Linkbutton (`<button>`) for inline actions | `<a href="#">` with a JS handler |
+| Error message text in grey 800 + paired icon | Error text in `--glds-feedback-error-500` |

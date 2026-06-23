@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://gl-design-system/ai/_schema/component.schema.json",
+  "title": "DSComponentDefinition",
+  "description": "DS-agnostic component definition shared by every @gl/ai-* package.",
+  "type": "object",
+  "required": ["id", "name", "dsId", "summary", "anatomy", "props", "variants", "states", "a11y", "examples", "doNot"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "dsId": { "enum": ["magna", "jedi", "glds-web"] },
+    "summary": { "type": "string", "minLength": 1 },
+    "anatomy": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["part", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "part": { "type": "string" },
+          "description": { "type": "string" },
+          "required": { "type": "boolean" }
+        }
+      }
+    },
+    "props": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "default": {},
+          "description": { "type": "string" },
+          "required": { "type": "boolean" }
+        }
+      }
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["axis", "values"],
+        "additionalProperties": false,
+        "properties": {
+          "axis": { "type": "string" },
+          "values": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "default": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "a11y": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "snippet"],
+        "additionalProperties": false,
+        "properties": {
+          "label": { "type": "string" },
+          "language": { "type": "string" },
+          "snippet": { "type": "string" }
+        }
+      }
+    },
+    "doNot": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "tokensUsed": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

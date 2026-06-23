@@ -1,0 +1,40 @@
+---
+title: Typography
+dsId: magna
+tags: [foundations, typography, inter]
+---
+
+# Typography
+
+Magna ships **Inter** in weights 400/500/600. The scale matches Jedi's so the two systems feel related, but Magna leans on the larger end for learner legibility — and **body text does not shrink on mobile**.
+
+## Variants (real names)
+
+`h1`–`h5` · `subtitle1` / `subtitle2` · `body1` / `body2` · `caption` · `overline` · `buttonLarge` / `buttonMedium` / `buttonSmall`.
+
+There is no `headline1`/`headline2`/etc. in the Tamagui `Typography` API — those names exist only in M3 docs. There is also no `h6`.
+
+```tsx
+import { Typography } from '@gl/elements';
+
+<Typography variant="h3">Lesson 4 · State management</Typography>
+<Typography variant="body1">React state lives in the component that owns it.</Typography>
+<Typography variant="caption" color="$onSurfaceVariant">Updated 2 hours ago</Typography>
+```
+
+## Title-case buttons
+
+Buttons in Magna are **Title Case**, not UPPERCASE — learner-facing buttons read as friendlier in Title Case. Only `overline` is uppercased.
+
+## Mobile body stays at 16/14
+
+Unlike Jedi, `body1` stays 16px and `body2` stays 14px on mobile. Learners read on phones; legibility wins over density.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| `variant="h3"` for a section heading | `variant="headline3"` (not exported) |
+| `variant="buttonMedium"` for button text | `variant="buttonMedium"` then UPPERCASE the label |
+| Use `caption` for metadata under content | Reach for 13/15/17px — the scale is closed |
+| Stick to weights 400/500/600 | Load 300 (Light) or 800 (ExtraBold) |

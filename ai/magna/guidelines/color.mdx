@@ -1,0 +1,47 @@
+---
+title: Color
+dsId: magna
+tags: [foundations, color, m3, tokens]
+---
+
+# Color
+
+Magna uses **Material 3 (M3) role tokens** — never raw hex. Every color exists as a *semantic role*, and roles come in **pairs**: a container/surface role and its `on-` role that's contrast-engineered to sit on top. Pick the role for the job, then put its paired `on-` role on top, and accessibility is handled for free.
+
+## The pairing rule
+
+Text on `$primary` is `$onPrimary`. Text on `$surface` is `$onSurface`. Text on `$primaryContainer` is `$onPrimaryContainer`. There are no exceptions — and never put `$onSurface` text on a `$primary` fill.
+
+```tsx
+import { Button, Surface, Typography } from '@gl/elements';
+
+// ✅ role + matching on-role
+<Surface backgroundColor="$surfaceContainer" padding="$md">
+  <Typography variant="subtitle1" color="$onSurface">Course title</Typography>
+  <Typography variant="body2" color="$onSurfaceVariant">12 lessons · 4h 30m</Typography>
+</Surface>
+
+// ✅ button uses primary + onPrimary automatically
+<Button onPress={enroll}>Enroll</Button>
+```
+
+## Surfaces & elevation
+
+M3 expresses elevation through **tonal surfaces**, not shadows. The default Magna card is `$surfaceContainer`; raise to `$surfaceContainerHigh` only when the card needs to read as raised. Pick the container by elevation role, not by guessing a grey.
+
+## Status colors
+
+M3 has only one built-in status role: `$error`. For success/warning/info, use the `magnaColors` extended hues with their container + on-container pairs so contrast holds — never invent a loose green or amber text color.
+
+## Light / dark
+
+Roles flip correctly between modes automatically. Always reference the role token, never a mode-specific hex, and light/dark is handled for free.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| `color="$onSurface"` for body text | `color="#1A1B1E"` |
+| `backgroundColor="$primaryContainer"` for tonal fills | `backgroundColor="lightblue"` |
+| Raise cards by stepping up `$surfaceContainer*` | Add `boxShadow` to highlight a card |
+| `<Typography color="$onPrimary">` inside a `$primary` button | `<Typography color="$onSurface">` inside a `$primary` button |

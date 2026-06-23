@@ -1,0 +1,54 @@
+---
+title: Usage
+dsId: glds-web
+tags: [usage, marketing, conversion, band-model]
+---
+
+# Usage — marketing band model
+
+GLDS-Web powers **marketing & landing pages**. Visitors arrive from an ad or search, give a few seconds, *scan* (don't read), and either commit or leave. The goal is comprehension-and-commitment in one fast pass — not task completion over time.
+
+## The band model
+
+Build pages as a vertical stack of full-width **bands**, each self-contained with **one headline, one supporting line, one action**. A typical landing flow: **hero → value props → social proof → (pricing) → final CTA**. If a band has two messages, split it into two bands.
+
+```html
+<section class="glds-band glds-band--surface-primary">
+  <div class="glds-band__content">
+    <h1 class="glds-hero__title">Build the career you actually want</h1>
+    <p class="glds-hero__sub">University-backed programs, taught live by industry mentors.</p>
+    <button class="glds-btn glds-btn--filled glds-btn--large">Start free trial</button>
+  </div>
+</section>
+
+<section class="glds-band glds-band--surface-secondary">
+  <!-- value props -->
+</section>
+```
+
+## Hero / above-the-fold contract
+
+The first viewport answers three questions before any scroll: **what is this · what do I get · what do I do.** Headline + subhead + primary CTA visible without scrolling — decorative hero imagery must not push the CTA below the fold.
+
+## CTA system
+
+- **Freedom Blue (`--glds-primary-500`) is reserved for CTAs.** Don't use it as a decorative accent.
+- **Repeat the CTA down a long page** (hero, mid-page, closing — all the same action).
+- **Action-and-value labels:** "Start free trial", "Book a demo", "Enroll now" — never "Submit" / "Click here".
+
+## Motion is spotlight, not wallpaper
+
+Motion must **earn its place by directing attention**. One focal animation per viewport, tied to the thing you want seen. Reveals fire **once** on scroll-in and are **fast (200–400ms)**. No looping backgrounds, scroll-hijacking parallax, or auto-advancing carousels.
+
+## Persuasion: real signals only
+
+Authority (real university partnerships), social proof (real testimonials & counts), scarcity (**real** cohort deadlines), reciprocity (free lesson before signup) — use them when they're true. Never fabricate: no reset-on-refresh countdowns, no "only 3 seats left" untied to inventory, no fake viewer counters.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| One headline + one CTA per band | Two competing CTAs in the same band |
+| Freedom Blue for CTAs only | Freedom Blue accents in section headings |
+| Real cohort deadlines stated boldly | Countdown timer that resets on refresh |
+| Headlines short enough to survive 40px mobile H1 | 12-word hero copy that breaks on phones |

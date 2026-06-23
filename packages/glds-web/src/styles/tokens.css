@@ -1,27 +1,116 @@
 [data-ds="glds-web"] {
-  --glds-color-primary: #1F6FEB;
-  --glds-color-onPrimary: #FFFFFF;
-  --glds-color-primaryContainer: #D8E6FF;
-  --glds-color-onPrimaryContainer: #0A1F45;
-  --glds-color-surface: #FFFFFF;
-  --glds-color-onSurface: #0E1116;
-  --glds-color-surfaceVariant: #F4F6F8;
-  --glds-color-onSurfaceVariant: #41474D;
-  --glds-color-outline: #C6CBD1;
-  --glds-color-danger: #D32F2F;
-  --glds-color-success: #2E7D32;
-  --glds-font-family: 'Inter', system-ui, sans-serif;
-  --glds-space-1: 4px;
-  --glds-space-2: 8px;
-  --glds-space-3: 12px;
-  --glds-space-4: 16px;
-  --glds-space-5: 24px;
-  --glds-space-6: 32px;
-  --glds-space-8: 48px;
+  /* === Primary UI Action (Freedom Blue ramp) === */
+  --glds-primary-50: #E8F0FC;
+  --glds-primary-100: #BAD2F7;
+  --glds-primary-200: #8CB5F2;
+  --glds-primary-300: #4788EA;
+  --glds-primary-400: #3079E8;
+  --glds-primary-500: #196AE5;
+  --glds-primary-600: #1455B7;
+  --glds-primary-700: #0041B2;
+  --glds-primary-800: #0F4089;
+  --glds-primary-900: #0D3573;
+
+  /* === Secondary UI Action (Mandarin ramp) === */
+  --glds-secondary-50: #FFF3E0;
+  --glds-secondary-100: #FFE0B2;
+  --glds-secondary-200: #FFCC80;
+  --glds-secondary-300: #FFB74D;
+  --glds-secondary-400: #FFA726;
+  --glds-secondary-500: #FF9800;
+  --glds-secondary-600: #FB8C00;
+  --glds-secondary-700: #F57C00;
+  --glds-secondary-800: #EF6C00;
+  --glds-secondary-900: #E65100;
+
+  /* === Brand colors === */
+  --glds-trust-blue: #0E39A9;
+  --glds-wisdom-indigo: #0C1D5D;
+  --glds-creativity-purple: #5C34B1;
+  --glds-intellect-mandarin: #FF9800;
+  --glds-energy-orange: #FFBF00;
+  --glds-optimism-yellow: #FFDF00;
+  --glds-balance-black: #000000;
+  --glds-purity-white: #FFFFFF;
+
+  /* === Web Greys (light mode) === */
+  --glds-grey-pure-contrast: #000000;
+  --glds-grey-contrast-190: #201F1E;
+  --glds-grey-primary-text: #323130;
+  --glds-grey-contrast-150: #3B3A39;
+  --glds-grey-secondary-text: #605E5C;
+  --glds-grey-disabled-text: #A19F9D;
+  --glds-grey-contrast-60: #C8C6C4;
+  --glds-grey-contrast-50: #D2D0CE;
+  --glds-grey-contrast-40: #E1DFDD;
+  --glds-grey-divider: #EDEBE9;
+  --glds-grey-secondary-surface: #F8F8F8;
+  --glds-grey-primary-surface: #FFFFFF;
+
+  /* === UI Feedback === */
+  --glds-feedback-error-50: #FFEBEE;
+  --glds-feedback-error-500: #FF3333;
+  --glds-feedback-error-800: #323130;
+  --glds-feedback-alert-50: #FFF8E1;
+  --glds-feedback-alert-500: #FFBF00;
+  --glds-feedback-alert-800: #323130;
+  --glds-feedback-success-50: #E7F7E7;
+  --glds-feedback-success-500: #22BB33;
+  --glds-feedback-success-800: #323130;
+
+  /* === Course Card pairs === */
+  --glds-card-cool10-bg: #E1F4F4;  --glds-card-cool10-fg: #00A498;
+  --glds-card-cool20-bg: #E3F4FF;  --glds-card-cool20-fg: #196BE5;
+  --glds-card-cool30-bg: #E7E9F7;  --glds-card-cool30-fg: #0E39A9;
+  --glds-card-cool40-bg: #EDE7F6;  --glds-card-cool40-fg: #5C34B1;
+  --glds-card-warm10-bg: #FFF8E1;  --glds-card-warm10-fg: #FFA200;
+  --glds-card-warm20-bg: #FBE9E7;  --glds-card-warm20-fg: #E64A19;
+  --glds-card-warm30-bg: #FBE8E7;  --glds-card-warm30-fg: #E53119;
+  --glds-card-warm40-bg: #FCE4EC;  --glds-card-warm40-fg: #C2185B;
+
+  /* === Spacing (base-8) === */
+  --glds-space-xsm: 8px;
+  --glds-space-sm: 16px;
+  --glds-space-md: 24px;
+  --glds-space-lg: 32px;
+  --glds-space-xl: 48px;
+  --glds-space-2xl: 64px;
+
+  /* === Radius === */
   --glds-radius-sm: 4px;
   --glds-radius-md: 8px;
   --glds-radius-lg: 12px;
   --glds-radius-pill: 999px;
+
+  /* === Elevation === */
   --glds-elevation-1: 0 1px 2px rgba(0,0,0,0.06), 0 1px 1px rgba(0,0,0,0.04);
   --glds-elevation-2: 0 2px 6px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+
+  /* === Breakpoints (CSS custom prop for JS consumers; @media still needs literals) === */
+  --glds-breakpoint-md: 768px;
+  --glds-breakpoint-lg: 1024px;
+
+  /* === Typography === */
+  --glds-font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --glds-font-family-legacy-body: 'Noto Sans', sans-serif;
+
+  /* === Backwards-compat aliases for existing recipes / utilities === */
+  --glds-color-primary: var(--glds-primary-500);
+  --glds-color-onPrimary: var(--glds-purity-white);
+  --glds-color-primaryContainer: var(--glds-primary-50);
+  --glds-color-onPrimaryContainer: var(--glds-primary-800);
+  --glds-color-surface: var(--glds-grey-primary-surface);
+  --glds-color-onSurface: var(--glds-grey-primary-text);
+  --glds-color-surfaceVariant: var(--glds-grey-secondary-surface);
+  --glds-color-onSurfaceVariant: var(--glds-grey-secondary-text);
+  --glds-color-outline: var(--glds-grey-contrast-60);
+  --glds-color-danger: var(--glds-feedback-error-500);
+  --glds-color-success: var(--glds-feedback-success-500);
+  --glds-space-1: 4px;
+  --glds-space-2: var(--glds-space-xsm);
+  --glds-space-3: 12px;
+  --glds-space-4: var(--glds-space-sm);
+  --glds-space-5: var(--glds-space-md);
+  --glds-space-6: var(--glds-space-lg);
+  --glds-space-8: var(--glds-space-xl);
 }

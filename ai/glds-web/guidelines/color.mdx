@@ -1,0 +1,49 @@
+---
+title: Color
+dsId: glds-web
+tags: [foundations, color, brand]
+---
+
+# Color
+
+GLDS-Web's palette is built on **named brand colors with intent** — use them by meaning, not by hex. **Freedom Blue (`#196AE5`) is reserved for CTAs**; using it as a decorative accent dilutes the action color.
+
+## Ramps
+
+The Primary UI Action (Freedom Blue) ramp `50–900` powers buttons, links, focus rings. Hover steps to `600`; pressed/active to `700`/`800`; tints/backgrounds to `50`/`100`.
+
+```css
+[data-ds="glds-web"] .glds-btn--filled {
+  background: var(--glds-primary-500);
+  color: var(--glds-purity-white);
+}
+[data-ds="glds-web"] .glds-btn--filled:hover  { background: var(--glds-primary-600); }
+[data-ds="glds-web"] .glds-btn--filled:active { background: var(--glds-primary-700); }
+```
+
+## Body ink is `#323130`, not `#000`
+
+Use `--glds-grey-primary-text` (`#323130`) for body and headings — softer on long marketing copy than pure black. Use `--glds-grey-pure-contrast` only where maximum contrast is intended.
+
+## UI Feedback colors aren't text colors
+
+| Type | 50 (bg) | 500 (main) | 800 (text) |
+|---|---|---|---|
+| Error | `#FFEBEE` | `#FF3333` | `#323130` |
+| Alert | `#FFF8E1` | `#FFBF00` | `#323130` |
+| Success | `#E7F7E7` | `#22BB33` | `#323130` |
+
+Pattern: tint-50 background, 500 for icon/border, dark grey 800 for the **message text**. The 500 values fail WCAG as text on white.
+
+## Course Card pairs
+
+Cool & Warm course-card colors are **always used as background + foreground pairs** so text/icon contrast holds on the tinted card. Never use a foreground alone or mix unmatched pairs.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| Freedom Blue (`--glds-primary-500`) for CTAs only | Use Freedom Blue as a decorative section accent |
+| Body copy in `--glds-grey-primary-text` | Body copy in `#000` |
+| Error message text in `--glds-feedback-error-800` (grey) | Error message text in `--glds-feedback-error-500` (red) |
+| Use a Course Card bg with its matched fg | Pair `cool20-bg` with `warm30-fg` |

@@ -1,0 +1,52 @@
+---
+title: Usage
+dsId: jedi
+tags: [usage, sovereign, internal, partner]
+---
+
+# Usage — sovereign posture
+
+Jedi is the **sovereign** posture (Cooper). One codebase serves all internal/partner surfaces; users live in it for long stretches and become intermediate users fast. Optimize for the returning user, density is acceptable, keyboard navigation is expected, minimal onboarding chrome.
+
+## Posture rules
+
+- **One primary action per view.** Exactly one `contained` button; everything else `outlined` or `text` (Behavioral rule B4).
+- **Defaults do the work.** Pre-select the most common option; prefill from data the app already has.
+- **Forms: 7±2 visible fields per step (max 9).** Beyond that, split into steps with a visible progress indicator.
+- **Destructive actions confirm; reversible actions don't.** Delete/cancel get a confirm step naming the consequence; everything reversible executes immediately with an undo path.
+- **Empty states are starting points.** Every empty list explains what belongs there and offers the action that fills it.
+
+## Flat, outlined, no elevation
+
+Cards are always `variant="outlined"` — no shadows, no raised elevation, in either mode. Shadows belong to true overlays (menus, dialogs, popovers). Never raise a card.
+
+```tsx
+import { Card, CardContent, Stack, Typography, Button } from '@mui/material';
+
+<Card> {/* outlined by default via theme */}
+  <CardContent>
+    <Stack spacing={2}>
+      <Typography variant="h5">Pending reviews</Typography>
+      <Typography color="text.secondary">8 applications waiting on you.</Typography>
+      <Button>Open queue</Button>
+    </Stack>
+  </CardContent>
+</Card>
+```
+
+## Scannability rules (information density is fine; chaos isn't)
+
+- Tables scan **down columns** — right-align numbers, left-align text, tabular figures.
+- Front-load the distinguishing word ("Annual report 2024", not "Report (annual), 2024").
+- Label and value visually distinct in key-value displays (label muted, value emphasized).
+- One clear entry point per screen.
+- Group by proximity, separate by whitespace — not dividers.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| Use `variant="outlined"` on cards | Add `elevation={4}` for emphasis |
+| Right-align numeric table columns | Left-align money columns |
+| Confirm destructive actions (delete) | Confirm dialogs on save/edit |
+| Build flows in steps with progress | One giant 25-field scroll-form |

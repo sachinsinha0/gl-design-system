@@ -1,20 +1,46 @@
+/**
+ * Jedi token surface — palette + typography + spacing.
+ *
+ * Tokens are organized to match the Jedi SKILL.md:
+ *   - `palette.<role>.main/dark/light/contrastText` (used by MUI's `createTheme`)
+ *   - `spacing` is the indexed array `[0, 4, 8, 16, 24, 32, 40, 48, 64, 96, 128]`
+ *   - `typography` mirrors the desktop scale (mobile overrides live in `buildTheme`)
+ *
+ * `jediTokens` is a verification snapshot of the LIGHT theme. For mode-aware
+ * lookups, import `getColors(mode)` from `./colors` directly.
+ */
+
+import { getColors, type ColorMode } from './colors';
+import { fontFamily, desktopTypography, mobileTypography } from './typography';
+
+export { getColors, type ColorMode } from './colors';
+export { fontFamily, desktopTypography, mobileTypography } from './typography';
+
+export const spacing: ReadonlyArray<number> = [0, 4, 8, 16, 24, 32, 40, 48, 64, 96, 128];
+
+const buildPalette = (mode: ColorMode) => {
+  const c = getColors(mode);
+  return {
+    mode,
+    primary: { main: c.primary.main, dark: c.primary.dark, light: c.primary.light, contrastText: c.primary.contrast },
+    secondary: { main: c.secondary.main, dark: c.secondary.dark, light: c.secondary.light, contrastText: c.secondary.contrast },
+    error: { main: c.error.main, dark: c.error.dark, light: c.error.light, contrastText: c.error.contrast },
+    warning: { main: c.warning.main, dark: c.warning.dark, light: c.warning.light, contrastText: c.warning.contrast },
+    info: { main: c.info.main, dark: c.info.dark, light: c.info.light, contrastText: c.info.contrast },
+    success: { main: c.success.main, dark: c.success.dark, light: c.success.light, contrastText: c.success.contrast },
+    text: { primary: c.text.primary, secondary: c.text.secondary, disabled: c.text.disabled },
+    background: { default: c.background.default, paper: c.background['paper-elevation-0'] },
+    divider: c.other.divider
+  };
+};
+
 export const jediTokens = {
-  palette: {
-    primary: { main: '#3F51B5', contrastText: '#FFFFFF' },
-    secondary: { main: '#E91E63', contrastText: '#FFFFFF' },
-    error: { main: '#D32F2F' },
-    warning: { main: '#ED6C02' },
-    info: { main: '#0288D1' },
-    success: { main: '#2E7D32' },
-    background: { default: '#FAFAFA', paper: '#FFFFFF' }
-  },
-  typography: {
-    fontFamily: '"Inter", system-ui, sans-serif',
-    h1: { fontSize: 48, fontWeight: 700, lineHeight: 1.15 },
-    h2: { fontSize: 36, fontWeight: 700, lineHeight: 1.2 },
-    h3: { fontSize: 28, fontWeight: 600, lineHeight: 1.25 },
-    body1: { fontSize: 16, lineHeight: 1.5 }
-  },
-  shape: { borderRadius: 8 },
-  spacing: 8
+  palette: buildPalette('light'),
+  paletteDark: buildPalette('dark'),
+  spacing,
+  typography: { fontFamily, ...desktopTypography },
+  typographyMobile: mobileTypography,
+  shape: { borderRadius: 8 }
 } as const;
+
+export type JediTokens = typeof jediTokens;

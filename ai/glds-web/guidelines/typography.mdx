@@ -1,0 +1,48 @@
+---
+title: Typography
+dsId: glds-web
+tags: [foundations, typography, poppins]
+---
+
+# Typography
+
+**Poppins** throughout for all new work, in 400 / 500 / 600. The legacy GLDS scale (Poppins headings + Noto Sans body) is for maintaining existing pages only — migrate to the Web scale when touching old templates.
+
+## Web scale (Desktop, Poppins)
+
+| Style | Size | Weight | Line height | Letter spacing | Case |
+|---|---|---|---|---|---|
+| Headline 1 | 64px | 600 | 80px | -2% | — |
+| Headline 2 | 48px | 600 | 64px | -2% | — |
+| Headline 3 | 32px | 600 | 40px | 0 | — |
+| Body 1 | 16px | 400 | 24px | 0 | — |
+| Button | 16px | 600 | 16px | 0.5px | UPPERCASE |
+| Overline | 12px | 600 | 16px | 20% | UPPERCASE |
+
+## Mobile scales down hard
+
+H1 drops `64 → 40`; use the responsive pair (`@media` swap at `--glds-breakpoint-md`, 768px), not a single fluid value, unless you implement `clamp()` carefully.
+
+```css
+.glds-hero__title { font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: -0.02em; }
+@media (min-width: 768px) {
+  .glds-hero__title { font-size: 64px; line-height: 80px; }
+}
+```
+
+## Type swap, not fluid interpolation
+
+The file ships two discrete scales. Type **swaps at 768px**, it does not fluidly interpolate. `1024px` governs **layout** (columns, max-widths), not type.
+
+## UPPERCASE: buttons and overlines only
+
+Headlines and body are sentence/title case.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| `font-family: var(--glds-font-family)` (Poppins) | `font-family: 'Roboto'` (or Noto Sans for new work) |
+| Use the responsive pair for headlines | One giant `clamp()` per heading |
+| UPPERCASE only on Button + Overline | Uppercase the headline for emphasis |
+| Keep H1 short — it must survive 40px on mobile | A 12-word hero headline that wraps awkwardly on phones |

@@ -1,0 +1,47 @@
+---
+title: Usage
+dsId: magna
+tags: [usage, learner, posture]
+---
+
+# Usage — learner posture
+
+Magna is for **learners** (students, consumers). Surfaces shipped here serve people who arrive with motivation but limited context — clarity, warmth, and confidence outrank density.
+
+## Posture rules
+
+- **One primary action per screen.** Exactly one `$primary` button; supporting actions are tonal/outlined/text. If two actions feel equally primary, the screen is doing two jobs — split it.
+- **Generous spacing, modest density.** Magna surfaces breathe (`gap="$md"`+, `padding="$lg"`+). The opposite of Jedi's density allowance.
+- **Status and progress are explicit.** A learner who can't tell what's loading, completed, or locked has bounced. Every async action over ~400ms shows skeleton + state.
+- **Empty states are starting points, not dead ends.** Every empty list explains what belongs there and offers the action that fills it.
+
+## Build from `@gl/elements`, never raw React Native
+
+```tsx
+// ✅ Use the design-system surface + typography components
+import { YStack, Surface, Typography, Button } from '@gl/elements';
+
+<YStack gap="$lg" padding="$xl">
+  <Typography variant="h3">Welcome back</Typography>
+  <Surface backgroundColor="$surfaceContainer" padding="$md" borderRadius="$lg">
+    <Typography variant="body1">Pick up where you left off.</Typography>
+    <Button onPress={resume}>Resume Lesson 4</Button>
+  </Surface>
+</YStack>
+
+// ❌ Don't drop down to raw RN primitives
+import { View, Text } from 'react-native';
+```
+
+## Icons: Lucide only
+
+Use `@tamagui/lucide-icons` (or `@gl/elements/icons`). Material string-name icons (`icon="play_arrow"`) render nothing on web — they're shimmed.
+
+## Do / Don't
+
+| ✅ Do | ❌ Don't |
+|---|---|
+| Build from `@gl/elements` components | Drop into raw `<View>` / `<Text>` |
+| Use Lucide icons | Pass `"play_arrow"` as an icon name string |
+| One filled button per view | Stack two filled buttons in a card footer |
+| Show skeleton on every async ≥ 400ms | Leave a blank screen until data arrives |
