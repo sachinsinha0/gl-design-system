@@ -1,9 +1,30 @@
-import { YStack, XStack, Typography, Separator } from '@gl/elements';
 import { InstallPage, ASSET_ICONS, CodeBlock } from '../../../platform/install-page';
 import skillUrl from '../../../../../../ai/magna/skills/magna-design-system/SKILL.md?url';
 import contextUrl from '../../../../../../ai/magna/skills/magna-design-system/context.md?url';
 import referenceUrl from '../../../../../../ai/magna/skills/magna-design-system/reference.md?url';
 import pkgJsonUrl from '../../../../../../ai/magna/package.json?url';
+
+const body = {
+  p: (text: string) => <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>{text}</p>,
+  small: (text: string) => <p style={{ margin: 0, fontSize: 12, color: '#64748b' }}>{text}</p>,
+  mono: (text: string) => (
+    <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>
+      {text}
+    </code>
+  ),
+  stack: (...children: React.ReactNode[]) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>{children}</div>
+  ),
+  row: (...children: React.ReactNode[]) => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>{children}</div>
+  ),
+  hr: () => <hr style={{ border: 'none', borderTop: '1px solid #e2e8f0', margin: '4px 0' }} />,
+  tag: (text: string) => (
+    <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', fontSize: 12, background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, color: '#475569' }}>
+      {text}
+    </code>
+  ),
+};
 
 export function InstallationPage() {
   return (
@@ -12,7 +33,7 @@ export function InstallationPage() {
       tagline="Learner-facing design system — Tamagui + M3 roles, Inter, light + dark, mobile-first clarity."
       packageName="@gl/elements"
       sourcePath="packages/elements · ai/magna"
-      installCommand={'# Yarn 4 workspace\nyarn workspace <your-app> add @gl/elements\n\n# or plain npm / pnpm\nnpm install @gl/elements\npnpm add @gl/elements'}
+      installCommand={'# Inside this monorepo\nyarn workspace <your-app> add @gl/elements\n\n# Fresh project (add peer deps too)\nyarn add @gl/elements tamagui react-native-web\nnpm install @gl/elements tamagui react-native-web'}
       tabs={[
         {
           id: 'skill',
@@ -23,17 +44,13 @@ export function InstallationPage() {
             href: skillUrl,
             size: '~11 KB',
             icon: ASSET_ICONS.FileCode,
-            downloadAs: 'magna-design-system.SKILL.md'
+            downloadAs: 'magna-design-system.SKILL.md',
           },
-          body: (
-            <YStack gap="$2">
-              <Typography variant="body2">Drop the file into your project at:</Typography>
-              <CodeBlock>{'.claude/skills/magna-design-system/SKILL.md'}</CodeBlock>
-              <Typography variant="caption2" color="$onSurfaceVariant">
-                Claude reads the frontmatter and triggers it on any "learner-facing UI / M3 / Tamagui" task.
-              </Typography>
-            </YStack>
-          )
+          body: body.stack(
+            body.p('Drop the file into your project at:'),
+            <CodeBlock key="path">{'.claude/skills/magna-design-system/SKILL.md'}</CodeBlock>,
+            body.small('Claude reads the frontmatter and triggers on any "learner-facing UI / M3 / Tamagui" task.')
+          ),
         },
         {
           id: 'context',
@@ -44,20 +61,12 @@ export function InstallationPage() {
             href: contextUrl,
             size: '~3 KB',
             icon: ASSET_ICONS.FileText,
-            downloadAs: 'magna-design-system.context.md'
+            downloadAs: 'magna-design-system.context.md',
           },
-          body: (
-            <YStack gap="$2">
-              <Typography variant="body2">
-                Use this version when prompting from a chat surface that doesn't auto-load skills. Paste it
-                at the top of the conversation, then describe the screen you want to build.
-              </Typography>
-              <Typography variant="caption2" color="$onSurfaceVariant">
-                Same do/don't rules as the full reference, minus deep code examples — tuned for vibe coding
-                where you trade depth for round-trip speed.
-              </Typography>
-            </YStack>
-          )
+          body: body.stack(
+            body.p('Use when prompting from a chat surface that doesn\'t auto-load skills. Paste at the top of the conversation, then describe the screen you want to build.'),
+            body.small('Same do/don\'t rules as the full reference, minus deep code examples — tuned for vibe coding where you trade depth for round-trip speed.')
+          ),
         },
         {
           id: 'reference',
@@ -67,16 +76,11 @@ export function InstallationPage() {
             description: 'Complete spec — color, typography, components, accessibility, examples.',
             href: referenceUrl,
             icon: ASSET_ICONS.FileText,
-            downloadAs: 'magna-design-system.reference.md'
+            downloadAs: 'magna-design-system.reference.md',
           },
-          body: (
-            <YStack gap="$2">
-              <Typography variant="body2">
-                Attach as project-level context (Cursor "Docs" / Copilot workspace MD / Continue rules)
-                when you want exhaustive guidance — tokens, full component table, accessibility checklist.
-              </Typography>
-            </YStack>
-          )
+          body: body.stack(
+            body.p('Attach as project-level context (Cursor "Docs" / Copilot workspace MD / Continue rules) when you want exhaustive guidance — tokens, full component table, accessibility checklist.')
+          ),
         },
         {
           id: 'pkg',
@@ -86,25 +90,23 @@ export function InstallationPage() {
             description: 'npm package bundling skills/, guidelines/, components/, tokens/. Download manifest.',
             href: pkgJsonUrl,
             icon: ASSET_ICONS.Package,
-            downloadAs: 'gl-ai-magna.package.json'
+            downloadAs: 'gl-ai-magna.package.json',
           },
-          body: (
-            <YStack gap="$2">
-              <Typography variant="body2">Install:</Typography>
-              <CodeBlock>{'npm install -D @gl/ai-magna\n# or\nyarn add -D @gl/ai-magna'}</CodeBlock>
-              <Typography variant="body2">Then point your assistant at the installed assets:</Typography>
-              <CodeBlock>{'# .claude/skills/magna-design-system  →  copy or symlink from:\nnode_modules/@gl/ai-magna/skills/magna-design-system/\n\n# AGENTS.md\nSee design rules in node_modules/@gl/ai-magna/skills/magna-design-system/SKILL.md'}</CodeBlock>
-              <Separator marginVertical="$2" />
-              <XStack gap="$2" flexWrap="wrap" alignItems="center">
-                <Typography variant="caption2" color="$onSurfaceVariant">Ships:</Typography>
-                <Typography variant="caption2" fontFamily="$monospace">skills/</Typography>
-                <Typography variant="caption2" fontFamily="$monospace">guidelines/</Typography>
-                <Typography variant="caption2" fontFamily="$monospace">components/</Typography>
-                <Typography variant="caption2" fontFamily="$monospace">tokens/</Typography>
-              </XStack>
-            </YStack>
-          )
-        }
+          body: body.stack(
+            body.p('Install:'),
+            <CodeBlock key="install">{'npm install -D @gl/ai-magna\n# or\nyarn add -D @gl/ai-magna'}</CodeBlock>,
+            body.p('Then point your assistant at the installed assets:'),
+            <CodeBlock key="usage">{'# .claude/skills/magna-design-system  →  copy or symlink from:\nnode_modules/@gl/ai-magna/skills/magna-design-system/\n\n# AGENTS.md\nSee design rules in node_modules/@gl/ai-magna/skills/magna-design-system/SKILL.md'}</CodeBlock>,
+            body.hr(),
+            body.row(
+              <span key="label" style={{ fontSize: 12, color: '#64748b' }}>Ships:</span>,
+              body.tag('skills/'),
+              body.tag('guidelines/'),
+              body.tag('components/'),
+              body.tag('tokens/')
+            )
+          ),
+        },
       ]}
     />
   );

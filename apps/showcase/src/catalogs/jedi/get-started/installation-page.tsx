@@ -1,9 +1,32 @@
-import { YStack, XStack, Typography, Separator } from '@gl/elements';
 import { InstallPage, ASSET_ICONS, CodeBlock } from '../../../platform/install-page';
 import skillUrl from '../../../../../../ai/jedi/skills/jedi-design-system/SKILL.md?url';
 import contextUrl from '../../../../../../ai/jedi/skills/jedi-design-system/context.md?url';
 import referenceUrl from '../../../../../../ai/jedi/skills/jedi-design-system/reference.md?url';
 import pkgJsonUrl from '../../../../../../ai/jedi/package.json?url';
+
+const body = {
+  p: (text: string) => <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>{text}</p>,
+  small: (...children: React.ReactNode[]) => (
+    <p style={{ margin: 0, fontSize: 12, color: '#64748b' }}>{children}</p>
+  ),
+  mono: (text: string) => (
+    <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>
+      {text}
+    </code>
+  ),
+  stack: (...children: React.ReactNode[]) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>{children}</div>
+  ),
+  row: (...children: React.ReactNode[]) => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>{children}</div>
+  ),
+  hr: () => <hr style={{ border: 'none', borderTop: '1px solid #e2e8f0', margin: '4px 0' }} />,
+  tag: (text: string) => (
+    <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', fontSize: 12, background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, color: '#475569' }}>
+      {text}
+    </code>
+  ),
+};
 
 export function InstallationPage() {
   return (
@@ -12,7 +35,7 @@ export function InstallationPage() {
       tagline="Internal & partner tools — MUI v6 themed by Jedi, Inter, role-driven palette."
       packageName="@gl/jedi"
       sourcePath="packages/jedi · ai/jedi"
-      installCommand={'# Yarn 4 workspace\nyarn workspace <your-tool> add @gl/jedi @mui/material @emotion/react @emotion/styled\n\n# or plain npm\nnpm install @gl/jedi @mui/material @emotion/react @emotion/styled'}
+      installCommand={'# Inside this monorepo (MUI + Emotion already installed)\nyarn workspace <your-tool> add @gl/jedi\n\n# Fresh project (add peer deps too)\nyarn add @gl/jedi @mui/material @emotion/react @emotion/styled\nnpm install @gl/jedi @mui/material @emotion/react @emotion/styled'}
       tabs={[
         {
           id: 'skill',
@@ -23,17 +46,13 @@ export function InstallationPage() {
             href: skillUrl,
             size: '~10 KB',
             icon: ASSET_ICONS.FileCode,
-            downloadAs: 'jedi-design-system.SKILL.md'
+            downloadAs: 'jedi-design-system.SKILL.md',
           },
-          body: (
-            <YStack gap="$2">
-              <Typography variant="body2">Drop the file into your project at:</Typography>
-              <CodeBlock>{'.claude/skills/jedi-design-system/SKILL.md'}</CodeBlock>
-              <Typography variant="caption2" color="$onSurfaceVariant">
-                Triggers on any staff / partner-admin UI task. Don't cross-fire with Magna or GLDS-Web skills.
-              </Typography>
-            </YStack>
-          )
+          body: body.stack(
+            body.p('Drop the file into your project at:'),
+            <CodeBlock key="path">{'.claude/skills/jedi-design-system/SKILL.md'}</CodeBlock>,
+            body.small('Triggers on any staff / partner-admin UI task. Don\'t cross-fire with Magna or GLDS-Web skills.')
+          ),
         },
         {
           id: 'context',
@@ -44,20 +63,20 @@ export function InstallationPage() {
             href: contextUrl,
             size: '~3 KB',
             icon: ASSET_ICONS.FileText,
-            downloadAs: 'jedi-design-system.context.md'
+            downloadAs: 'jedi-design-system.context.md',
           },
-          body: (
-            <YStack gap="$2">
-              <Typography variant="body2">
-                Paste at the top of the conversation, then describe the dashboard / table / form you want.
-              </Typography>
-              <Typography variant="caption2" color="$onSurfaceVariant">
-                Includes the must-knows: import from <Typography tag="code" fontFamily="$monospace">@gl/jedi</Typography>,
-                wrap in <Typography tag="code" fontFamily="$monospace">{'<JediProvider>'}</Typography>, pull colors from
-                <Typography tag="code" fontFamily="$monospace"> getColors(mode)</Typography>.
-              </Typography>
-            </YStack>
-          )
+          body: body.stack(
+            body.p('Paste at the top of the conversation, then describe the dashboard / table / form you want.'),
+            body.small(
+              'Includes the must-knows: import from ',
+              body.mono('@gl/jedi'),
+              ', wrap in ',
+              body.mono('<JediProvider>'),
+              ', pull colors from ',
+              body.mono('getColors(mode)'),
+              '.'
+            )
+          ),
         },
         {
           id: 'reference',
@@ -67,15 +86,11 @@ export function InstallationPage() {
             description: 'Complete spec — MUI v6 components, jediTheme, color roles, accessibility.',
             href: referenceUrl,
             icon: ASSET_ICONS.FileText,
-            downloadAs: 'jedi-design-system.reference.md'
+            downloadAs: 'jedi-design-system.reference.md',
           },
-          body: (
-            <YStack gap="$2">
-              <Typography variant="body2">
-                Attach as project-level docs in Cursor / Copilot / Continue when you need exhaustive coverage.
-              </Typography>
-            </YStack>
-          )
+          body: body.stack(
+            body.p('Attach as project-level docs in Cursor / Copilot / Continue when you need exhaustive coverage.')
+          ),
         },
         {
           id: 'pkg',
@@ -85,25 +100,23 @@ export function InstallationPage() {
             description: 'npm package bundling skills/, guidelines/, components/, tokens/. Download manifest.',
             href: pkgJsonUrl,
             icon: ASSET_ICONS.Package,
-            downloadAs: 'gl-ai-jedi.package.json'
+            downloadAs: 'gl-ai-jedi.package.json',
           },
-          body: (
-            <YStack gap="$2">
-              <Typography variant="body2">Install:</Typography>
-              <CodeBlock>{'npm install -D @gl/ai-jedi\n# or\nyarn add -D @gl/ai-jedi'}</CodeBlock>
-              <Typography variant="body2">Then point your assistant at the installed assets:</Typography>
-              <CodeBlock>{'# .claude/skills/jedi-design-system  →  copy or symlink from:\nnode_modules/@gl/ai-jedi/skills/jedi-design-system/\n\n# AGENTS.md\nSee design rules in node_modules/@gl/ai-jedi/skills/jedi-design-system/SKILL.md'}</CodeBlock>
-              <Separator marginVertical="$2" />
-              <XStack gap="$2" flexWrap="wrap" alignItems="center">
-                <Typography variant="caption2" color="$onSurfaceVariant">Ships:</Typography>
-                <Typography variant="caption2" fontFamily="$monospace">skills/</Typography>
-                <Typography variant="caption2" fontFamily="$monospace">guidelines/</Typography>
-                <Typography variant="caption2" fontFamily="$monospace">components/</Typography>
-                <Typography variant="caption2" fontFamily="$monospace">tokens/</Typography>
-              </XStack>
-            </YStack>
-          )
-        }
+          body: body.stack(
+            body.p('Install:'),
+            <CodeBlock key="install">{'npm install -D @gl/ai-jedi\n# or\nyarn add -D @gl/ai-jedi'}</CodeBlock>,
+            body.p('Then point your assistant at the installed assets:'),
+            <CodeBlock key="usage">{'# .claude/skills/jedi-design-system  →  copy or symlink from:\nnode_modules/@gl/ai-jedi/skills/jedi-design-system/\n\n# AGENTS.md\nSee design rules in node_modules/@gl/ai-jedi/skills/jedi-design-system/SKILL.md'}</CodeBlock>,
+            body.hr(),
+            body.row(
+              <span key="label" style={{ fontSize: 12, color: '#64748b' }}>Ships:</span>,
+              body.tag('skills/'),
+              body.tag('guidelines/'),
+              body.tag('components/'),
+              body.tag('tokens/')
+            )
+          ),
+        },
       ]}
     />
   );

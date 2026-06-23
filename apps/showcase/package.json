@@ -32,6 +32,7 @@
     "@tamagui/portal": "1.126.4",
     "@tamagui/react-native-media-driver": "1.126.4",
     "@tamagui/shorthands": "1.126.4",
+    "lucide-react": "^1.21.0",
     "minisearch": "^7.1.0",
     "pascalcase": "^2.0.0",
     "ramda": "^0.28.0",

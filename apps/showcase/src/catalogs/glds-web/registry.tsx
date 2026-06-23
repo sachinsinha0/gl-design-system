@@ -1,5 +1,5 @@
 import type { CatalogGroup } from '../_shared/types';
-import { Palette, Boxes, BookOpen, Rocket } from '@tamagui/lucide-icons';
+import { Palette, Boxes, BookOpen, Rocket } from 'lucide-react';
 import { InstallationPage } from './get-started/installation-page';
 import { TokensPage } from './foundations/tokens-page';
 import { TypographyPage } from './foundations/typography-page';
