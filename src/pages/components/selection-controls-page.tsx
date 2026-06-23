@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { YStack, XStack, Checkbox, Radio, RadioGroup, Switch } from '@gl/elements';
+import { YStack, Checkbox, Radio, RadioGroup, Switch } from '@gl/elements';
 import { DemoBlock, VariantCell } from '../../showcase-kit';
 
 const CHECKBOX_SIZES = ['xs', 'sm', 'md'] as const;
@@ -8,7 +8,9 @@ export function SelectionControlsPage() {
   const [checked, setChecked] = useState(true);
   const [radio, setRadio] = useState('ml');
   const [group, setGroup] = useState('ds');
-  const [on, setOn] = useState(true);
+  const [sw1, setSw1] = useState(false);
+  const [sw2, setSw2] = useState(true);
+  const [sw3, setSw3] = useState(true);
 
   return (
     <YStack gap="$3">
@@ -79,16 +81,17 @@ export function SelectionControlsPage() {
         </RadioGroup>
       </DemoBlock>
 
-      <DemoBlock title="Switch" description="checked + onCheckedChange. size is a token (e.g. $3).">
-        <VariantCell label="on">
-          <Switch checked={on} onCheckedChange={setOn} />
+      <DemoBlock
+        title="Switch"
+        description="checked + onCheckedChange. Each toggles independently; size is a token ($3 default, $4 larger).">
+        <VariantCell label={sw1 ? 'on' : 'off'}>
+          <Switch checked={sw1} onCheckedChange={setSw1} />
         </VariantCell>
-        <VariantCell label="sizes">
-          <XStack gap="$3" alignItems="center">
-            <Switch size="$2" checked={on} onCheckedChange={setOn} />
-            <Switch size="$3" checked={on} onCheckedChange={setOn} />
-            <Switch size="$4" checked={on} onCheckedChange={setOn} />
-          </XStack>
+        <VariantCell label="size $3">
+          <Switch size="$3" checked={sw2} onCheckedChange={setSw2} />
+        </VariantCell>
+        <VariantCell label="size $4">
+          <Switch size="$4" checked={sw3} onCheckedChange={setSw3} />
         </VariantCell>
         <VariantCell label="disabled">
           <Switch disabled checked onCheckedChange={() => undefined} />

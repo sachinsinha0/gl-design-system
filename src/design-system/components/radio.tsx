@@ -105,13 +105,15 @@ export function Radio({
             //@ts-ignore
             scaleSize={1}
             borderColor={props.error ? '$error' : checked ? colorValue : '$onSurfaceVariant'}>
-            <TMRadioGroup.Indicator 
-              backgroundColor={colorValue} 
-              width="$1.5" 
+            <TMRadioGroup.Indicator
+              backgroundColor={colorValue}
+              width="$1.5"
               height={'$1.5'}
               {...(Platform.OS === 'web' && checked && {
                 borderWidth: 2,
-                borderColor: 'currentColor',
+                // Use the resolved indicator color, not `currentColor` (which
+                // resolves to the inherited CSS color — black — on web).
+                borderColor: colorValue,
                 borderStyle: 'solid'
               })}
             />
