@@ -4,7 +4,6 @@ import { XStack, YStack, Typography } from '@gl/elements';
 import { useActiveDS, useActiveDSId } from '../platform/ds-context';
 import { useDSSearch } from '../platform/search-index';
 import { ThemeSwitcher } from './theme-switcher';
-import { DSSwitcher } from './ds-switcher';
 
 export function TopBar() {
   const { pathname } = useLocation();
@@ -40,7 +39,6 @@ export function TopBar() {
       </YStack>
       <XStack gap="$2" alignItems="center" flexShrink={0}>
         <SearchBox />
-        <DSSwitcher />
         <ThemeSwitcher />
       </XStack>
     </XStack>

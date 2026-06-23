@@ -8,6 +8,8 @@ export type ThemeOption = { id: string; label: string };
 export type DesignSystemDescriptor = {
   id: DSId;
   label: string;
+  /** 2-3 word audience summary shown under the DS name in the sidebar switcher. */
+  tagline: string;
   tech: 'tamagui' | 'mui' | 'html-css';
   Provider: ComponentType<{ children: ReactNode }>;
   registry: CatalogGroup[];

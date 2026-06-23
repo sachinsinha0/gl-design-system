@@ -6,6 +6,7 @@ import { HomePage } from './home-page';
 registerDesignSystem({
   id: 'glds-web',
   label: 'GLDS-Web',
+  tagline: 'Marketing & public site',
   tech: 'html-css',
   Provider: GLDSProvider,
   registry: catalog,

@@ -19,7 +19,16 @@
   "peerDependencies": {
     "react": ">=18",
     "react-dom": ">=18",
+    "react-native-edge-to-edge": "*",
     "react-native-web": ">=0.20",
     "tamagui": "^1.126.4"
+  },
+  "optionalDependencies": {
+    "react-native-edge-to-edge": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native-edge-to-edge": {
+      "optional": true
+    }
   }
 }

@@ -1,5 +1,6 @@
 import type { CatalogGroup } from '../_shared/types';
-import { Palette, Boxes, MonitorSmartphone, BookOpen } from '@tamagui/lucide-icons';
+import { Palette, Boxes, MonitorSmartphone, BookOpen, Rocket } from '@tamagui/lucide-icons';
+import { InstallationPage } from './get-started/installation-page';
 import { ColorsPage } from './foundations/colors-page';
 import { TypographyPage } from './foundations/typography-page';
 import { SpacingPage } from './foundations/spacing-page';
@@ -38,6 +39,15 @@ const wrap = (Mdx: React.ComponentType) =>
     );
   };
 export const catalog: CatalogGroup[] = [
+  {
+    id: 'get-started',
+    label: 'Get started',
+    icon: Rocket,
+    description: 'Install @gl/elements, download the Claude skill or the Markdown spec.',
+    entries: [
+      { slug: 'installation', title: 'Installation', Component: InstallationPage }
+    ]
+  },
   {
     id: 'foundations',
     label: 'Foundations',

@@ -6,6 +6,7 @@ import { HomePage } from './home-page';
 registerDesignSystem({
   id: 'jedi',
   label: 'Jedi',
+  tagline: 'Internal & partner tools',
   tech: 'mui',
   Provider: JediProvider,
   registry: catalog,

@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { XStack, YStack, ScrollView } from '@gl/elements';
+import { Provider as MagnaProvider, XStack, YStack, ScrollView } from '@gl/elements';
 import { DSProvider } from '../platform/ds-context';
 import { ActiveDSProvider } from '../platform/providers';
 import { Sidebar } from './sidebar';
@@ -20,7 +20,12 @@ function Shell() {
           }}
         >
           <YStack width="100%" maxWidth={1180}>
-            <Outlet />
+            {/* The shell chrome is Magna; the active DS provider wraps only the route content so
+                non-Magna routes (Jedi MUI, GLDS-Web HTML+CSS) still get their styling context
+                without the shell needing two stacked theme providers. */}
+            <ActiveDSProvider>
+              <Outlet />
+            </ActiveDSProvider>
           </YStack>
         </ScrollView>
       </YStack>
@@ -31,9 +36,9 @@ function Shell() {
 export function AppShell() {
   return (
     <DSProvider>
-      <ActiveDSProvider>
+      <MagnaProvider>
         <Shell />
-      </ActiveDSProvider>
+      </MagnaProvider>
     </DSProvider>
   );
 }

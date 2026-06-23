@@ -7,6 +7,7 @@ import { magnaThemes } from './themes';
 registerDesignSystem({
   id: 'magna',
   label: 'Magna',
+  tagline: 'Learner product UI',
   tech: 'tamagui',
   Provider: MagnaProvider,
   registry: catalog,
