@@ -5,6 +5,8 @@ import { Check, ChevronsUpDown, Home } from '@tamagui/lucide-icons';
 import { useActiveDS, useActiveDSId, useSetActiveDS } from '../platform/ds-context';
 import { listDesignSystems, hasDesignSystem, type DSId } from '../platform/ds-registry';
 import { equivalentSlug } from '../platform/ds-equivalence';
+import { SearchBox } from './search-box';
+import { ThemeSwitcher } from './theme-switcher';
 
 function DSSwitchHeader() {
   const activeId = useActiveDSId();
@@ -201,6 +203,9 @@ export function Sidebar() {
       borderColor="$outlineVariant"
     >
       <DSSwitchHeader />
+      <Stack paddingHorizontal="$3" paddingBottom="$3">
+        <SearchBox />
+      </Stack>
       <Separator />
       <ScrollView flex={1} contentContainerStyle={{ padding: 12, gap: 4 }}>
         <NavRow
@@ -237,14 +242,9 @@ export function Sidebar() {
         })}
       </ScrollView>
       <Separator />
-      <XStack paddingHorizontal="$3" paddingVertical="$2.5" justifyContent="space-between" alignItems="center">
-        <Typography variant="caption2" color="$onSurfaceVariant">
-          v0.0.1
-        </Typography>
-        <Typography variant="caption2" color="$onSurfaceVariant">
-          Not for production
-        </Typography>
-      </XStack>
+      <Stack paddingHorizontal="$3" paddingVertical="$2.5">
+        <ThemeSwitcher />
+      </Stack>
     </YStack>
   );
 }
