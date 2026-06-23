@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     tamaguiPlugin({
-      config: 'src/design-system/theme/tamagui.config.ts',
+      config: 'packages/elements/src/theme/tamagui.config.ts',
       components: ['@gl/elements'],
       disableExtraction: true
     })
@@ -18,7 +18,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@gl/elements': path.resolve(__dirname, 'src/design-system'),
+      '@gl/elements': path.resolve(__dirname, 'packages/elements/src'),
       // The vendored design-system Icon statically imports vector-icons submodules
       // for the legacy Material-icon string API. On web we render Lucide icons, and
       // the vector-icons CJS bundles do not transform under Vite/Vitest, so shim them.

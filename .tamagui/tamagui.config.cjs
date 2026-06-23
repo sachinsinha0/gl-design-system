@@ -20851,7 +20851,7 @@ var require_cjs = __commonJS({
   }
 });
 
-// src/design-system/theme/tamagui.config.ts
+// packages/elements/src/theme/tamagui.config.ts
 var tamagui_config_exports = {};
 __export(tamagui_config_exports, {
   config: () => config
@@ -21162,7 +21162,7 @@ function getValue(input, isColor = false) {
 }
 __name(getValue, "getValue");
 
-// src/design-system/theme/animations.ts
+// packages/elements/src/theme/animations.ts
 var animations = createAnimations({
   bouncy: {
     type: "spring",
@@ -21202,7 +21202,7 @@ var animations = createAnimations({
   }
 });
 
-// src/design-system/theme/colors/blue-theme.ts
+// packages/elements/src/theme/colors/blue-theme.ts
 var light = {
   //sys
   primary: "#0054d6",
@@ -21608,7 +21608,7 @@ var dark = {
   keyPrimary: "#0054D6"
 };
 
-// src/design-system/theme/colors/deeporange-theme.ts
+// packages/elements/src/theme/colors/deeporange-theme.ts
 var light_deeporange = {
   primary: "#b02f00",
   onPrimary: "#ffffff",
@@ -22008,7 +22008,7 @@ var dark_deeporange = {
   surfaceDimOpacity16P: "#18121029"
 };
 
-// src/design-system/theme/colors/cyan-theme.ts
+// packages/elements/src/theme/colors/cyan-theme.ts
 var light_cyan = {
   primary: "#006876",
   onPrimary: "#ffffff",
@@ -22408,7 +22408,7 @@ var dark_cyan = {
   surfaceDimOpacity16P: "#11141529"
 };
 
-// src/design-system/theme/colors/deeppurple-theme.ts
+// packages/elements/src/theme/colors/deeppurple-theme.ts
 var light_deeppurple = {
   primary: "#6f43c0ff",
   onPrimary: "#ffffffff",
@@ -22808,7 +22808,7 @@ var dark_deeppurple = {
   surfaceDimOpacity16P: "#16121529"
 };
 
-// src/design-system/theme/colors/green-theme.ts
+// packages/elements/src/theme/colors/green-theme.ts
 var light_green = {
   primary: "#006e1c",
   onPrimary: "#ffffff",
@@ -23208,7 +23208,7 @@ var dark_green = {
   surfaceDimOpacity16P: "#12141129"
 };
 
-// src/design-system/theme/colors/lightblue-theme.ts
+// packages/elements/src/theme/colors/lightblue-theme.ts
 var light_lightblue = {
   "primary": "#2F628C",
   "surfaceTint": "#2F628C",
@@ -23610,7 +23610,7 @@ var dark_lightblue = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/orange-theme.ts
+// packages/elements/src/theme/colors/orange-theme.ts
 var light_orange = {
   "primary": "#895120",
   "surfaceTint": "#895120",
@@ -24012,7 +24012,7 @@ var dark_orange = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/pink-theme.ts
+// packages/elements/src/theme/colors/pink-theme.ts
 var light_pink = {
   primary: "#b2008a",
   onPrimary: "#ffffff",
@@ -24412,7 +24412,7 @@ var dark_pink = {
   surfaceDimOpacity16P: "#17121429"
 };
 
-// src/design-system/theme/colors/purple-theme.ts
+// packages/elements/src/theme/colors/purple-theme.ts
 var light_purple = {
   primary: "#9a25ae",
   onPrimary: "#ffffff",
@@ -24812,7 +24812,7 @@ var dark_purple = {
   surfaceDimOpacity16P: "#16121529"
 };
 
-// src/design-system/theme/colors/rose-theme.ts
+// packages/elements/src/theme/colors/rose-theme.ts
 var light_rose = {
   primary: "#bd0143",
   onPrimary: "#ffffff",
@@ -25212,7 +25212,7 @@ var dark_rose = {
   surfaceDimOpacity16P: "#18121229"
 };
 
-// src/design-system/theme/colors/lime-theme.ts
+// packages/elements/src/theme/colors/lime-theme.ts
 var light_lime = {
   primary: "#5b6300ff",
   onPrimary: "#ffffffff",
@@ -25612,7 +25612,7 @@ var dark_lime = {
   surfaceDimOpacity16P: "#13140f29"
 };
 
-// src/design-system/theme/colors/common.ts
+// packages/elements/src/theme/colors/common.ts
 var common = {
   white: "#ffffff",
   whiteOpacity80P: "#ffffff80",
@@ -25625,7 +25625,7 @@ var common = {
   blackOpacity20P: "#00000020"
 };
 
-// src/design-system/theme/colors/custom-colors.ts
+// packages/elements/src/theme/colors/custom-colors.ts
 var custom_light = {
   warning: "#8d4f00ff",
   onWarning: "#ffffffff",
@@ -25767,7 +25767,7 @@ var custom_dark = {
   onGreenContainer: "#94f990ff"
 };
 
-// src/design-system/theme/colors/tones.ts
+// packages/elements/src/theme/colors/tones.ts
 var tones = {
   warningTone0: "#000000ff",
   warningTone5: "#1e0d00ff",
@@ -26077,7 +26077,7 @@ var tones = {
   greenTone100: "#ffffffff"
 };
 
-// src/design-system/theme/colors/darkteal-theme.ts
+// packages/elements/src/theme/colors/darkteal-theme.ts
 var light_darkteal = {
   "primary": "#106681",
   "surfaceTint": "#106681",
@@ -26479,7 +26479,7 @@ var dark_darkteal = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/gold-theme.ts
+// packages/elements/src/theme/colors/gold-theme.ts
 var light_gold = {
   "primary": "#755B0B",
   "surfaceTint": "#755B0B",
@@ -26881,7 +26881,7 @@ var dark_gold = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/eggplant-theme.ts
+// packages/elements/src/theme/colors/eggplant-theme.ts
 var light_eggplant = {
   "primary": "#5F5791",
   "surfaceTint": "#5F5791",
@@ -27283,7 +27283,7 @@ var dark_eggplant = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/olive-theme.ts
+// packages/elements/src/theme/colors/olive-theme.ts
 var light_olive = {
   "primary": "#5C631D",
   "surfaceTint": "#5C631D",
@@ -27685,7 +27685,7 @@ var dark_olive = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/ocean-theme.ts
+// packages/elements/src/theme/colors/ocean-theme.ts
 var light_ocean = {
   "primary": "#006A60",
   "surfaceTint": "#006A60",
@@ -28087,7 +28087,7 @@ var dark_ocean = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/stormblue-theme.ts
+// packages/elements/src/theme/colors/stormblue-theme.ts
 var light_stormblue = {
   "primary": "#37618E",
   "surfaceTint": "#37618E",
@@ -28489,7 +28489,7 @@ var dark_stormblue = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/ink-theme.ts
+// packages/elements/src/theme/colors/ink-theme.ts
 var light_ink = {
   "primary": "#505B92",
   "surfaceTint": "#505B92",
@@ -28891,7 +28891,7 @@ var dark_ink = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/midnight-theme.ts
+// packages/elements/src/theme/colors/midnight-theme.ts
 var light_midnight = {
   "primary": "#5F5790",
   "surfaceTint": "#5F5790",
@@ -29293,7 +29293,7 @@ var dark_midnight = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/rust-theme.ts
+// packages/elements/src/theme/colors/rust-theme.ts
 var light_rust = {
   "primary": "#904B3D",
   "surfaceTint": "#904B3D",
@@ -29695,7 +29695,7 @@ var dark_rust = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/mint-theme.ts
+// packages/elements/src/theme/colors/mint-theme.ts
 var light_mint = {
   "primary": "#306A43",
   "surfaceTint": "#306A43",
@@ -30097,7 +30097,7 @@ var dark_mint = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/colors/glapremium-theme.ts
+// packages/elements/src/theme/colors/glapremium-theme.ts
 var light_glapremium = {
   "primary": "#7229ec",
   "surfaceTint": "#7229ec",
@@ -30499,7 +30499,7 @@ var dark_glapremium = {
   "background2": "#f2f4f7"
 };
 
-// src/design-system/theme/tokens.ts
+// packages/elements/src/theme/tokens.ts
 var import_core = require("@tamagui/core");
 var size = {
   $xs: 4,
@@ -30630,11 +30630,11 @@ var tokens = (0, import_core.createTokens)({
   size
 });
 
-// src/design-system/theme/themes.ts
+// packages/elements/src/theme/themes.ts
 var AppThemes = themeTokens;
 var themes = AppThemes;
 
-// src/design-system/theme/fonts.ts
+// packages/elements/src/theme/fonts.ts
 var import_core2 = require("@tamagui/core");
 var import_react_native = __toESM(require_cjs(), 1);
 var heading = (0, import_core2.createFont)({
@@ -31047,7 +31047,7 @@ var fonts = {
   buttonDesktop
 };
 
-// src/design-system/theme/tamagui.config.ts
+// packages/elements/src/theme/tamagui.config.ts
 var import_core3 = require("@tamagui/core");
 
 // node_modules/@tamagui/shorthands/dist/esm/index.mjs
@@ -31152,7 +31152,7 @@ function createMedia(media2) {
 }
 __name(createMedia, "createMedia");
 
-// src/design-system/theme/tamagui.config.ts
+// packages/elements/src/theme/tamagui.config.ts
 var media = {
   xxs: { maxWidth: 1 - 1 },
   gtXXs: { minWidth: 1 },
