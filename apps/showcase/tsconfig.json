@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": false,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": false,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "types": ["vitest/globals", "node"],
+    "baseUrl": ".",
+    // Pin @gl/elements to the ambient declaration so tsc doesn't walk into
+    // the vendored design-system workspace package (it has ~260 type errors
+    // when re-checked under our strict program). See packages/elements README.
+    "paths": {
+      "react-native": ["../../node_modules/react-native-web"],
+      "@gl/elements": ["src/types/gl-elements.d.ts"],
+      "@gl/elements/*": ["src/types/gl-elements.d.ts"]
+    }
+  },
+  "include": ["src", "vite.config.ts", "vitest.config.ts", "vitest.setup.ts"],
+  "exclude": ["node_modules", "../../packages", "../../ai"]
+}
