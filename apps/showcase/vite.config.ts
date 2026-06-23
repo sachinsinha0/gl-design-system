@@ -19,6 +19,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@gl/elements': path.resolve(__dirname, '../../packages/elements/src'),
+      '@gl/jedi': path.resolve(__dirname, '../../packages/jedi/src'),
+      '@gl/glds-web': path.resolve(__dirname, '../../packages/glds-web/src'),
       // The vendored design-system Icon statically imports vector-icons submodules
       // for the legacy Material-icon string API. On web we render Lucide icons, and
       // the vector-icons CJS bundles do not transform under Vite/Vitest, so shim them.

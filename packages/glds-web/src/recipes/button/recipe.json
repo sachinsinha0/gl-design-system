@@ -1,0 +1,1 @@
+{ "name": "button", "description": "Primary action button.", "slots": ["label"], "variants": ["primary", "secondary", "ghost"], "tokensUsed": ["color.primary", "color.onPrimary", "radius.md", "space.3", "space.4"], "examples": [{ "label": "Primary", "variant": "primary" }, { "label": "Secondary", "variant": "secondary" }, { "label": "Ghost", "variant": "ghost" }] }

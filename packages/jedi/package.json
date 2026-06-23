@@ -1,19 +1,34 @@
 {
   "name": "@gl/jedi",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
-  "description": "Jedi design system (MUI v6 based). Scaffold — components/theme arrive in JEDI-PKG phase.",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "types": "src/index.ts",
-  "files": [
-    "src"
-  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./theme": "./src/theme/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "echo 'source-only package, no build'",
+    "test": "echo 'no tests'"
+  },
   "peerDependencies": {
-    "@emotion/react": "^11.0.0",
-    "@emotion/styled": "^11.0.0",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@mui/material": "^6.0.0",
     "react": ">=18",
     "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "~5.8.3"
   }
 }

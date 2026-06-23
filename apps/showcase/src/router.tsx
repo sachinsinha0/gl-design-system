@@ -1,6 +1,8 @@
 import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-dom';
 import { AppShell } from './shell/app-shell';
 import './catalogs/magna';
+import './catalogs/jedi';
+import './catalogs/glds-web';
 import { listDesignSystems } from './platform/ds-registry';
 
 function buildDSChildren(): RouteObject[] {

@@ -1,0 +1,27 @@
+[data-ds="glds-web"] {
+  --glds-color-primary: #1F6FEB;
+  --glds-color-onPrimary: #FFFFFF;
+  --glds-color-primaryContainer: #D8E6FF;
+  --glds-color-onPrimaryContainer: #0A1F45;
+  --glds-color-surface: #FFFFFF;
+  --glds-color-onSurface: #0E1116;
+  --glds-color-surfaceVariant: #F4F6F8;
+  --glds-color-onSurfaceVariant: #41474D;
+  --glds-color-outline: #C6CBD1;
+  --glds-color-danger: #D32F2F;
+  --glds-color-success: #2E7D32;
+  --glds-font-family: 'Inter', system-ui, sans-serif;
+  --glds-space-1: 4px;
+  --glds-space-2: 8px;
+  --glds-space-3: 12px;
+  --glds-space-4: 16px;
+  --glds-space-5: 24px;
+  --glds-space-6: 32px;
+  --glds-space-8: 48px;
+  --glds-radius-sm: 4px;
+  --glds-radius-md: 8px;
+  --glds-radius-lg: 12px;
+  --glds-radius-pill: 999px;
+  --glds-elevation-1: 0 1px 2px rgba(0,0,0,0.06), 0 1px 1px rgba(0,0,0,0.04);
+  --glds-elevation-2: 0 2px 6px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+}

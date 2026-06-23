@@ -1,0 +1,3 @@
+[data-ds="glds-web"] .glds-card__title { margin: 0 0 var(--glds-space-2); font-size: 20px; font-weight: 600; }
+[data-ds="glds-web"] .glds-card__body { margin: 0 0 var(--glds-space-4); color: var(--glds-color-onSurfaceVariant); }
+[data-ds="glds-web"] .glds-card__footer { display: flex; justify-content: flex-end; }

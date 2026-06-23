@@ -1,0 +1,1 @@
+{ "name": "card", "description": "Container surface with elevation.", "slots": ["title", "body", "footer"], "variants": ["default"], "tokensUsed": ["color.surface", "color.outline", "radius.lg", "elevation.1", "space.5"], "examples": [] }

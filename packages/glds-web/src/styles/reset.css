@@ -1,0 +1,12 @@
+[data-ds="glds-web"] *,
+[data-ds="glds-web"] *::before,
+[data-ds="glds-web"] *::after { box-sizing: border-box; }
+[data-ds="glds-web"] {
+  margin: 0;
+  font-family: var(--glds-font-family);
+  color: var(--glds-color-onSurface);
+  background: var(--glds-color-surface);
+}
+[data-ds="glds-web"] button { font: inherit; cursor: pointer; }
+[data-ds="glds-web"] input, [data-ds="glds-web"] textarea { font: inherit; }
+[data-ds="glds-web"] a { color: var(--glds-color-primary); text-decoration: none; }

@@ -1,0 +1,5 @@
+[data-ds="glds-web"] .glds-btn { display: inline-flex; align-items: center; justify-content: center; padding: var(--glds-space-3) var(--glds-space-4); border-radius: var(--glds-radius-md); border: 1px solid transparent; font-weight: 600; line-height: 1; }
+[data-ds="glds-web"] .glds-btn + .glds-btn { margin-left: var(--glds-space-2); }
+[data-ds="glds-web"] .glds-btn--primary { background: var(--glds-color-primary); color: var(--glds-color-onPrimary); }
+[data-ds="glds-web"] .glds-btn--secondary { background: var(--glds-color-primaryContainer); color: var(--glds-color-onPrimaryContainer); }
+[data-ds="glds-web"] .glds-btn--ghost { background: transparent; color: var(--glds-color-primary); border-color: var(--glds-color-outline); }

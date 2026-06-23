@@ -1,9 +1,22 @@
 {
   "name": "@gl/glds-web",
-  "version": "0.0.0",
-  "description": "GLDS-Web design system (HTML + CSS recipes only). Scaffold — recipes arrive in GLDS-PKG phase.",
-  "main": "src/index.js",
-  "files": [
-    "src"
-  ]
+  "version": "0.0.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles/*": "./src/styles/*",
+    "./recipes/*": "./src/recipes/*",
+    "./tokens.json": "./src/tokens/tokens.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "echo 'source-only package, no build'",
+    "test": "echo 'no tests'"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "react": "^19.0.0",
+    "typescript": "~5.8.3"
+  }
 }

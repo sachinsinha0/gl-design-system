@@ -24,7 +24,11 @@
     "paths": {
       "react-native": ["../../node_modules/react-native-web"],
       "@gl/elements": ["src/types/gl-elements.d.ts"],
-      "@gl/elements/*": ["src/types/gl-elements.d.ts"]
+      "@gl/elements/*": ["src/types/gl-elements.d.ts"],
+      "@gl/jedi": ["../../packages/jedi/src"],
+      "@gl/jedi/*": ["../../packages/jedi/src/*"],
+      "@gl/glds-web": ["../../packages/glds-web/src"],
+      "@gl/glds-web/*": ["../../packages/glds-web/src/*"]
     }
   },
   "include": ["src", "vite.config.ts", "vitest.config.ts", "vitest.setup.ts"],

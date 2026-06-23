@@ -1,0 +1,9 @@
+[data-ds="glds-web"] .glds-stack { display: flex; flex-direction: column; gap: var(--glds-space-4); }
+[data-ds="glds-web"] .glds-row { display: flex; flex-direction: row; gap: var(--glds-space-4); align-items: center; }
+[data-ds="glds-web"] .glds-card {
+  background: var(--glds-color-surface);
+  border: 1px solid var(--glds-color-outline);
+  border-radius: var(--glds-radius-lg);
+  padding: var(--glds-space-5);
+  box-shadow: var(--glds-elevation-1);
+}

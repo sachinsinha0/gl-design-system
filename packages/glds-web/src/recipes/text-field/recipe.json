@@ -1,0 +1,1 @@
+{ "name": "text-field", "description": "Single-line input with label.", "slots": ["label", "input", "helper"], "variants": ["default", "error"], "tokensUsed": ["color.surface", "color.outline", "color.onSurfaceVariant", "radius.md", "space.2", "space.3"], "examples": [] }
