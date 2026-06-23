@@ -1,9 +1,20 @@
 import type { CatalogGroup } from '../_shared/types';
-import { Palette, Boxes, BookOpen, Rocket } from 'lucide-react';
+import { Palette, Boxes, BookOpen, Rocket, MonitorSmartphone } from 'lucide-react';
 import { InstallationPage } from './get-started/installation-page';
 import { ColorsPage } from './foundations/colors-page';
 import { TypographyPage } from './foundations/typography-page';
+import { SpacingPage } from './foundations/spacing-page';
+import { ElevationPage } from './foundations/elevation-page';
 import { ButtonsPage } from './components/buttons-page';
+import { InputsPage } from './components/inputs-page';
+import { ChipsPage } from './components/chips-page';
+import { FeedbackPage } from './components/feedback-page';
+import { DataDisplayPage } from './components/data-display-page';
+import { NavigationPage } from './components/navigation-page';
+import { DialogsPage } from './components/dialogs-page';
+import { MenusListsPage } from './components/menus-lists-page';
+import { AdminTablePrototype } from './prototypes/admin-table-prototype';
+import { PartnerFormPrototype } from './prototypes/partner-form-prototype';
 import { JediMDXProvider } from '../../platform/mdx-providers/jedi-mdx-provider';
 import ColorGuide from '../../../../../ai/jedi/guidelines/color.mdx';
 import TypeGuide from '../../../../../ai/jedi/guidelines/typography.mdx';
@@ -34,10 +45,12 @@ export const catalog: CatalogGroup[] = [
     id: 'foundations',
     label: 'Foundations',
     icon: Palette,
-    description: 'Jedi (MUI v6) tokens — palette, type and shape.',
+    description: 'Jedi (MUI v6) tokens — palette, type, spacing, elevation.',
     entries: [
       { slug: 'colors', title: 'Colors', Component: ColorsPage },
-      { slug: 'typography', title: 'Typography', Component: TypographyPage }
+      { slug: 'typography', title: 'Typography', Component: TypographyPage },
+      { slug: 'spacing', title: 'Spacing', Component: SpacingPage },
+      { slug: 'elevation', title: 'Elevation', Component: ElevationPage }
     ]
   },
   {
@@ -46,7 +59,24 @@ export const catalog: CatalogGroup[] = [
     icon: Boxes,
     description: 'MUI v6 components themed by Jedi.',
     entries: [
-      { slug: 'buttons', title: 'Buttons', Component: ButtonsPage }
+      { slug: 'buttons', title: 'Buttons', Component: ButtonsPage },
+      { slug: 'inputs', title: 'Inputs', Component: InputsPage },
+      { slug: 'chips', title: 'Chips', Component: ChipsPage },
+      { slug: 'feedback', title: 'Feedback', Component: FeedbackPage },
+      { slug: 'data-display', title: 'Data display', Component: DataDisplayPage },
+      { slug: 'navigation', title: 'Navigation', Component: NavigationPage },
+      { slug: 'dialogs', title: 'Dialogs', Component: DialogsPage },
+      { slug: 'menus-lists', title: 'Menus & lists', Component: MenusListsPage }
+    ]
+  },
+  {
+    id: 'prototypes',
+    label: 'Prototypes',
+    icon: MonitorSmartphone,
+    description: 'End-to-end internal-tool patterns demonstrating Jedi interaction rules.',
+    entries: [
+      { slug: 'admin-table', title: 'Admin table', Component: AdminTablePrototype },
+      { slug: 'partner-form', title: 'Partner form', Component: PartnerFormPrototype }
     ]
   },
   {
@@ -63,3 +93,4 @@ export const catalog: CatalogGroup[] = [
     ]
   }
 ];
+

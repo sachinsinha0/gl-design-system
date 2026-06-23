@@ -256,6 +256,91 @@ const darkColors = {
   basic: { white, black: '#000000' }
 };
 
+// --- §2.7 Extended data-viz ramps ----------------------------------------
+// Solid ramps only (the `-a` alpha variants are intentionally omitted; tokens
+// can be added later if a data-viz surface needs them).
+type Ramp = Record<'50' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900', string>;
+
+const lightGrey: Ramp = {
+  '50': '#FAFAFA', '100': '#F5F5F5', '200': '#EEEEEE', '300': '#E0E0E0', '400': '#BDBDBD',
+  '500': '#9E9E9E', '600': '#757575', '700': '#616161', '800': '#424242', '900': '#212121'
+};
+const lightPurple: Ramp = {
+  '50': '#F3E5F5', '100': '#E1BEE7', '200': '#CE93D8', '300': '#BA68C8', '400': '#AB47BC',
+  '500': '#9C27B0', '600': '#8E24AA', '700': '#7B1FA2', '800': '#6A1B9A', '900': '#4A148C'
+};
+const lightLightBlue: Ramp = {
+  '50': '#E1F5FE', '100': '#B3E5FC', '200': '#81D4FA', '300': '#4FC3F7', '400': '#29B6F6',
+  '500': '#03A9F4', '600': '#039BE5', '700': '#0288D1', '800': '#0277BD', '900': '#01579B'
+};
+const lightYellow: Ramp = {
+  '50': '#FFFDE7', '100': '#FFF9C4', '200': '#FFF59D', '300': '#FFF176', '400': '#FFEE58',
+  '500': '#FFEB3B', '600': '#FDD835', '700': '#FBC02D', '800': '#F9A825', '900': '#F57F17'
+};
+// Spec §2.7 blue ramp is customized — blue.700 is #0057B2, not Material's #1976D2.
+const lightBlue: Ramp = {
+  '50': '#E3F2FD', '100': '#BBDEFB', '200': '#90CAF9', '300': '#64B5F6', '400': '#42A5F5',
+  '500': '#2196F3', '600': '#1E88E5', '700': '#0057B2', '800': '#1565C0', '900': '#0D47A1'
+};
+const lightBlueGray: Ramp = {
+  '50': '#ECEFF1', '100': '#CFD8DC', '200': '#B0BEC5', '300': '#90A4AE', '400': '#78909C',
+  '500': '#607D8B', '600': '#546E7A', '700': '#455A64', '800': '#37474F', '900': '#263238'
+};
+
+// §2.7 — "In dark mode the code reverses each ramp (50↔900) automatically."
+function reverseRamp(r: Ramp): Ramp {
+  return {
+    '50': r['900'], '100': r['800'], '200': r['700'], '300': r['600'], '400': r['500'],
+    '500': r['400'], '600': r['300'], '700': r['200'], '800': r['100'], '900': r['50']
+  };
+}
+
+const lightRamps = {
+  grey: lightGrey,
+  purple: lightPurple,
+  'light-blue': lightLightBlue,
+  yellow: lightYellow,
+  // Spec §2.7 extra step `blue.70 = #0041B2` (custom token outside Material's 50–900 grid).
+  blue: { ...lightBlue, '70': '#0041B2' } as Ramp & { '70': string },
+  'blue-gray': lightBlueGray
+};
+
+const darkRamps = {
+  grey: reverseRamp(lightGrey),
+  purple: reverseRamp(lightPurple),
+  'light-blue': reverseRamp(lightLightBlue),
+  yellow: reverseRamp(lightYellow),
+  blue: { ...reverseRamp(lightBlue), '70': '#0041B2' } as Ramp & { '70': string },
+  'blue-gray': reverseRamp(lightBlueGray)
+};
+
+const lightFull = { ...lightColors, ramps: lightRamps };
+const darkFull = { ...darkColors, ramps: darkRamps };
+
 export function getColors(mode: ColorMode) {
-  return mode === 'dark' ? darkColors : lightColors;
+  return mode === 'dark' ? darkFull : lightFull;
+}
+
+// --- CSS variable serializer ----------------------------------------------
+// Walk the palette tree and emit `--<group>-<token>: <value>` so component
+// authors can reach tokens without `getColors(mode)` in CSS-only contexts.
+// e.g. `--primary-main`, `--text-secondary`, `--error-shades-190-p`,
+// `--background-paper-elevation-2`, `--ramps-grey-100`.
+function flattenForCss(node: unknown, prefix: string, out: Record<string, string>) {
+  if (typeof node === 'string') {
+    out[`--${prefix}`] = node;
+    return;
+  }
+  if (node && typeof node === 'object') {
+    for (const [k, v] of Object.entries(node as Record<string, unknown>)) {
+      const key = prefix ? `${prefix}-${k}` : k;
+      flattenForCss(v, key, out);
+    }
+  }
+}
+
+export function toCssVariables(mode: ColorMode): Record<string, string> {
+  const out: Record<string, string> = {};
+  flattenForCss(getColors(mode), '', out);
+  return out;
 }

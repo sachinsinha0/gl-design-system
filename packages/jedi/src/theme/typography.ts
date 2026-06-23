@@ -59,3 +59,40 @@ export const mobileTypography = {
   caption: { fontSize: 10, lineHeight: '16px', letterSpacing: '0.4px' },
   overline: { fontSize: 10, lineHeight: '16px', letterSpacing: '1.25px' }
 };
+
+/**
+ * Spec §3.3 — Component-level type tokens. Consumed by `buildJediTheme`
+ * `components.<Mui*>.styleOverrides` so each component renders to spec
+ * without callers having to remember the values.
+ */
+export const componentTypography = {
+  inputLabel: { fontFamily, fontWeight: 400, fontSize: 12, lineHeight: '12px', letterSpacing: '0.15px' },
+  inputText: { fontFamily, fontWeight: 400, fontSize: 16, lineHeight: '24px', letterSpacing: '0.15px' },
+  helperText: { fontFamily, fontWeight: 400, fontSize: 12, lineHeight: '16px', letterSpacing: '0.4px' },
+  chip: { fontFamily, fontWeight: 500, fontSize: 12, lineHeight: '16px', letterSpacing: '0.16px' },
+  tooltip: { fontFamily, fontWeight: 500, fontSize: 10, lineHeight: '16px', letterSpacing: '0px' },
+  alertTitle: { fontFamily, fontWeight: 500, fontSize: 16, lineHeight: 1.5, letterSpacing: '0.15px' },
+  tableHeader: { fontFamily, fontWeight: 500, fontSize: 14, lineHeight: '24px', letterSpacing: '0.17px' },
+  badgeLabel: { fontFamily, fontWeight: 500, fontSize: 12, lineHeight: '16px', letterSpacing: '0.14px' },
+  avatarInitials: { fontFamily, fontWeight: 400, fontSize: 20, lineHeight: '24px', letterSpacing: '0.14px' },
+  menuItem: { fontFamily, fontWeight: 400, fontSize: 16, lineHeight: 1.5, letterSpacing: '0.15px' },
+  menuItemDense: { fontFamily, fontWeight: 400, fontSize: 14, lineHeight: '24px', letterSpacing: '0.17px' },
+  listSubheader: {
+    fontFamily,
+    fontWeight: 500,
+    fontSize: 14,
+    lineHeight: '48px',
+    letterSpacing: '0.1px'
+  },
+  bottomNavActiveLabel: {
+    fontFamily,
+    fontWeight: 400,
+    fontSize: 14,
+    lineHeight: '24px',
+    letterSpacing: '0.4px'
+  },
+  // Emphasis variants from §3.1.
+  subtitle1Bold: { fontFamily, fontWeight: 600, fontSize: 16, lineHeight: 1.75, letterSpacing: '0.35px' },
+  subtitle2Bold: { fontFamily, fontWeight: 600, fontSize: 14, lineHeight: 1.57, letterSpacing: '0.1px' }
+} as const;
+

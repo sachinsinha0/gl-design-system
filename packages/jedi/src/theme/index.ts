@@ -1,16 +1,17 @@
 import { createTheme, type Theme } from '@mui/material/styles';
 import { getColors, type ColorMode } from './colors';
-import { fontFamily, desktopTypography, mobileTypography } from './typography';
+import { fontFamily, desktopTypography, mobileTypography, componentTypography } from './typography';
 import { spacing as spacingScale, jediTokens } from './tokens';
 
 export { jediTokens, spacing } from './tokens';
-export { getColors, type ColorMode } from './colors';
-export { fontFamily, desktopTypography, mobileTypography } from './typography';
+export { getColors, type ColorMode, toCssVariables } from './colors';
+export { fontFamily, desktopTypography, mobileTypography, componentTypography } from './typography';
 
 const baseSpacing = (factor: number) => `${spacingScale[factor] ?? factor * 8}px`;
 
 export function buildJediTheme(mode: ColorMode = 'light'): Theme {
   const c = getColors(mode);
+  const isDark = mode === 'dark';
 
   const theme = createTheme({
     palette: {
@@ -29,8 +30,8 @@ export function buildJediTheme(mode: ColorMode = 'light'): Theme {
         disabled: c.action.disabled,
         disabledBackground: c.action['disabled-background'],
         focus: c.action.focus,
-        hoverOpacity: mode === 'light' ? 0.04 : 0.08,
-        selectedOpacity: mode === 'light' ? 0.08 : 0.16
+        hoverOpacity: isDark ? 0.08 : 0.04,
+        selectedOpacity: isDark ? 0.16 : 0.08
       },
       background: { default: c.background.default, paper: c.background['paper-elevation-0'] },
       divider: c.other.divider
@@ -43,13 +44,120 @@ export function buildJediTheme(mode: ColorMode = 'light'): Theme {
     },
     components: {
       MuiCard: { defaultProps: { variant: 'outlined' } },
-      MuiPaper: { defaultProps: { variant: 'outlined' }, styleOverrides: { root: { backgroundImage: 'none' } } },
+      MuiPaper: {
+        defaultProps: { variant: 'outlined' },
+        styleOverrides: { root: { backgroundImage: 'none' } }
+      },
       MuiButton: {
+        defaultProps: { disableElevation: true },
         styleOverrides: {
-          root: { fontWeight: mode === 'dark' ? 600 : 500 },
+          root: { fontWeight: isDark ? 600 : 500 },
           sizeLarge: desktopTypography.buttonLarge,
           sizeSmall: desktopTypography.buttonSmall
         }
+      },
+      // §3.3 — Inputs
+      MuiInputLabel: {
+        styleOverrides: { root: { ...componentTypography.inputLabel } }
+      },
+      MuiInputBase: {
+        styleOverrides: { input: { ...componentTypography.inputText } }
+      },
+      MuiOutlinedInput: {
+        styleOverrides: { input: { ...componentTypography.inputText } }
+      },
+      MuiFilledInput: {
+        styleOverrides: {
+          input: { ...componentTypography.inputText },
+          root: { backgroundColor: c.other['filled-input-background'] }
+        }
+      },
+      MuiFormHelperText: {
+        styleOverrides: { root: { ...componentTypography.helperText } }
+      },
+      // §3.3 — Chips. Outlined variant per the flat-system rule.
+      MuiChip: {
+        defaultProps: { variant: 'outlined' },
+        styleOverrides: {
+          root: { ...componentTypography.chip },
+          label: { ...componentTypography.chip }
+        }
+      },
+      // §3.3 — Tooltip
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            ...componentTypography.tooltip,
+            backgroundColor: c.other.snackbar,
+            color: c.basic.white
+          }
+        }
+      },
+      // §3.3 — Alert: enforce the 160-p on 190-p tint recipe (§2.3).
+      MuiAlertTitle: {
+        styleOverrides: { root: { ...componentTypography.alertTitle } }
+      },
+      MuiAlert: {
+        defaultProps: { variant: 'standard' },
+        styleOverrides: {
+          standardError: {
+            backgroundColor: c.error['shades-190-p'],
+            color: c.error['shades-160-p']
+          },
+          standardWarning: {
+            backgroundColor: c.warning['shades-190-p'],
+            color: c.warning['shades-160-p']
+          },
+          standardInfo: {
+            backgroundColor: c.info['shades-190-p'],
+            color: c.info['shades-160-p']
+          },
+          standardSuccess: {
+            backgroundColor: c.success['shades-190-p'],
+            color: c.success['shades-160-p']
+          }
+        }
+      },
+      // §3.3 — Table header. §6.6 rule 15: numeric columns right-align with tabular figures.
+      MuiTableCell: {
+        styleOverrides: {
+          head: { ...componentTypography.tableHeader, color: c.text.secondary },
+          root: { fontVariantNumeric: 'tabular-nums' }
+        }
+      },
+      // §3.3 — Badge label
+      MuiBadge: {
+        styleOverrides: { badge: { ...componentTypography.badgeLabel } }
+      },
+      // §3.3 — Avatar initials
+      MuiAvatar: {
+        styleOverrides: { root: { ...componentTypography.avatarInitials } }
+      },
+      // §3.3 — Menu item (+ dense variant)
+      MuiMenuItem: {
+        styleOverrides: {
+          root: ({ ownerState }: { ownerState: { dense?: boolean } }) => ({
+            ...(ownerState.dense ? componentTypography.menuItemDense : componentTypography.menuItem)
+          })
+        }
+      },
+      // §3.3 — List subheader
+      MuiListSubheader: {
+        styleOverrides: {
+          root: { ...componentTypography.listSubheader, color: c.text.secondary }
+        }
+      },
+      // §3.3 — Bottom nav active label
+      MuiBottomNavigationAction: {
+        styleOverrides: {
+          root: {
+            '&.Mui-selected': { ...componentTypography.bottomNavActiveLabel }
+          }
+        }
+      },
+      // §2.6 — Use dividers sparingly; default to the 6%-light / 12%-dark token color.
+      MuiDivider: {
+        styleOverrides: { root: { borderColor: c.other.divider } }
       }
     }
   });
@@ -66,3 +174,4 @@ export const jediTheme = buildJediTheme('light');
 export const jediThemeDark = buildJediTheme('dark');
 
 export default jediTokens;
+
