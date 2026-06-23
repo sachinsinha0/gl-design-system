@@ -3,10 +3,16 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { YStack, XStack, Stack, Typography, ScrollView, Separator } from '@gl/elements';
 import { Check, ChevronsUpDown, Home } from '@tamagui/lucide-icons';
 import { useActiveDS, useActiveDSId, useSetActiveDS } from '../platform/ds-context';
-import { listDesignSystems, hasDesignSystem, type DSId } from '../platform/ds-registry';
+import { listDesignSystems, hasDesignSystem, type DSId, type DSChrome } from '../platform/ds-registry';
 import { equivalentSlug } from '../platform/ds-equivalence';
 import { SearchBox } from './search-box';
 import { ThemeSwitcher } from './theme-switcher';
+
+const DEFAULT_CHROME: DSChrome = {
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+  accent: '#E8F0FE',
+  accentText: '#0B57D0'
+};
 
 function DSSwitchHeader() {
   const activeId = useActiveDSId();
@@ -74,11 +80,11 @@ function DSSwitchHeader() {
           width={36}
           height={36}
           borderRadius={10}
-          backgroundColor="$primary"
           alignItems="center"
           justifyContent="center"
+          style={{ background: 'var(--ds-chrome-accent-text)' }}
         >
-          <Typography variant="subtitle1" color="$onPrimary">
+          <Typography variant="subtitle1" style={{ color: '#fff' }}>
             {ds.label.slice(0, 2).toUpperCase()}
           </Typography>
         </Stack>
@@ -126,18 +132,24 @@ function DSSwitchHeader() {
                 paddingVertical="$2"
                 borderRadius={8}
                 borderWidth={0}
-                backgroundColor={active ? '$primaryContainer' : 'transparent'}
-                hoverStyle={{ backgroundColor: active ? '$primaryContainer' : '$surfaceContainerHigh' }}
+                hoverStyle={{ backgroundColor: '$surfaceContainerHigh' }}
                 cursor="pointer"
                 width="100%"
+                style={
+                  active
+                    ? { background: 'var(--ds-chrome-accent)' }
+                    : { background: 'transparent' }
+                }
               >
                 <Stack width={20} alignItems="center">
-                  {active ? <Check size={16} color="$onPrimaryContainer" /> : null}
+                  {active ? (
+                    <Check size={16} style={{ color: 'var(--ds-chrome-accent-text)' }} />
+                  ) : null}
                 </Stack>
                 <YStack flex={1} alignItems="flex-start">
                   <Typography
                     variant="body2"
-                    color={active ? '$onPrimaryContainer' : '$onSurface'}
+                    style={active ? { color: 'var(--ds-chrome-accent-text)' } : undefined}
                   >
                     {d.label}
                   </Typography>
@@ -166,21 +178,25 @@ function NavRow({
   icon?: ReactNode;
 }) {
   return (
-    <Link to={to} style={{ textDecoration: 'none' }}>
+    <Link to={to} style={{ textDecoration: 'none' }} data-active={active || undefined}>
       <XStack
         alignItems="center"
         gap="$2"
         paddingHorizontal="$2.5"
         paddingVertical="$2"
         borderRadius={10}
-        backgroundColor={active ? '$primaryContainer' : 'transparent'}
-        hoverStyle={{ backgroundColor: active ? '$primaryContainer' : '$surfaceContainerHigh' }}
+        hoverStyle={{ backgroundColor: '$surfaceContainerHigh' }}
         cursor="pointer"
+        style={
+          active
+            ? { background: 'var(--ds-chrome-accent)', color: 'var(--ds-chrome-accent-text)' }
+            : undefined
+        }
       >
         {icon ? <Stack width={18}>{icon}</Stack> : null}
         <Typography
           variant="body2"
-          color={active ? '$onPrimaryContainer' : '$onSurface'}
+          style={active ? { color: 'var(--ds-chrome-accent-text)' } : undefined}
         >
           {label}
         </Typography>
@@ -193,58 +209,74 @@ export function Sidebar() {
   const { pathname } = useLocation();
   const ds = useActiveDS();
   const dsId = useActiveDSId();
+  const chrome = ds.chrome ?? DEFAULT_CHROME;
   const homePath = `/${dsId}`;
   return (
-    <YStack
-      width={264}
-      height="100%"
-      backgroundColor="$surfaceContainerLow"
-      borderRightWidth={1}
-      borderColor="$outlineVariant"
+    <div
+      data-ds-chrome={dsId}
+      style={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily: chrome.fontFamily,
+        ['--ds-chrome-accent' as never]: chrome.accent,
+        ['--ds-chrome-accent-text' as never]: chrome.accentText
+      }}
     >
-      <DSSwitchHeader />
-      <Stack paddingHorizontal="$3" paddingBottom="$3">
-        <SearchBox />
-      </Stack>
-      <Separator />
-      <ScrollView flex={1} contentContainerStyle={{ padding: 12, gap: 4 }}>
-        <NavRow
-          to={homePath}
-          label="Home"
-          active={pathname === homePath}
-          icon={<Home size={18} color={pathname === homePath ? '$onPrimaryContainer' : '$onSurfaceVariant'} />}
-        />
-        {ds.registry.map((group) => {
-          const GroupIcon = group.icon as
-            | ComponentType<{ size?: number; color?: string }>
-            | undefined;
-          return (
-            <YStack key={group.id} gap="$0.5" marginTop="$3">
-              <XStack alignItems="center" gap="$1.5" paddingHorizontal="$2.5" paddingBottom="$1">
-                {GroupIcon ? <GroupIcon size={14} color="$onSurfaceVariant" /> : null}
-                <Typography variant="overline" color="$onSurfaceVariant">
-                  {group.label}
-                </Typography>
-              </XStack>
-              {group.entries.map((entry) => {
-                const to = `${homePath}/${entry.slug}`;
-                return (
-                  <NavRow
-                    key={entry.slug}
-                    to={to}
-                    label={entry.title}
-                    active={pathname === to}
-                  />
-                );
-              })}
-            </YStack>
-          );
-        })}
-      </ScrollView>
-      <Separator />
-      <Stack paddingHorizontal="$3" paddingVertical="$2.5">
-        <ThemeSwitcher />
-      </Stack>
-    </YStack>
+      {/* Force all sidebar text to inherit the active DS's font and to inherit color when an
+          ancestor has set --ds-chrome-accent-text (the active row). */}
+      <style>{`[data-ds-chrome] * { font-family: inherit; }`}</style>
+      <YStack
+        width={264}
+        flex={1}
+        backgroundColor="$surfaceContainerLow"
+        borderRightWidth={1}
+        borderColor="$outlineVariant"
+      >
+        <DSSwitchHeader />
+        <Stack paddingHorizontal="$3" paddingBottom="$3">
+          <SearchBox />
+        </Stack>
+        <Separator />
+        <ScrollView flex={1} contentContainerStyle={{ padding: 12, gap: 4 }}>
+          <NavRow
+            to={homePath}
+            label="Home"
+            active={pathname === homePath}
+            icon={<Home size={18} color={pathname === homePath ? '$onPrimaryContainer' : '$onSurfaceVariant'} />}
+          />
+          {ds.registry.map((group) => {
+            const GroupIcon = group.icon as
+              | ComponentType<{ size?: number; color?: string }>
+              | undefined;
+            return (
+              <YStack key={group.id} gap="$0.5" marginTop="$3">
+                <XStack alignItems="center" gap="$1.5" paddingHorizontal="$2.5" paddingBottom="$1">
+                  {GroupIcon ? <GroupIcon size={14} color="$onSurfaceVariant" /> : null}
+                  <Typography variant="overline" color="$onSurfaceVariant">
+                    {group.label}
+                  </Typography>
+                </XStack>
+                {group.entries.map((entry) => {
+                  const to = `${homePath}/${entry.slug}`;
+                  return (
+                    <NavRow
+                      key={entry.slug}
+                      to={to}
+                      label={entry.title}
+                      active={pathname === to}
+                    />
+                  );
+                })}
+              </YStack>
+            );
+          })}
+        </ScrollView>
+        <Separator />
+        <Stack paddingHorizontal="$3" paddingVertical="$2.5">
+          <ThemeSwitcher />
+        </Stack>
+      </YStack>
+    </div>
   );
 }

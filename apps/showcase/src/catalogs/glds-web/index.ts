@@ -10,5 +10,10 @@ registerDesignSystem({
   tech: 'html-css',
   Provider: GLDSProvider,
   registry: catalog,
-  homePage: HomePage
+  homePage: HomePage,
+  chrome: {
+    fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    accent: '#FFF1E6',
+    accentText: '#B8531A'
+  }
 });

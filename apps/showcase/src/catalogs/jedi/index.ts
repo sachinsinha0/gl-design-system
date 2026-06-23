@@ -10,5 +10,10 @@ registerDesignSystem({
   tech: 'mui',
   Provider: JediProvider,
   registry: catalog,
-  homePage: HomePage
+  homePage: HomePage,
+  chrome: {
+    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    accent: '#EEF1F6',
+    accentText: '#1F3A93'
+  }
 });

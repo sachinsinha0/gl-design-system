@@ -12,5 +12,10 @@ registerDesignSystem({
   Provider: MagnaProvider,
   registry: catalog,
   homePage: HomePage,
-  themes: magnaThemes
+  themes: magnaThemes,
+  chrome: {
+    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    accent: '#E8F0FE',
+    accentText: '#0B57D0'
+  }
 });
