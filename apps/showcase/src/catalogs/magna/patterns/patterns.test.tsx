@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { renderWithProvider } from '../test/render';
+import { renderWithProvider } from '../../test/render';
 import { InfoCard } from './info-card';
 import { ListItem } from './list-item';
 import { ScreenAppBar } from './screen-app-bar';

@@ -1,9 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import { XStack, YStack, ScrollView } from '@gl/elements';
+import { DSProvider } from '../platform/ds-context';
+import { ActiveDSProvider } from '../platform/providers';
 import { Sidebar } from './sidebar';
 import { TopBar } from './top-bar';
 
-export function AppShell() {
+function Shell() {
   return (
     <XStack height="100vh" backgroundColor="$surface">
       <Sidebar />
@@ -23,5 +25,15 @@ export function AppShell() {
         </ScrollView>
       </YStack>
     </XStack>
+  );
+}
+
+export function AppShell() {
+  return (
+    <DSProvider>
+      <ActiveDSProvider>
+        <Shell />
+      </ActiveDSProvider>
+    </DSProvider>
   );
 }

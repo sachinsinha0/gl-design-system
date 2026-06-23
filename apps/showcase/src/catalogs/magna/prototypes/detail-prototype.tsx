@@ -18,7 +18,7 @@ import {
   AccordionDetails
 } from '@gl/elements';
 import { Share2, Bookmark, Star, Check, PlayCircle } from '@tamagui/lucide-icons';
-import { ScreenAppBar, ProgressBar } from '../../patterns';
+import { ScreenAppBar, ProgressBar } from '../patterns';
 import { COURSES } from '../../mocks/data';
 
 const course = COURSES[0];

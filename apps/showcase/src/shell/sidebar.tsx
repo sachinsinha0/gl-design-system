@@ -2,7 +2,7 @@ import type { ComponentType, ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { YStack, XStack, Stack, Typography, ScrollView, Separator } from '@gl/elements';
 import { Home } from '@tamagui/lucide-icons';
-import { catalog } from '../catalog/registry';
+import { useActiveDS, useActiveDSId } from '../platform/ds-context';
 
 function BrandMark() {
   return (
@@ -66,6 +66,9 @@ function NavRow({
 
 export function Sidebar() {
   const { pathname } = useLocation();
+  const ds = useActiveDS();
+  const dsId = useActiveDSId();
+  const homePath = `/${dsId}`;
   return (
     <YStack
       width={264}
@@ -78,12 +81,12 @@ export function Sidebar() {
       <Separator />
       <ScrollView flex={1} contentContainerStyle={{ padding: 12, gap: 4 }}>
         <NavRow
-          to="/"
+          to={homePath}
           label="Home"
-          active={pathname === '/'}
-          icon={<Home size={18} color={pathname === '/' ? '$onPrimaryContainer' : '$onSurfaceVariant'} />}
+          active={pathname === homePath}
+          icon={<Home size={18} color={pathname === homePath ? '$onPrimaryContainer' : '$onSurfaceVariant'} />}
         />
-        {catalog.map((group) => {
+        {ds.registry.map((group) => {
           const GroupIcon = group.icon as
             | ComponentType<{ size?: number; color?: string }>
             | undefined;
@@ -95,14 +98,17 @@ export function Sidebar() {
                   {group.label}
                 </Typography>
               </XStack>
-              {group.entries.map((entry) => (
-                <NavRow
-                  key={entry.slug}
-                  to={`/${entry.slug}`}
-                  label={entry.title}
-                  active={pathname === `/${entry.slug}`}
-                />
-              ))}
+              {group.entries.map((entry) => {
+                const to = `${homePath}/${entry.slug}`;
+                return (
+                  <NavRow
+                    key={entry.slug}
+                    to={to}
+                    label={entry.title}
+                    active={pathname === to}
+                  />
+                );
+              })}
             </YStack>
           );
         })}

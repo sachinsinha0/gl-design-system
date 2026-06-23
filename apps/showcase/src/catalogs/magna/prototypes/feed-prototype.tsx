@@ -12,7 +12,7 @@ import {
 } from '@gl/elements';
 import { Link } from 'react-router-dom';
 import { Bell, Search, Flame, Clock, Award, Play } from '@tamagui/lucide-icons';
-import { ProgressBar, CourseCard } from '../../patterns';
+import { ProgressBar, CourseCard } from '../patterns';
 import { COURSES, AVATAR_URL } from '../../mocks/data';
 
 const STATS = [

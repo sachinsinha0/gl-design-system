@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { YStack, XStack, Typography } from '@gl/elements';
-import { InfoCard } from '../../patterns';
+import { InfoCard } from '../patterns';
 
 const PROTOTYPES = [
   {

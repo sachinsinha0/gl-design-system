@@ -2,8 +2,9 @@ import type { ComponentType } from 'react';
 import { Link } from 'react-router-dom';
 import { YStack, XStack, Stack, Typography, Container, Button, Icon } from '@gl/elements';
 import { ArrowRight, Sparkles, Rocket, Palette } from '@tamagui/lucide-icons';
-import { catalog } from '../catalog/registry';
-import type { CatalogGroup } from '../catalog/types';
+import { catalog } from './registry';
+import type { CatalogGroup } from '../_shared/types';
+import { useActiveDSId } from '../../platform/ds-context';
 
 const THEME_COUNT = 22;
 
@@ -43,11 +44,11 @@ function StatTile({ value, label }: { value: string; label: string }) {
   );
 }
 
-function GroupCard({ group }: { group: CatalogGroup }) {
+function GroupCard({ group, dsId }: { group: CatalogGroup; dsId: string }) {
   const GroupIcon = group.icon as ComponentType<{ size?: number; color?: string }> | undefined;
   const preview = group.entries.slice(0, 4).map((e) => e.title);
   return (
-    <Link to={`/${firstSlug(group)}`} style={{ textDecoration: 'none', flex: 1, minWidth: 260 }}>
+    <Link to={`/${dsId}/${firstSlug(group)}`} style={{ textDecoration: 'none', flex: 1, minWidth: 260 }}>
       <Container
         container="lowest"
         outlined
@@ -114,6 +115,7 @@ function GroupCard({ group }: { group: CatalogGroup }) {
 }
 
 export function HomePage() {
+  const dsId = useActiveDSId();
   return (
     <YStack gap="$5">
       {/* Hero */}
@@ -147,17 +149,17 @@ export function HomePage() {
           </Typography>
         </YStack>
         <XStack gap="$2" flexWrap="wrap">
-          <Link to="/buttons" style={{ textDecoration: 'none' }}>
+          <Link to={`/${dsId}/buttons`} style={{ textDecoration: 'none' }}>
             <Button variant="contained" endIcon={ArrowRight}>
               Browse components
             </Button>
           </Link>
-          <Link to="/colors" style={{ textDecoration: 'none' }}>
+          <Link to={`/${dsId}/colors`} style={{ textDecoration: 'none' }}>
             <Button variant="outlined" startIcon={Palette}>
               View foundations
             </Button>
           </Link>
-          <Link to="/prototypes" style={{ textDecoration: 'none' }}>
+          <Link to={`/${dsId}/prototypes`} style={{ textDecoration: 'none' }}>
             <Button variant="text">See prototypes</Button>
           </Link>
         </XStack>
@@ -177,7 +179,7 @@ export function HomePage() {
         </Typography>
         <XStack gap="$3" flexWrap="wrap" alignItems="stretch">
           {catalog.map((group) => (
-            <GroupCard key={group.id} group={group} />
+            <GroupCard key={group.id} group={group} dsId={dsId} />
           ))}
         </XStack>
       </YStack>
