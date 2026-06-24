@@ -4,13 +4,6 @@ import {
   Chip,
   InputAdornment,
   Link,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   Typography,
 } from '@mui/material';
@@ -134,13 +127,90 @@ const BASE = 'https://mui.com/material-ui';
 
 const CATEGORIES = Array.from(new Set(COMPONENTS.map((c) => c.category)));
 
+function ComponentCard({ c }: { c: MuiComponent }) {
+  const apiSlug = c.apiSlug ?? toKebab(c.name);
+  return (
+    <Box
+      sx={{
+        border: '1px solid',
+        borderColor: 'divider',
+        borderRadius: 2,
+        p: 1.5,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 1,
+        bgcolor: 'background.paper',
+        transition: 'border-color 0.15s, box-shadow 0.15s',
+        '&:hover': {
+          borderColor: 'primary.main',
+          boxShadow: '0 2px 8px rgba(21,101,192,0.10)',
+        },
+      }}
+    >
+      <Typography
+        variant="body2"
+        sx={{ fontWeight: 600, fontSize: 13, fontFamily: '"Roboto Mono", "Fira Code", monospace', color: 'text.primary', lineHeight: 1.3 }}
+      >
+        {c.name}
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 1 }}>
+        <Link
+          href={`${BASE}/react-${c.uiSlug}/`}
+          target="_blank"
+          rel="noopener noreferrer"
+          underline="none"
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 0.3,
+            fontSize: 11,
+            fontWeight: 500,
+            color: 'primary.main',
+            px: 0.75,
+            py: 0.25,
+            borderRadius: 1,
+            bgcolor: 'primary.50',
+            '&:hover': { bgcolor: 'primary.100' },
+          }}
+        >
+          Docs <OpenInNewIcon sx={{ fontSize: 10 }} />
+        </Link>
+        <Link
+          href={`${BASE}/api/${apiSlug}/`}
+          target="_blank"
+          rel="noopener noreferrer"
+          underline="none"
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 0.3,
+            fontSize: 11,
+            fontWeight: 500,
+            color: 'text.secondary',
+            px: 0.75,
+            py: 0.25,
+            borderRadius: 1,
+            bgcolor: 'grey.100',
+            '&:hover': { bgcolor: 'grey.200' },
+          }}
+        >
+          API <OpenInNewIcon sx={{ fontSize: 10 }} />
+        </Link>
+      </Box>
+    </Box>
+  );
+}
+
 export function MuiBrowsePage() {
   const [query, setQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const q = query.trim().toLowerCase();
 
-  const filtered = q
-    ? COMPONENTS.filter((c) => c.name.toLowerCase().includes(q) || c.category.toLowerCase().includes(q))
-    : COMPONENTS;
+  const filtered = COMPONENTS.filter((c) => {
+    const matchesQuery = !q || c.name.toLowerCase().includes(q) || c.category.toLowerCase().includes(q);
+    const matchesCategory = !activeCategory || c.category === activeCategory;
+    return matchesQuery && matchesCategory;
+  });
 
   const grouped = CATEGORIES.map((cat) => ({
     cat,
@@ -149,10 +219,8 @@ export function MuiBrowsePage() {
 
   return (
     <Box>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          Search any MUI component — links open the official docs in a new tab.
-        </Typography>
+      {/* Search + category filters */}
+      <Box sx={{ mb: 3, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
         <TextField
           size="small"
           fullWidth
@@ -166,72 +234,56 @@ export function MuiBrowsePage() {
               </InputAdornment>
             ),
           }}
-          sx={{ maxWidth: 480 }}
+          sx={{ maxWidth: 400 }}
         />
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
+          <Chip
+            label="All"
+            size="small"
+            onClick={() => setActiveCategory(null)}
+            variant={activeCategory === null ? 'filled' : 'outlined'}
+            color={activeCategory === null ? 'primary' : 'default'}
+          />
+          {CATEGORIES.map((cat) => (
+            <Chip
+              key={cat}
+              label={cat}
+              size="small"
+              onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+              variant={activeCategory === cat ? 'filled' : 'outlined'}
+              color={activeCategory === cat ? 'primary' : 'default'}
+            />
+          ))}
+        </Box>
         {q ? (
-          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+          <Typography variant="caption" color="text.secondary">
             {filtered.length} result{filtered.length !== 1 ? 's' : ''} for &ldquo;{query}&rdquo;
           </Typography>
         ) : null}
       </Box>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {/* Component grid, grouped by category */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3.5 }}>
         {grouped.map(({ cat, items }) => (
           <Box key={cat}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-              <Typography variant="overline" color="text.secondary">{cat}</Typography>
-              <Chip label={items.length} size="small" sx={{ height: 18, fontSize: 11 }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5, pb: 1, borderBottom: '1px solid', borderColor: 'divider' }}>
+              <Typography variant="overline" sx={{ color: 'text.secondary', lineHeight: 1 }}>{cat}</Typography>
+              <Typography variant="caption" sx={{ color: 'text.disabled', fontWeight: 500 }}>{items.length}</Typography>
             </Box>
-            <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2 }}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow sx={{ bgcolor: 'grey.50' }}>
-                    <TableCell sx={{ fontWeight: 600, fontSize: 12 }}>Component</TableCell>
-                    <TableCell sx={{ fontWeight: 600, fontSize: 12 }}>UI docs</TableCell>
-                    <TableCell sx={{ fontWeight: 600, fontSize: 12 }}>API reference</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {items.map((c) => {
-                    const apiSlug = c.apiSlug ?? toKebab(c.name);
-                    return (
-                      <TableRow key={c.name} hover>
-                        <TableCell>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>{c.name}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Link
-                            href={`${BASE}/react-${c.uiSlug}/`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            underline="hover"
-                            sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, fontSize: 13 }}
-                          >
-                            UI guide <OpenInNewIcon sx={{ fontSize: 13 }} />
-                          </Link>
-                        </TableCell>
-                        <TableCell>
-                          <Link
-                            href={`${BASE}/api/${apiSlug}/`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            underline="hover"
-                            sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, fontSize: 13 }}
-                          >
-                            API <OpenInNewIcon sx={{ fontSize: 13 }} />
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+                gap: 1,
+              }}
+            >
+              {items.map((c) => <ComponentCard key={c.name} c={c} />)}
+            </Box>
           </Box>
         ))}
         {filtered.length === 0 ? (
           <Typography variant="body2" color="text.secondary">
-            No components match &ldquo;{query}&rdquo;. Try a shorter term or check the spelling.
+            No components match &ldquo;{query}&rdquo;.
           </Typography>
         ) : null}
       </Box>
