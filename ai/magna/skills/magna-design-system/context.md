@@ -79,3 +79,14 @@ course title 16/600/24/-0.4 · button-med 14/500/20/0/Title · avatar 20/600/24/
 
 ## Aesthetic intent
 Warm, clear, confident — reduce learner anxiety. M3 tonality (surfaceContainer steps) creates depth/grouping without borders/shadows. One obvious primary action. Color = meaning (primary="the main thing", tertiary/extended=categories), not decoration. Title Case friendly voice. Trends as execution quality (M3 motion, state layers, skeletons), never legibility-hurting decoration.
+
+
+## Content design (Great Learning voice) — applies to ALL copy
+Voice: confident · cordial · motivational · human · concise. Tone shifts by context, voice stays constant.
+- **Casing:** CTAs & nav & form labels & main headings = Title Case; banners/subheads/body/tooltips/errors = sentence case. Always capitalise course/university/product names.
+- **Grammar:** active voice; consistent tense; prefer 2nd person; lead with the objective.
+- **Punctuation:** Oxford comma required; no full stops in CTAs/labels/solo sentences; ₹ not Rs/INR; em dash — in place of parentheses; en dash – for ranges; no parentheses in main copy; kill "etc./and more/among others".
+- **Length:** title ≤6 words · subtext ≤120 chars · CTA ≤3 words · body ≤30 words.
+- **CTAs:** Title Case, no punctuation, "Log In"/"Sign Up" (split). **Errors:** what happened + why + next step, non-condescending. **Empty states:** never blank — say what will appear. **Dialogs:** date `12 May, 2021` (intl) / `12th May, 2021` (domestic); 12-hr time + timezone.
+- **This system:** Olympus rules (I) apply to student surfaces; SEO (J) does not.
+Full rules + Claude skill: `ai/magna/skills/gl-content-review/SKILL.md`.

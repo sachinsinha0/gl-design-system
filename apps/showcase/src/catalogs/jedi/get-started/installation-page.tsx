@@ -1,8 +1,7 @@
-import { InstallPage, ASSET_ICONS, CodeBlock } from '../../../platform/install-page';
+import { InstallPage, ASSET_ICONS, CodeBlock, GitInstallBlock } from '../../../platform/install-page';
 import skillUrl from '../../../../../../ai/jedi/skills/jedi-design-system/SKILL.md?url';
 import contextUrl from '../../../../../../ai/jedi/skills/jedi-design-system/context.md?url';
 import referenceUrl from '../../../../../../ai/jedi/skills/jedi-design-system/reference.md?url';
-import pkgJsonUrl from '../../../../../../ai/jedi/package.json?url';
 
 const body = {
   p: (text: string) => <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>{text}</p>,
@@ -93,29 +92,9 @@ export function InstallationPage() {
           ),
         },
         {
-          id: 'pkg',
-          label: 'Node package',
-          asset: {
-            label: '@gl/ai-jedi',
-            description: 'npm package bundling skills/, guidelines/, components/, tokens/. Download manifest.',
-            href: pkgJsonUrl,
-            icon: ASSET_ICONS.Package,
-            downloadAs: 'gl-ai-jedi.package.json',
-          },
-          body: body.stack(
-            body.p('Install:'),
-            <CodeBlock key="install">{'npm install -D @gl/ai-jedi\n# or\nyarn add -D @gl/ai-jedi'}</CodeBlock>,
-            body.p('Then point your assistant at the installed assets:'),
-            <CodeBlock key="usage">{'# .claude/skills/jedi-design-system  →  copy or symlink from:\nnode_modules/@gl/ai-jedi/skills/jedi-design-system/\n\n# AGENTS.md\nSee design rules in node_modules/@gl/ai-jedi/skills/jedi-design-system/SKILL.md'}</CodeBlock>,
-            body.hr(),
-            body.row(
-              <span key="label" style={{ fontSize: 12, color: '#64748b' }}>Ships:</span>,
-              body.tag('skills/'),
-              body.tag('guidelines/'),
-              body.tag('components/'),
-              body.tag('tokens/')
-            )
-          ),
+          id: 'git',
+          label: 'Git install',
+          body: <GitInstallBlock dsId="jedi" />,
         },
       ]}
     />

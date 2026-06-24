@@ -62,3 +62,14 @@ Also: Brand logos section + Keyboard widget — reuse as-is, don't recreate.
 
 ## Anti-patterns
 Scattered inline hex (centralize as CSS vars) · non-Poppins for new work / non-Material icons · feedback 500 as message text (use grey 800) · #000 body copy (use #323130) · `<a>`+JS for actions / `<button>` for nav · outline:none w/o replacement ring · two filled CTAs per section · invented variants beyond defined axes · icon-only without aria-label · inputs without `<label>` / color-only errors · disabled via opacity · dividers where surface bands suffice · skipped headings/multiple h1 · course-card fg without its paired bg · hero value/CTA below the fold or behind hover · competing focal points/animations in one band · Freedom Blue as decorative accent · auto-carousels/looping bg/scroll-hijack parallax/reveals >400ms · fabricated urgency (reset timers, fake counts, perpetual "ends today") or invented proof · vague CTA labels ("Submit") · hardcoded breakpoint number instead of $breakpoint-md.
+
+
+## Content design (Great Learning voice) — applies to ALL copy
+Voice: confident · cordial · motivational · human · concise. Tone shifts by context, voice stays constant.
+- **Casing:** CTAs & nav & form labels & main headings = Title Case; banners/subheads/body/tooltips/errors = sentence case. Always capitalise course/university/product names.
+- **Grammar:** active voice; consistent tense; prefer 2nd person; lead with the objective.
+- **Punctuation:** Oxford comma required; no full stops in CTAs/labels/solo sentences; ₹ not Rs/INR; em dash — in place of parentheses; en dash – for ranges; no parentheses in main copy; kill "etc./and more/among others".
+- **Length:** title ≤6 words · subtext ≤120 chars · CTA ≤3 words · body ≤30 words.
+- **CTAs:** Title Case, no punctuation, "Log In"/"Sign Up" (split). **Errors:** what happened + why + next step, non-condescending. **Empty states:** never blank — say what will appear. **Dialogs:** date `12 May, 2021` (intl) / `12th May, 2021` (domestic); 12-hr time + timezone.
+- **This system:** full guideline applies; SEO & keyword density (J) MANDATORY on program/course/landing pages; Olympus rules (I) do not.
+Full rules + Claude skill: `ai/glds-web/skills/gl-content-review/SKILL.md`.

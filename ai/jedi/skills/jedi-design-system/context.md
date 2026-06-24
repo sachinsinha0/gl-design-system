@@ -83,3 +83,14 @@ input label 12/400/12/0.15 · input text 16/400/24/0.15 · helper 12/400/16/0.4 
 
 ## Aesthetic intent (for judgment calls)
 Calm near-black ink, one loud blue (primary) for everything interactive; secondary orange is rare warmth, never a competing voice. Hierarchy via weight+size, never colored/grey headings. Flat outlined surfaces, no shadows, dividers as a last resort. Trends enter as execution quality (skeletons, refined empty states), never decoration (no glassmorphism, gradients, scroll effects). When unsure, remove decoration.
+
+
+## Content design (Great Learning voice) — applies to ALL copy
+Voice: confident · cordial · motivational · human · concise. Tone shifts by context, voice stays constant.
+- **Casing:** CTAs & nav & form labels & main headings = Title Case; banners/subheads/body/tooltips/errors = sentence case. Always capitalise course/university/product names.
+- **Grammar:** active voice; consistent tense; prefer 2nd person; lead with the objective.
+- **Punctuation:** Oxford comma required; no full stops in CTAs/labels/solo sentences; ₹ not Rs/INR; em dash — in place of parentheses; en dash – for ranges; no parentheses in main copy; kill "etc./and more/among others".
+- **Length:** title ≤6 words · subtext ≤120 chars · CTA ≤3 words · body ≤30 words.
+- **CTAs:** Title Case, no punctuation, "Log In"/"Sign Up" (split). **Errors:** what happened + why + next step, non-condescending. **Empty states:** never blank — say what will appear. **Dialogs:** date `12 May, 2021` (intl) / `12th May, 2021` (domestic); 12-hr time + timezone.
+- **This system:** Olympus rules (I) apply — esp. student-vs-faculty labels & status; SEO (J) does not.
+Full rules + Claude skill: `ai/jedi/skills/gl-content-review/SKILL.md`.

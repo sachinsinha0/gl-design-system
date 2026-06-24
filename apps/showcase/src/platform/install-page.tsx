@@ -187,6 +187,133 @@ export function CodeBlock({ children }: { children: string }) {
   );
 }
 
+export function CopyCodeBlock({ children, label }: { children: string; label?: string }) {
+  const [copied, setCopied] = useState(false);
+  function copy() {
+    navigator.clipboard?.writeText(children).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    });
+  }
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {label ? (
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 600,
+            color: '#64748b',
+            textTransform: 'uppercase',
+            letterSpacing: 0.6,
+          }}
+        >
+          {label}
+        </div>
+      ) : null}
+      <div style={{ position: 'relative' }}>
+        <button
+          type="button"
+          onClick={copy}
+          title="Copy"
+          style={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            padding: '4px 8px',
+            borderRadius: 6,
+            background: copied ? '#22c55e' : '#334155',
+            color: '#fff',
+            border: 'none',
+            fontSize: 11,
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 4,
+            zIndex: 1,
+          }}
+        >
+          {copied ? <IconCheck size={11} /> : <IconCopy size={11} />}
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+        <CodeBlock>{children}</CodeBlock>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Git-based distribution ──────────────────────────────────────────────── */
+
+const GITHUB_REPO = 'sachinsinha0/gl-design-system';
+const GITHUB_BRANCH = 'main';
+
+/** Raw GitHub URL for a file at `<subdir>/<path>` on the configured branch. */
+export function rawGithubUrl(subdir: string, path: string): string {
+  return `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${subdir}/${path}`;
+}
+
+/**
+ * Force a Save-As download regardless of the server's content-type by routing
+ * the response through a blob URL. Falls back to opening in a new tab.
+ */
+async function forceDownload(href: string, filename: string): Promise<void> {
+  try {
+    const res = await fetch(href);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch {
+    window.open(href, '_blank', 'noopener');
+  }
+}
+
+/**
+ * Renders the canonical "pull ai/<ds>/ from git" instructions for a DS.
+ * The repo IS the distribution — no npm publish.
+ */
+export function GitInstallBlock({ dsId }: { dsId: string }) {
+  const subdir = `ai/${dsId}`;
+  const target = `.claude/skills/${dsId}-design-system`;
+  const degit = `npx degit github:${GITHUB_REPO}/${subdir}#${GITHUB_BRANCH} ${target}`;
+  const sparse = `git clone --depth 1 --filter=blob:none --sparse \\
+  https://github.com/${GITHUB_REPO}.git .gl-tmp && \\
+  cd .gl-tmp && git sparse-checkout set ${subdir} && \\
+  cp -r ${subdir} ../${target} && cd .. && rm -rf .gl-tmp`;
+  const monoChip: React.CSSProperties = {
+    fontFamily: 'ui-monospace, Menlo, monospace',
+    background: '#f1f5f9',
+    padding: '1px 5px',
+    borderRadius: 4,
+    color: '#475569',
+  };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+        The repo <strong>is</strong> the distribution — there is no npm package. Pull just <code style={monoChip}>{subdir}/</code> into your project with one command.
+      </p>
+      <CopyCodeBlock label="Recommended · degit (no .git history)">{degit}</CopyCodeBlock>
+      <CopyCodeBlock label="Alternate · sparse-checkout (keeps git history)">{sparse}</CopyCodeBlock>
+      <p style={{ margin: 0, fontSize: 12, color: '#64748b' }}>
+        <strong>Update later:</strong> re-run the degit command. It overwrites the target folder with the latest <code style={monoChip}>{GITHUB_BRANCH}</code>.
+      </p>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' }}>
+        <span style={{ fontSize: 12, color: '#64748b' }}>Ships under <code style={monoChip}>{subdir}/</code>:</span>
+        <code style={{ ...monoChip, fontSize: 12 }}>skills/</code>
+        <code style={{ ...monoChip, fontSize: 12 }}>guidelines/</code>
+        <code style={{ ...monoChip, fontSize: 12 }}>components/</code>
+        <code style={{ ...monoChip, fontSize: 12 }}>tokens/</code>
+      </div>
+    </div>
+  );
+}
+
 function AssetCard({ asset }: { asset: InstallAsset }) {
   const Icon = asset.icon ?? IconFileCode;
   const disabled = !asset.href;
@@ -267,9 +394,9 @@ function AssetCard({ asset }: { asset: InstallAsset }) {
           Coming soon
         </span>
       ) : (
-        <a
-          href={asset.href ?? '#'}
-          download={asset.downloadAs ?? asset.label}
+        <button
+          type="button"
+          onClick={() => forceDownload(asset.href!, asset.downloadAs ?? asset.label)}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -278,15 +405,16 @@ function AssetCard({ asset }: { asset: InstallAsset }) {
             borderRadius: 8,
             background: '#2563eb',
             color: '#fff',
-            textDecoration: 'none',
+            border: 'none',
             fontWeight: 600,
             fontSize: 13,
+            cursor: 'pointer',
             flexShrink: 0,
           }}
         >
           <IconDownload size={15} />
           Download
-        </a>
+        </button>
       )}
     </div>
   );
