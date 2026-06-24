@@ -1,0 +1,134 @@
+---
+title: Principles
+dsId: magna
+tags: [principles, aesthetic, intent, learner]
+---
+
+> **Who this is for:** Engineers and designers making judgment calls about Magna's visual and interaction posture — what "feels right" vs what doesn't.
+> **What this covers:** The three aesthetic principles that define Magna's character, what passes as execution quality, and what gets rejected as decoration.
+
+## Why it matters
+
+Magna is built for learners encountering something new. Every visual decision either reduces anxiety or adds to it. These principles encode what the design system stands for so that individual decisions stay consistent without a design review on every component.
+
+## The three principles
+
+### 1. Structured clarity
+
+The screen's hierarchy should be immediately legible. The learner's next action is obvious; supporting context recedes. M3 tonal surfaces and a single `$primary` emphasis do this structurally — no borders, heavy shadows, or decorative lines needed.
+
+What this means in practice:
+- One `$primary`-emphasis action per view; everything else is tonal/secondary.
+- Group related content with tonal surface steps, not dividers.
+- Labels and values are visually distinct — label at `$onSurfaceVariant`, value at `$onSurface`.
+
+```tsx
+import { YStack, Surface, Typography, Button } from '@gl/elements';
+
+// ✅ Structured clarity: tonal grouping, one primary action
+<YStack gap="$md" padding="$xl">
+  <Surface backgroundColor="$surfaceContainer" padding="$md" borderRadius="$lg">
+    <Typography variant="subtitle2" color="$onSurfaceVariant">Duration</Typography>
+    <Typography variant="body1" color="$onSurface">12 weeks · 4h/week</Typography>
+  </Surface>
+  <Button>Enroll Now</Button>
+</YStack>
+
+// ❌ Cluttered: two primary actions, border dividers, raw colors
+<YStack borderTopWidth={1} borderColor="#ccc" gap="$sm">
+  <Button backgroundColor="#0054D6">Enroll Now</Button>
+  <Button backgroundColor="#3A3BFF">Add to Wishlist</Button>
+</YStack>
+```
+
+### 2. Warm authority
+
+Magna is confident without being cold. The design should feel like it was made for the learner specifically — roomy, readable, Title Case buttons that sound human. It is not a dense admin tool (that's Jedi) and not a marketing page (that's GLDS-Web).
+
+What this means in practice:
+- Generous spacing: `gap="$md"` minimum between related elements, `padding="$lg"` or more on containers.
+- Body text stays ≥ 14px; headlines reach up toward the learner, not down.
+- Buttons are Title Case ("Enroll Now", not "ENROLL NOW" or "enroll now").
+- `$primaryContainer` / `$onPrimaryContainer` for tonal emphasis that feels warm rather than stark.
+
+```tsx
+import { Surface, Typography, Button } from '@gl/elements';
+
+// ✅ Warm authority: readable type, tonal container, friendly casing
+<Surface backgroundColor="$primaryContainer" padding="$lg" borderRadius="$xl">
+  <Typography variant="headline4" color="$onPrimaryContainer">
+    You're 68% through Module 3
+  </Typography>
+  <Button variant="tonal">Continue Learning</Button>
+</Surface>
+
+// ❌ Cold and dense: uppercase, tight padding, secondary-emphasis
+<Surface padding="$xs">
+  <Typography variant="caption" color="$onSurfaceVariant">MODULE 3 — 68%</Typography>
+  <Button variant="text">CONTINUE</Button>
+</Surface>
+```
+
+### 3. Earned motion
+
+Motion and transitions should feel like the platform responding, not performing. Use M3-standard easing and Tamagui's built-in press/hover state layers. Custom animation is only introduced when it adds clarity to a transition — never as decoration.
+
+What this means in practice:
+- `pressStyle` on interactive surfaces uses the matched `on-` role at 12% — do not hand-tune hover/press colors.
+- Skeleton loading replaces blank screens while data fetches; M3 progress indicators for waited operations.
+- Avoid `scroll-triggered` animation, parallax, or decorative fades unless explicitly requested by design.
+- Respect `prefers-reduced-motion` — Tamagui's media queries handle this; don't bypass them.
+
+```tsx
+import { Surface } from '@gl/elements';
+
+// ✅ Earned motion: Tamagui state layers via pressStyle, matched on- role
+<Surface
+  backgroundColor="$surfaceContainerHigh"
+  pressStyle={{ backgroundColor: '$surfaceContainerHighest' }}
+  padding="$md"
+  borderRadius="$lg"
+  onPress={onSelect}
+>
+  {/* card content */}
+</Surface>
+
+// ❌ Overproduced: custom colors on press, decorative shadow on hover
+<Surface
+  hoverStyle={{ boxShadow: '0 8px 24px rgba(0,0,0,0.2)' }}
+  pressStyle={{ backgroundColor: '#e0e8ff' }}
+  padding="$md"
+>
+  {/* card content */}
+</Surface>
+```
+
+## What "feels like Magna"
+
+| Feels like Magna ✓ | Does not feel like Magna ✗ |
+|---|---|
+| Roomy spacing, content breathes | Packed rows, tight padding |
+| Single `$primary` action, visible from across the room | Competing emphasis: two `$primary` buttons |
+| Tonal containers for depth | Hairline borders everywhere |
+| Title Case buttons, sentence case labels | UPPERCASE buttons, inconsistent casing |
+| Skeleton on every async operation | Blank screen while data loads |
+| Empty states explain and offer a next step | "No data" with nothing else |
+| M3 state layers on press/hover | Custom hand-coded hover colors |
+| Smooth, purposeful transitions | Decorative gradients, glass morphism, scroll-jacking |
+
+## Do / Don't
+
+| Do ✓ | Don't ✗ |
+|---|---|
+| One `$primary` emphasis per view | Two filled primary buttons in the same card |
+| Step `$surfaceContainer*` for elevation | Add `boxShadow` to raise a card |
+| `pressStyle` using paired `on-` role at standard opacity | Hand-tune `pressStyle` with raw hex |
+| Generous `padding="$lg"` on content containers | `padding="$xs"` to fit more content |
+| Skeleton loaders for async content | A bare blank surface while data loads |
+
+## Related
+
+- [Color](/magna/guidelines/color) — M3 role tokens are the technical implementation of these principles
+- [Spacing](/magna/guidelines/spacing) — "surfaces breathe" is the spacing expression of warm authority
+- [Interaction](/magna/guidelines/interaction) — earned motion rules are expanded in the interaction guide
+- [Usage](/magna/guidelines/usage) — learner-posture rules that govern screen-level decisions

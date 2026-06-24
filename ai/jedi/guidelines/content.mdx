@@ -1,0 +1,146 @@
+---
+title: Content
+dsId: jedi
+tags: [content, copy, labels, errors, voice, tone]
+---
+
+> **Who this is for:** Anyone writing UI copy for Jedi screens — button labels, error messages, table headers, empty states, dialog titles.
+> **What this covers:** Great Learning content rules applied to internal/admin surfaces: casing, task-oriented labels, active voice, error copy, button copy, table column labels, empty states, and confirmation dialogs.
+
+## Why it matters
+
+Every label, button, error, and empty state ships with this system. Copy that is vague, passive, or mismatched to the user's task slows down sovereign users who have been here before. The rules below are the same across Magna, Jedi, and GLDS-Web — only which sections apply differs. For Jedi (internal staff and faculty admin), Sections A–H and Section I (Olympus) apply.
+
+## Casing rules
+
+| Content type | Rule |
+|---|---|
+| Page / main headings | Title Case |
+| Subheadings | Sentence case |
+| Navigation items | Title Case |
+| CTA buttons | Title Case — "Create Cohort", "Enrol For Free" |
+| Form labels | Title Case |
+| Tooltips | Sentence case |
+| Error messages | Sentence case |
+| Body copy | Sentence case |
+
+Always capitalise: course names, university names, product names, proper nouns.
+
+## Task-oriented labels
+
+Labels tell users what they can **do**, not what a section is called. Front-load the verb or the distinguishing word.
+
+```
+✅ "Create cohort"       ❌ "Cohort creation"
+✅ "Manage learners"     ❌ "Learners section"
+✅ "Review submissions"  ❌ "Submissions"
+✅ "Annual report 2024"  ❌ "Report (annual), 2024"
+```
+
+## Active voice
+
+Lead with the action. Do not bury the objective.
+
+```
+✅ "To add a learner, click Enrol."
+❌ "A learner can be added by clicking Enrol."
+
+✅ "The assignment deadline is 15 June."
+❌ "In 15 June there will be an assignment deadline."
+```
+
+## Button copy
+
+Short verb-noun pairs, Title Case, no punctuation, max 3 words.
+
+```
+✅ "Save Changes"    ❌ "Save."
+✅ "Delete Cohort"   ❌ "Yes, Delete It!"
+✅ "Log In"          ❌ "Login"
+✅ "Sign Up"         ❌ "Signup"
+```
+
+Destructive button copy names the irreversible action — "Delete Cohort", not "Confirm" or "OK".
+
+## Error messages
+
+Every error answers three questions: what happened, why, and what to do next. Sentence case. No apologies, no "Oops", no error codes alone. Non-condescending.
+
+```
+✅ "We couldn't load the cohort list. Check your connection and try again."
+✅ "This email is already registered. Sign in or use a different email."
+❌ "Something went wrong."
+❌ "Oops! Looks like you made a mistake. Try again."
+❌ "Error 500."
+```
+
+## Table column labels
+
+Short nouns or noun phrases, Title Case. Right-aligned numeric columns, left-aligned text. The column label should match the data type to set scan expectations.
+
+```
+✅ "Cohort"   "Learners"   "Revenue"   "Status"
+❌ "Cohort Name"  "Number of Learners"  "Total Revenue Amount"
+```
+
+## Empty state copy
+
+Never leave a panel blank. Explain what will appear and offer the filling action. Sentence case body; Title Case CTA.
+
+```
+✅ "No assignments yet. Your faculty will add assignments once the course begins."
+✅ "Track progress once a learner begins activity."
+❌ "No data found."
+❌ (blank)
+```
+
+## Confirmation dialog phrasing
+
+Title names the destructive action (Title Case, max 3–4 words). Body names the full consequence including count or entity name. Cancel button before confirm button.
+
+```
+✅ Title:  "Delete Cohort?"
+   Body:   "This will permanently delete "Batch 42" and remove 38 enrolled learners. This cannot be undone."
+   Buttons: [Cancel] [Delete Cohort]
+
+❌ Title:  "Are you sure?"
+   Body:   "This action cannot be reversed."
+   Buttons: [No] [Yes]
+```
+
+## Do / Don't
+
+| Do ✓ | Don't ✗ |
+|---|---|
+| Sentence case for error messages and tooltips | ALL CAPS for urgency — use deadline proximity instead |
+| Title Case for nav, form labels, and CTAs | Sentence case CTAs ("Enrol for free") |
+| Verb-noun button copy ("Create Cohort") | Noun-only labels ("Cohort") for actions |
+| Error copy with cause + next step | "Something went wrong." |
+| Empty state copy with what will appear + filling action | Blank panels |
+| Destructive dialog body names the entity and count | "Are you sure?" without consequence |
+| "Log In" (two words) | "Login" (one word) |
+| No punctuation in CTAs or button labels | "Save." with a full stop |
+
+## Olympus-specific rules (Jedi admin surfaces)
+
+When the surface is Olympus (the LMS), apply these additional rules:
+
+- **Neutral, functional copy only.** No marketing language ("unlock your potential") inside the product.
+- **No exclamation marks** anywhere on the platform.
+- **Student vs faculty labels differ.** Never reuse the same label for both where context or permission level differs.
+
+| Surface | Student label | Faculty label |
+|---|---|---|
+| Submission action | "Submit assignment" | "Review submissions" |
+| Course access | "Continue learning" | "Manage course" |
+| Session action | "Join session" | "Start session" |
+| Progress view | "Your progress" | "Learner progress" |
+
+- **Progress language:** "3 of 8 modules complete" — not "37.5% done".
+- **Notification lead:** action or deadline first, not the sender. "Assignment due 15 June" not "Your faculty has set an assignment due 15 June."
+
+## Related
+
+- [Interaction](/jedi/guidelines/interaction) — error message placement, form validation, confirmation dialogs
+- [Postures](/jedi/guidelines/postures) — Internal vs Partner tone and density
+- [Accessibility](/jedi/guidelines/accessibility) — accessible names on icon buttons, semantic elements

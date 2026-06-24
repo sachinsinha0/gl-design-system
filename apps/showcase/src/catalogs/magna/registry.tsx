@@ -28,7 +28,9 @@ import TypeGuide from '../../../../../ai/magna/guidelines/typography.mdx';
 import SpacingGuide from '../../../../../ai/magna/guidelines/spacing.mdx';
 import AccessibilityGuide from '../../../../../ai/magna/guidelines/accessibility.mdx';
 import UsageGuide from '../../../../../ai/magna/guidelines/usage.mdx';
-import ContentGuide from '../../../../../ai/_shared/guidelines/content.mdx';
+import PrinciplesGuide from '../../../../../ai/magna/guidelines/principles.mdx';
+import InteractionGuide from '../../../../../ai/magna/guidelines/interaction.mdx';
+import MagnaContentGuide from '../../../../../ai/magna/guidelines/content.mdx';
 
 const wrap = (Mdx: React.ComponentType) =>
   function GuidelinePage() {
@@ -100,7 +102,9 @@ export const catalog: CatalogGroup[] = [
       { slug: 'guidelines/spacing', title: 'Spacing', Component: wrap(SpacingGuide) },
       { slug: 'guidelines/accessibility', title: 'Accessibility', Component: wrap(AccessibilityGuide) },
       { slug: 'guidelines/usage', title: 'Usage', Component: wrap(UsageGuide) },
-      { slug: 'guidelines/content', title: 'Content', Component: wrap(ContentGuide) }
+      { slug: 'guidelines/content', title: 'Content', Component: wrap(MagnaContentGuide) },
+      { slug: 'guidelines/principles', title: 'Principles', Component: wrap(PrinciplesGuide) },
+      { slug: 'guidelines/interaction', title: 'Interaction', Component: wrap(InteractionGuide) }
     ]
   }
 ];

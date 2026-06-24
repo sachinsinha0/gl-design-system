@@ -1,0 +1,212 @@
+---
+title: Interaction
+dsId: magna
+tags: [interaction, behavior, feedback, motion, forms, empty-states]
+---
+
+> **Who this is for:** Engineers building interactive learner-facing components with `@gl/elements` — buttons, forms, loading states, empty states, and navigation.
+> **What this covers:** Touch targets, press states, feedback timing, loading patterns, error recovery, empty states, and M3-standard motion rules.
+
+## Why it matters
+
+Learners are on mobile in low-attention contexts. If an action doesn't confirm it worked, a learner tries it again. If a screen goes blank while loading, they think it broke. Consistent interaction patterns reduce cognitive load and build trust.
+
+## Touch targets
+
+Every tappable element must be at least **48×48dp** with at least **8dp** of spacing between adjacent targets. This is stricter than Jedi (44dp) because Magna is mobile-first and serves a broad learner audience.
+
+```tsx
+import { Button, IconButton } from '@gl/elements';
+import { Bookmark } from '@tamagui/lucide-icons';
+
+// ✅ 48dp minimum enforced by the component system
+<Button minHeight={48} onPress={enroll}>Enroll Now</Button>
+<IconButton minWidth={48} minHeight={48} accessibilityLabel="Bookmark course" onPress={save}>
+  <Bookmark />
+</IconButton>
+
+// ❌ Too small — icon button with no minimum size set
+<IconButton size="$2" onPress={save}><Bookmark /></IconButton>
+```
+
+## Press states
+
+Use Tamagui's `pressStyle` with the matched `on-` role at 12% opacity, following M3 state layer rules. Never hand-tune press/hover colors.
+
+| State | Overlay | Token reference |
+|---|---|---|
+| Hover | 8% opacity | `on-` role of the container |
+| Press / focus | 12% opacity | `on-` role of the container |
+| Drag | 16% opacity | `on-` role of the container |
+
+```tsx
+import { Surface } from '@gl/elements';
+
+// ✅ M3 state layers via pressStyle
+<Surface
+  backgroundColor="$surfaceContainer"
+  pressStyle={{ backgroundColor: '$surfaceContainerHigh' }}
+  focusStyle={{ backgroundColor: '$surfaceContainerHigh' }}
+  borderRadius="$lg"
+  padding="$md"
+  onPress={onSelect}
+/>
+
+// ❌ Custom hex on press — breaks light/dark and consistency
+<Surface
+  pressStyle={{ backgroundColor: '#d0d8ff' }}
+  onPress={onSelect}
+/>
+```
+
+## Feedback timing
+
+Every operation that takes more than 400ms must show feedback. Don't leave the learner wondering if the tap registered.
+
+- **Content areas** → skeleton loader (shows layout shape, gives confidence data is coming)
+- **Explicit waits (submissions, uploads)** → M3 progress indicator (circular or linear)
+- **Successful actions** → snackbar with `$inverseSurface` / `$inverseOnSurface` — never silent
+
+```tsx
+import { Surface, Skeleton, Typography, Button } from '@gl/elements';
+
+// ✅ Skeleton while data loads
+{isLoading ? (
+  <Surface backgroundColor="$surfaceContainer" borderRadius="$lg" padding="$md">
+    <Skeleton height={20} width="60%" borderRadius="$sm" />
+    <Skeleton height={14} width="80%" borderRadius="$sm" marginTop="$sm" />
+  </Surface>
+) : (
+  <CourseCard course={course} />
+)}
+```
+
+```tsx
+import { Snackbar } from '@gl/elements';
+
+// ✅ Explicit success confirmation
+<Snackbar
+  backgroundColor="$inverseSurface"
+  message={<Typography color="$inverseOnSurface">Progress saved</Typography>}
+/>
+```
+
+## Loading states
+
+| Pattern | When to use |
+|---|---|
+| Skeleton | Page or section loading — show the layout shape |
+| Progress indicator (circular) | User-triggered async (save, submit, upload) |
+| Progress indicator (linear) | Step completion, course progress |
+| Inline spinner | A single small element loading independently |
+
+Do not use a blank surface. Do not use a spinner where a skeleton would show layout context.
+
+## Empty states
+
+Every empty list, dashboard section, or search result must explain what belongs there and offer the action to fill it. Blank = broken from a learner's perspective.
+
+```tsx
+import { YStack, Typography, Button } from '@gl/elements';
+import { BookOpen } from '@tamagui/lucide-icons';
+import { Icon } from '@gl/elements';
+
+// ✅ Empty state — explains context, offers action
+<YStack alignItems="center" gap="$md" padding="$xl">
+  <Icon icon={<BookOpen />} size={48} color="$onSurfaceVariant" />
+  <Typography variant="headline5" color="$onSurface">No courses yet</Typography>
+  <Typography variant="body2" color="$onSurfaceVariant" textAlign="center">
+    Browse the catalog to enroll in your first program.
+  </Typography>
+  <Button onPress={browse}>Browse Catalog</Button>
+</YStack>
+
+// ❌ Blank screen or unhelpful message
+<Typography variant="body2">No courses found.</Typography>
+```
+
+## Form validation
+
+Prevent errors before they happen. Validate on blur, not only on submit. Show requirements before a field is touched. Never destroy user input on a failed submission.
+
+```tsx
+import { Input, Typography, YStack } from '@gl/elements';
+
+// ✅ Inline validation on blur
+<YStack gap="$sm">
+  <Input
+    label="Email"
+    value={email}
+    onBlur={validateEmail}
+    error={emailError}
+    helperText={emailError ?? 'We'll send your enrollment confirmation here'}
+  />
+  {emailError && (
+    <Typography variant="caption" color="$error">
+      {emailError}
+    </Typography>
+  )}
+</YStack>
+```
+
+Form rules:
+- Show validation error on blur (not on mount, not only on submit).
+- Error messages state what happened and what to fix — no codes, no "Invalid input".
+- Maximum 7±2 fields per step; split longer forms with a visible progress indicator.
+- Never clear the form on a failed network submission — preserve what the learner typed.
+
+## Destructive and confirmable actions
+
+Confirm destructive / irreversible actions (delete, unenroll, remove). Do not confirm harmless or reversible actions (toggle, bookmark, hide) — alarm fatigue is real.
+
+```tsx
+import { Dialog, Button, Typography } from '@gl/elements';
+
+// ✅ Confirm destructive action
+<Dialog>
+  <Dialog.Title>Remove from library?</Dialog.Title>
+  <Dialog.Description>
+    <Typography variant="body2">
+      You can re-enroll any time from the course catalog.
+    </Typography>
+  </Dialog.Description>
+  <Button variant="destructive" onPress={confirmRemove}>Remove</Button>
+  <Button variant="text" onPress={cancel}>Keep it</Button>
+</Dialog>
+
+// ❌ Confirm a harmless toggle
+<Dialog>
+  <Dialog.Title>Bookmark this?</Dialog.Title>
+  <Button onPress={save}>Yes</Button>
+  <Button onPress={cancel}>No</Button>
+</Dialog>
+```
+
+## Motion and transitions
+
+Use M3-standard easing via Tamagui's animation system. No custom animation on the first pass. Always respect `prefers-reduced-motion`.
+
+- Navigation transitions: Tamagui platform defaults (slide on native, fade on web).
+- Sheet / dialog entry: M3 standard — slide-up with spring easing.
+- State changes (check, completion): short fade or scale, no more than 300ms.
+- Never use scroll-triggered animation, parallax, or decorative fades unprompted.
+
+## Do / Don't
+
+| Do ✓ | Don't ✗ |
+|---|---|
+| Touch targets ≥ 48×48dp | 32dp icon buttons without padding compensation |
+| `pressStyle` using `on-` role at 12% | Hand-coded `pressStyle` with raw hex |
+| Skeleton for content-area loads ≥ 400ms | Blank surface while data fetches |
+| Confirm snackbar on every successful save | Silent success |
+| Validate on blur, preserve input on failed submit | Validate only on submit; clear form on error |
+| Confirm irreversible actions only | Confirm dialog on every action |
+| M3-standard motion via Tamagui | Custom scroll-triggered or decorative animation |
+| Empty states with explanation + CTA | "No results" with no next step |
+
+## Related
+
+- [Accessibility](/magna/guidelines/accessibility) — touch targets, icon-only labels, and semantic roles overlap with interaction rules
+- [Principles](/magna/guidelines/principles) — earned motion and warm authority motivate these patterns
+- [Content](/magna/guidelines/content) — error message format and empty state copy rules
+- [Usage](/magna/guidelines/usage) — screen-level posture (one primary action, explicit states)

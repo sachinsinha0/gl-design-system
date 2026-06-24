@@ -1,0 +1,187 @@
+---
+title: Conversion
+dsId: glds-web
+tags: [conversion, landing-page, cta, hero, persuasion, forms]
+---
+
+> **Who this is for:** Engineers and designers building GL landing pages, program pages, or any page with a primary conversion goal.
+> **What this covers:** The above-the-fold formula, the band model, CTA system, form field rules, social proof placement, and honest urgency/trust signals.
+
+## Why this matters
+
+A marketing visitor arrives from an ad or search, gives a few seconds, *scans* (doesn't read), and either commits or leaves. Every rule below exists to produce **comprehension-and-commitment in one fast pass** — not task completion over time.
+
+## The band model
+
+Build pages as a vertical stack of full-width **bands**, each with **one headline, one supporting line, one action**. The typical landing flow:
+
+**hero → value props → social proof → (pricing) → final CTA**
+
+If a band has two messages, split it into two bands. The eye must never have to choose where to look first within a band.
+
+```html
+<section class="glds-band glds-band--surface-primary">
+  <div class="glds-band__content">
+    <h1 class="glds-hero__title">Build the career you actually want</h1>
+    <p class="glds-hero__sub">University-backed programs, taught live by industry mentors.</p>
+    <button class="glds-btn glds-btn--filled glds-btn--large" id="hero-cta">
+      Start Free Trial
+    </button>
+  </div>
+</section>
+
+<!-- Alternate surfaces — never use a border to separate bands -->
+<section class="glds-band glds-band--surface-secondary">…</section>
+<section class="glds-band glds-band--surface-primary">…</section>
+```
+
+## Above-the-fold contract
+
+The first viewport must answer three questions **before any scroll**, on both mobile and desktop:
+
+1. **What is this?** — value-driven headline (clarity over cleverness)
+2. **What do I get?** — subhead with the specifics or proof
+3. **What do I do?** — the primary CTA
+
+Decorative hero imagery must **not** push the value proposition or CTA below the fold.
+
+```html
+<!-- Hero anatomy -->
+<section class="glds-band glds-band--hero">
+  <div class="glds-band__content">
+    <!-- 1. What is this -->
+    <h1 class="glds-type--headline-1">Master Data Science in 6 months</h1>
+    <!-- 2. What do I get -->
+    <p class="glds-type--subtitle-1">
+      Live mentorship, IIT Roorkee certificate, 95% placement record.
+    </p>
+    <!-- 3. What do I do -->
+    <button class="glds-btn glds-btn--filled glds-btn--large" id="hero-enroll-cta">
+      Enrol Now
+    </button>
+  </div>
+</section>
+```
+
+## CTA system
+
+- **Freedom Blue (`--glds-primary-500`) is reserved for CTAs.** Never use it as a decorative accent — the action color must not compete for meaning.
+- **Repeat the CTA** at hero, mid-page, and closing positions. Each is the same label, same color, same target. Visitors commit at different scroll depths.
+- **One filled primary CTA per band.** Supporting actions are outlined / text / linkbutton.
+- **Action-and-value labels** only. Never "Submit" or "Click here".
+
+```html
+<!-- ✅ Action-and-value labels -->
+<button class="glds-btn glds-btn--filled glds-btn--large">Enrol Now</button>
+<button class="glds-btn glds-btn--filled glds-btn--large">Book A Demo</button>
+<button class="glds-btn glds-btn--filled glds-btn--large">Start Free Trial</button>
+
+<!-- ❌ Vague labels -->
+<button class="glds-btn glds-btn--filled glds-btn--large">Submit</button>
+<button class="glds-btn glds-btn--filled glds-btn--large">Click Here</button>
+```
+
+CTA button specs: Freedom Blue fill, 48px minimum height, `border-radius` per token, Poppins SemiBold, Title Case.
+
+```css
+[data-ds="glds-web"] .glds-btn--filled {
+  background: var(--glds-primary-500);
+  color: var(--glds-purity-white);
+  min-height: 48px;
+  padding: 0 var(--glds-spacing-md);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  border-radius: var(--glds-radius-md);
+  transition: background 200ms ease;
+}
+[data-ds="glds-web"] .glds-btn--filled:hover  { background: var(--glds-primary-600); }
+[data-ds="glds-web"] .glds-btn--filled:active { background: var(--glds-primary-700); }
+```
+
+## Forms — conversion choke points
+
+Every field costs conversions. Ask for the **minimum** the next step truly needs.
+
+```html
+<form class="glds-lead-form" novalidate>
+  <div class="glds-form-field">
+    <label for="lead-name" class="glds-label">Full Name</label>
+    <input id="lead-name" name="name" type="text" class="glds-input"
+           autocomplete="name" aria-describedby="lead-name-error" required />
+    <p id="lead-name-error" class="glds-form-error" role="alert" hidden>
+      <span class="material-icons" aria-hidden="true">error</span>
+      Enter your full name.
+    </p>
+  </div>
+
+  <div class="glds-form-field">
+    <label for="lead-phone" class="glds-label">Phone Number</label>
+    <input id="lead-phone" name="phone" type="tel" class="glds-input"
+           autocomplete="tel" aria-describedby="lead-phone-error" required />
+    <p id="lead-phone-error" class="glds-form-error" role="alert" hidden>
+      <span class="material-icons" aria-hidden="true">error</span>
+      Enter a valid phone number.
+    </p>
+  </div>
+
+  <!-- Submit button states its value — not "Submit" -->
+  <button type="submit" class="glds-btn glds-btn--filled glds-btn--large">
+    Get Free Brochure
+  </button>
+</form>
+```
+
+Form rules:
+- Real `<label>` per field (associated via `for` / `id`)
+- Validate on **blur**, not per keystroke
+- Errors pair color + message — never color alone
+- **Never lose entered input** on a failed submit
+- Multi-step forms show progress; submit button states its value
+
+## Trust and urgency signals
+
+Use **true** signals boldly. The test: **is this real?**
+
+| Signal | Use when real | Forbidden (dark pattern) |
+|---|---|---|
+| **Authority** | University / partner logos, instructor credentials, press mentions | Invented affiliations |
+| **Social proof** | Real testimonials (name + photo), real enrollment counts, real ratings | Fake reviews, invented counters |
+| **Scarcity / Urgency** | Real cohort dates, application deadlines, genuinely limited seats, time-bound pricing that actually ends | Countdown timer that resets on refresh, "only 3 seats left" not tied to real inventory |
+| **Reciprocity** | Free lesson, useful guide before signup | "Free" that hides a mandatory charge |
+
+Place social proof **near CTAs** — it works hardest when the visitor is deciding.
+
+## Measurement hooks
+
+Give CTAs and key bands stable `id` attributes so analytics and A/B testing can attach. Do not generate markup that makes elements impossible to target.
+
+```html
+<!-- Stable ids for tracking -->
+<section class="glds-band" id="band-hero">
+  <button class="glds-btn glds-btn--filled" id="cta-hero-enroll">Enrol Now</button>
+</section>
+<section class="glds-band" id="band-social-proof">…</section>
+<section class="glds-band" id="band-closing-cta">
+  <button class="glds-btn glds-btn--filled" id="cta-closing-enroll">Enrol Now</button>
+</section>
+```
+
+## Do / Don't
+
+| Do ✓ | Don't ✗ |
+|---|---|
+| One headline + one CTA per band | Two competing CTAs in the same band |
+| Repeat the same CTA at hero, mid, and closing | Each band uses a different label for the same action |
+| Freedom Blue for CTAs only | Freedom Blue as section background or decorative heading color |
+| Real cohort deadlines stated boldly | Countdown timer that resets on page refresh |
+| Form submit button labels its value ("Get Free Brochure") | "Submit" button on a lead capture form |
+| Social proof placed near the CTA | Social proof buried below the fold on a long page |
+
+## Related
+
+- [Interaction](/glds-web/guidelines/interaction) — hover / focus / active states for CTA buttons
+- [Content](/glds-web/guidelines/content) — CTA copy rules, voice, and social-proof phrasing
+- [Usage](/glds-web/guidelines/usage) — band model, motion constraints, and persuasion overview
+- [Accessibility](/glds-web/guidelines/accessibility) — form labels, focus rings, error patterns

@@ -11,7 +11,9 @@ import TypeGuide from '../../../../../ai/jedi/guidelines/typography.mdx';
 import SpacingGuide from '../../../../../ai/jedi/guidelines/spacing.mdx';
 import AccessibilityGuide from '../../../../../ai/jedi/guidelines/accessibility.mdx';
 import UsageGuide from '../../../../../ai/jedi/guidelines/usage.mdx';
-import ContentGuide from '../../../../../ai/_shared/guidelines/content.mdx';
+import PosturesGuide from '../../../../../ai/jedi/guidelines/postures.mdx';
+import InteractionGuide from '../../../../../ai/jedi/guidelines/interaction.mdx';
+import ContentGuide from '../../../../../ai/jedi/guidelines/content.mdx';
 
 const wrap = (Mdx: React.ComponentType) =>
   function GuidelinePage() {
@@ -55,7 +57,9 @@ export const catalog: CatalogGroup[] = [
       { slug: 'guidelines/spacing', title: 'Spacing', Component: wrap(SpacingGuide) },
       { slug: 'guidelines/accessibility', title: 'Accessibility', Component: wrap(AccessibilityGuide) },
       { slug: 'guidelines/usage', title: 'Usage', Component: wrap(UsageGuide) },
-      { slug: 'guidelines/content', title: 'Content', Component: wrap(ContentGuide) }
+      { slug: 'guidelines/content', title: 'Content', Component: wrap(ContentGuide) },
+      { slug: 'guidelines/postures', title: 'Postures', Component: wrap(PosturesGuide) },
+      { slug: 'guidelines/interaction', title: 'Interaction', Component: wrap(InteractionGuide) }
     ]
   }
 ];

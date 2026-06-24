@@ -1,0 +1,213 @@
+---
+title: Interaction
+dsId: glds-web
+tags: [interaction, states, hover, focus, animation, forms, motion]
+---
+
+> **Who this is for:** Engineers implementing interactive elements on GL marketing pages — buttons, links, form fields, and animated reveals.
+> **What this covers:** Required interaction states, transition timing, form validation patterns, button state CSS, link styling, and motion tier rules.
+
+## Why it matters
+
+Interaction states are **mandatory, not optional polish**. A button without a visible focus ring is inaccessible to keyboard users. An animation that delays the CTA from becoming clickable costs conversions. Every rule below is the minimum required for a shippable component.
+
+## The four required states
+
+Every interactive element must define all four:
+
+| State | CSS selector | Purpose |
+|---|---|---|
+| Default | (resting) | Baseline appearance |
+| Hover | `:hover` | Pointer feedback |
+| Active / Pressed | `:active` | Confirms the click registered |
+| Disabled | `[disabled]`, `.is-disabled` | Unavailable — not via `opacity` on the whole element |
+
+Focus is separate but equally mandatory:
+
+| State | CSS selector | Rule |
+|---|---|---|
+| Focus (keyboard) | `:focus-visible` | Always a visible ring — never `outline: none` without a replacement |
+
+## Transition timing
+
+All state transitions use **200ms ease** unless a specific exception is noted.
+
+```css
+/* Apply to every interactive element — button, input, link, card, etc. */
+[data-ds="glds-web"] .glds-interactive {
+  transition: background-color 200ms ease,
+              border-color 200ms ease,
+              color 200ms ease,
+              box-shadow 200ms ease;
+}
+```
+
+Do not exceed 200ms for hover/focus feedback. Entrance reveals (scroll-in) may use up to 400ms.
+
+## Button states
+
+```css
+/* Filled (primary CTA) */
+[data-ds="glds-web"] .glds-btn--filled {
+  background: var(--glds-primary-500);
+  color: var(--glds-purity-white);
+  border: none;
+  transition: background 200ms ease;
+}
+[data-ds="glds-web"] .glds-btn--filled:hover          { background: var(--glds-primary-600); }
+[data-ds="glds-web"] .glds-btn--filled:active         { background: var(--glds-primary-700); }
+[data-ds="glds-web"] .glds-btn--filled:focus-visible  {
+  outline: 2px solid var(--glds-primary-500);
+  outline-offset: 2px;
+}
+[data-ds="glds-web"] .glds-btn--filled[disabled] {
+  background: var(--glds-grey-contrast-40);
+  color: var(--glds-grey-disabled-text);
+  cursor: not-allowed;
+  /* Never use opacity: 0.5 on the whole element */
+}
+
+/* Outlined (secondary action) */
+[data-ds="glds-web"] .glds-btn--outlined {
+  background: transparent;
+  border: 1px solid var(--glds-primary-500);
+  color: var(--glds-primary-500);
+  transition: background 200ms ease;
+}
+[data-ds="glds-web"] .glds-btn--outlined:hover         { background: var(--glds-primary-50); }
+[data-ds="glds-web"] .glds-btn--outlined:active        { background: var(--glds-primary-100); }
+[data-ds="glds-web"] .glds-btn--outlined:focus-visible {
+  outline: 2px solid var(--glds-primary-500);
+  outline-offset: 2px;
+}
+[data-ds="glds-web"] .glds-btn--outlined[disabled] {
+  border-color: var(--glds-grey-disabled-text);
+  color: var(--glds-grey-disabled-text);
+  cursor: not-allowed;
+}
+```
+
+## Link styling
+
+```css
+[data-ds="glds-web"] .glds-link {
+  color: var(--glds-primary-500);
+  text-decoration: underline;
+  transition: color 200ms ease;
+}
+[data-ds="glds-web"] .glds-link:hover         { color: var(--glds-primary-600); }
+[data-ds="glds-web"] .glds-link:active        { color: var(--glds-primary-700); }
+[data-ds="glds-web"] .glds-link:focus-visible {
+  outline: 2px solid var(--glds-primary-500);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+```
+
+Use `<a href>` for navigation only. For inline actions that look like links, use a **linkbutton** (`<button class="glds-btn glds-btn--linkbutton">`).
+
+## Form field states
+
+```css
+/* Text input */
+[data-ds="glds-web"] .glds-input {
+  border: 1px solid var(--glds-grey-contrast-60);  /* enabled */
+  color: var(--glds-grey-primary-text);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+[data-ds="glds-web"] .glds-input::placeholder { color: var(--glds-grey-secondary-text); }
+[data-ds="glds-web"] .glds-input:hover        { border-color: var(--glds-grey-contrast-150); }
+[data-ds="glds-web"] .glds-input:focus        {
+  border-color: var(--glds-primary-500);
+  box-shadow: 0 0 0 2px var(--glds-primary-100);
+  outline: none; /* replaced by box-shadow ring */
+}
+[data-ds="glds-web"] .glds-input--error       { border-color: var(--glds-feedback-error-500); }
+[data-ds="glds-web"] .glds-input[disabled]    {
+  border-color: var(--glds-grey-contrast-40);
+  color: var(--glds-grey-disabled-text);
+  background: var(--glds-grey-secondary-surface);
+  cursor: not-allowed;
+}
+```
+
+## Form validation pattern
+
+Validate on **blur**, not per keystroke.
+
+```html
+<div class="glds-form-field">
+  <label for="email" class="glds-label">Email</label>
+  <input id="email" type="email" class="glds-input"
+         aria-describedby="email-error" required />
+  <p id="email-error" class="glds-form-error" role="alert" hidden>
+    <span class="material-icons" aria-hidden="true">error</span>
+    Enter a valid email address.
+  </p>
+</div>
+```
+
+```javascript
+// Validate on blur — never per keystroke
+document.querySelector('#email').addEventListener('blur', function () {
+  const isValid = this.checkValidity();
+  const errorEl = document.querySelector('#email-error');
+  this.classList.toggle('glds-input--error', !isValid);
+  errorEl.hidden = isValid;
+});
+```
+
+Rules:
+- Error state uses color + message — never color alone
+- Error message text is grey 800 (`--glds-grey-primary-text`), not the error 500 red
+- Entered values are **never cleared** on a failed submit
+
+## Motion tiers
+
+| Tier | Rule |
+|---|---|
+| **Functional** (hover / focus / active / validation) | Always present — confirmation, not decoration |
+| **Attention** (hero entrance, one stat counting up) | Allowed — one focal animation per viewport, fires once on scroll-in, 200–400ms |
+| **Decorative** (looping backgrounds, auto carousels, parallax) | Forbidden |
+
+```css
+/* Scroll-in reveal — fires once, fast */
+[data-ds="glds-web"] .glds-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+[data-ds="glds-web"] .glds-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Always honor reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-ds="glds-web"] .glds-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+```
+
+Never use motion to reveal content that is essential on touch — hover is unavailable on mobile and tablet.
+
+## Do / Don't
+
+| Do ✓ | Don't ✗ |
+|---|---|
+| All four states (default / hover / active / disabled) on every interactive element | Ship only the resting state |
+| `:focus-visible` ring on every interactive element | `outline: none` without a visible replacement |
+| Disabled state via per-property overrides (color + bg) | `opacity: 0.5` on the whole element for disabled |
+| Validate on blur | Validate on every keystroke |
+| Error: color + message together | Error: color change alone |
+| 200ms ease for hover / focus transitions | Transitions longer than 200ms on hover / focus |
+| `prefers-reduced-motion` fallback on every animation | Animation that ignores the OS reduced-motion setting |
+
+## Related
+
+- [Accessibility](/glds-web/guidelines/accessibility) — focus, semantic elements, ARIA on icon-only controls
+- [Conversion](/glds-web/guidelines/conversion) — CTA button anatomy and placement rules
+- [Color](/glds-web/guidelines/color) — state colors from the brand ramp, feedback pattern

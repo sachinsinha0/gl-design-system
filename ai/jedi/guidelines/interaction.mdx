@@ -1,0 +1,163 @@
+---
+title: Interaction
+dsId: jedi
+tags: [interaction, loading, empty-state, validation, feedback, dialogs]
+---
+
+> **Who this is for:** Engineers building interactive Jedi screens — forms, tables, dialogs, and any action with a server round-trip.
+> **What this covers:** Click targets, hover/focus states, loading patterns, empty states, optimistic updates, form validation, table interactions, and confirmation dialogs.
+
+## Why it matters
+
+Every rule below exists to raise task-completion speed and confidence for returning users — not visual appeal. Sovereign users have muscle memory; inconsistent feedback or silent failures break flow and erode trust.
+
+## Loading patterns
+
+Prefer **skeleton loaders** over spinners for content areas — they maintain layout shape and read faster to the eye. Use `CircularProgress` only for indeterminate short waits inside controls (buttons, inline saves).
+
+```tsx
+import { Skeleton, CircularProgress, Button } from '@gl/jedi';
+
+// ✅ Content area loading — skeleton preserves layout
+<Skeleton variant="rectangular" height={200} />
+<Skeleton variant="text" width="60%" />
+
+// ✅ Control-level loading — spinner inside the action
+<Button disabled startIcon={<CircularProgress size={16} />}>
+  Saving…
+</Button>
+
+// ❌ Full-page spinner for a content list
+<CircularProgress />
+```
+
+Every action over ~400ms must show its state. Silent loading reads as broken.
+
+## Empty states
+
+Every empty list, table, or dashboard explains what belongs there and offers the filling action. Blank panels are forbidden.
+
+```tsx
+import { Stack, Typography, Button } from '@gl/jedi';
+
+// ✅ Empty state with context and CTA
+<Stack alignItems="center" spacing={2} py={6}>
+  <Typography variant="h5">No cohorts yet</Typography>
+  <Typography color="text.secondary">
+    Create a cohort to start tracking learner progress.
+  </Typography>
+  <Button variant="contained">Create cohort</Button>
+</Stack>
+
+// ❌ Blank panel — leaves users with no next action
+<Box />
+```
+
+## Form validation
+
+Validate **on blur**, not on every keystroke. Show inline errors beneath the field. Never empty the form on a failed submission — preserving user input is non-negotiable.
+
+```tsx
+import { TextField, FormHelperText } from '@gl/jedi';
+
+// ✅ Inline validation on blur
+<TextField
+  label="Email"
+  error={!!errors.email}
+  helperText={errors.email ?? 'We'll send a verification link'}
+  onBlur={validateEmail}
+/>
+
+// ✅ Server error: preserve fields, show message above submit
+{submitError && (
+  <Alert severity="error">{submitError}</Alert>
+)}
+
+// ❌ Clearing form fields on failed submission
+onError={() => reset()}  // destroys user input — critical bug
+```
+
+For multi-step forms: max 9 visible fields per step; show a progress indicator between steps.
+
+## Confirmation dialogs
+
+Destructive actions (delete, unenroll, cancel subscription) require a confirmation dialog that names the consequence. Reversible actions execute immediately — do not add confirmation dialogs to harmless saves or edits, it trains users to click through blindly.
+
+```tsx
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@gl/jedi';
+
+// ✅ Destructive confirm — names the consequence
+<Dialog open={open}>
+  <DialogTitle>Delete cohort?</DialogTitle>
+  <DialogContent>
+    <DialogContentText>
+      This will permanently delete "Batch 42" and remove all 38 enrolled learners.
+      This cannot be undone.
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={cancel}>Cancel</Button>
+    <Button color="error" variant="contained" onClick={confirm}>Delete cohort</Button>
+  </DialogActions>
+</Dialog>
+
+// ❌ Confirm on a reversible action (save / edit)
+<Dialog open={open}>
+  <DialogTitle>Save changes?</DialogTitle>  {/* unnecessary — just save */}
+  ...
+</Dialog>
+```
+
+## Table interactions
+
+Right-align numeric columns; left-align text. Use `sx` to enforce hover and row-selection states from theme tokens — never hard-code colors.
+
+```tsx
+import { Table, TableHead, TableBody, TableRow, TableCell } from '@gl/jedi';
+
+// ✅ Row hover using theme action token
+<TableRow
+  hover
+  selected={selectedId === row.id}
+  onClick={() => setSelectedId(row.id)}
+  sx={{ cursor: 'pointer' }}
+>
+  <TableCell>{row.cohortName}</TableCell>
+  <TableCell align="right">{row.learnerCount}</TableCell>   {/* numeric: right-align */}
+  <TableCell align="right">₹{row.revenue.toLocaleString()}</TableCell>
+</TableRow>
+```
+
+## Hover and focus states
+
+Never suppress MUI's focus ring. Apply hover states via `sx` using `action.hover` — do not hard-code alpha values.
+
+```tsx
+// ✅ Hover using theme token
+<Box
+  sx={{
+    '&:hover': { bgcolor: 'action.hover' },
+    '&:focus-visible': { outline: '2px solid', outlineColor: 'primary.main' },
+  }}
+/>
+
+// ❌ Hard-coded hover color
+<Box sx={{ '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' } }} />
+```
+
+## Do / Don't
+
+| Do ✓ | Don't ✗ |
+|---|---|
+| Skeleton loaders for content areas | Full-page spinner for a list |
+| Validate on blur with inline error below the field | Validate on every keystroke |
+| Preserve all form fields on a failed submission | Clear the form on error |
+| Confirm dialogs only for destructive actions | Confirm dialog on save / edit |
+| Right-align numeric table columns | Left-align money or count columns |
+| Explicit success feedback (snackbar, state change) | Silent success on save or submit |
+
+## Related
+
+- [Postures](/jedi/guidelines/postures) — Internal vs Partner density, touch targets
+- [Content](/jedi/guidelines/content) — error message wording, button copy, dialog phrasing
+- [Accessibility](/jedi/guidelines/accessibility) — focus rings, semantic elements, disabled state

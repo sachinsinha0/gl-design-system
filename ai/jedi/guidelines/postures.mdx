@@ -1,0 +1,90 @@
+---
+title: Postures
+dsId: jedi
+tags: [posture, sovereign, internal, partner, density]
+---
+
+> **Who this is for:** Engineers and designers deciding how to tune density, feedback level, and affordances for a Jedi screen.
+> **What this covers:** The sovereign application posture (Cooper), the Internal vs Partner audience split, and what each means for every design decision.
+
+## Why it matters
+
+Jedi is a **sovereign application** (Cooper): a single codebase serves all internal and partner surfaces. Users live in it for long stretches and become intermediate users fast. Sovereign products must be tuned for the returning user — not the first-time visitor. Onboarding chrome, loud decoration, and over-confirmation all become fatigue over time.
+
+## Sovereign posture consequences
+
+| Design dimension | Rule |
+|---|---|
+| Visual temperature | Muted — quiet dividers, near-black ink, single blue action voice |
+| Density | Acceptable — information-rich layouts are fine if they are *structured* |
+| Keyboard navigation | Expected — not optional; first-class on all surfaces |
+| Onboarding chrome | Minimal — no tooltips as crutches for unclear labels |
+| Decoration | None — trends enter as execution quality (skeleton loaders, refined states), not visual flourish |
+| Defaults | Do the work — pre-select common options, prefill from data already in the app |
+
+## Audience postures
+
+The same Jedi surface serves two audiences. **Only density and tone shift — tokens never change between postures.**
+
+| Posture | Who | Design priority |
+|---|---|---|
+| **Internal** (staff / admin) | Ops, program managers, support agents | Information density allowed (dense table/menu variants, compact spacing), speed over hand-holding |
+| **Partner** (semi-external) | Visiting faculty, part-time collaborators | Internal-grade efficiency with extra legibility and self-explanatory flows — they visit less often, so assume less learned context. **When in doubt, follow Partner rules.** |
+
+## Per-posture rules in practice
+
+### Density
+```tsx
+import { Table, MenuItem } from '@gl/jedi';
+
+// Internal: dense variants acceptable
+<Table size="small">...</Table>
+<MenuItem dense>Manage cohort</MenuItem>
+
+// Partner: standard density
+<Table>...</Table>
+<MenuItem>Manage cohort</MenuItem>
+```
+
+### Touch targets
+```tsx
+// Partner surfaces: min 44×44px touch target
+<Button sx={{ minHeight: 44 }}>Enrol</Button>
+
+// Internal toolbars: compact is acceptable
+<IconButton size="small" aria-label="Filter">...</IconButton>
+```
+
+### Never mix densities in one view
+```tsx
+// ❌ — mixing dense and standard in the same table
+<Table size="small">
+  <TableRow>
+    <TableCell>Name</TableCell>
+    <TableCell><Button size="large">Approve</Button></TableCell>  {/* jarring */}
+  </TableRow>
+</Table>
+
+// ✅ — consistent density for the surface
+<Table size="small">
+  <TableRow>
+    <TableCell>Name</TableCell>
+    <TableCell><Button size="small">Approve</Button></TableCell>
+  </TableRow>
+</Table>
+```
+
+## Do / Don't
+
+| Do ✓ | Don't ✗ |
+|---|---|
+| Use Partner rules when posture is ambiguous | Guess internal density for a faculty-facing screen |
+| Dense menus and compact tables on internal views | Mix dense and standard density within one view |
+| Pre-select defaults from data the app already has | Build new tracking infra just to remember a choice |
+| Keep keyboard navigation first-class everywhere | Omit focus styles on "internal-only" screens |
+
+## Related
+
+- [Interaction](/jedi/guidelines/interaction) — feedback thresholds, loading patterns, form validation
+- [Accessibility](/jedi/guidelines/accessibility) — 44px targets, focus visibility, semantic elements
+- [Usage](/jedi/guidelines/usage) — sovereign core principles and flat card rules

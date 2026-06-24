@@ -1,0 +1,161 @@
+---
+title: Content
+dsId: magna
+tags: [content, voice, copy, labels, errors, empty-states]
+---
+
+> **Who this is for:** Engineers and AI coders writing any string that appears in a Magna (learner-facing) surface — buttons, labels, errors, empty states, dialogs, notifications.
+> **What this covers:** Great Learning voice rules for in-app copy: casing, active voice, button labels, error messages, empty state copy, truncation, and number formatting.
+
+## Why it matters
+
+Copy is part of the UI. An error message that says "Invalid input" leaves the learner stuck. A button that says "Submit" is less motivating than "Enroll Now". These rules are the content layer of Magna's warm, confident character.
+
+## Core principles
+
+1. **Sentence case for labels, messages, tooltips, and body copy** — not UPPERCASE, not Title Case (except buttons, nav, and headings).
+2. **Title Case for CTAs, navigation, and main headings** — Magna buttons are human, not systemic.
+3. **Active voice.** The sentence leads with the action, not the outcome buried at the end.
+4. **Every error explains what happened and what to do next.**
+5. **Every empty state explains what will appear and offers the action that fills it.**
+6. **Buttons are ≤ 3 words, verb-noun.** "Enroll Now", "Browse Catalog", "Resume Course".
+
+## Casing rules
+
+| Content type | Rule | Example |
+|---|---|---|
+| CTA / Button | Title Case | "Enroll Now", "Get Started" |
+| Navigation item | Title Case | "My Courses", "Browse Catalog" |
+| Form label | Title Case | "Email Address", "First Name" |
+| Main heading | Title Case | "Welcome Back" |
+| Subheading | Sentence case | "Pick up where you left off" |
+| Body copy | Sentence case | "You have 3 assignments due this week." |
+| Tooltip | Sentence case | "Opens a full-screen preview" |
+| Error message | Sentence case | "We couldn't save your progress." |
+| Badge / chip | Sentence case | "In progress", "New" |
+
+**Always capitalise:** course names, university names, product names, proper nouns, "Great Learning", "Olympus".
+
+## Voice & tone
+
+Great Learning's voice is confident, cordial, motivational, human, and concise. For the learner app specifically:
+
+- Address the learner as "you" / "your" — not "the user" or "one".
+- Speak directly: "You have 2 assignments due" not "There are 2 assignments pending for this user".
+- Lead with the objective, not setup: "To save your progress, tap Done" not "Tap Done if you want to save your progress".
+- No exclamation marks in functional UI (dialogs, errors, progress, notifications). They belong on celebratory one-time moments only.
+- No filler: remove "please note", "kindly", "feel free to", "as you may know".
+
+## Button labels
+
+Buttons are ≤ 3 words, Title Case, verb-noun, no punctuation.
+
+| Do ✓ | Don't ✗ |
+|---|---|
+| "Enroll Now" | "Click here to enroll" |
+| "Resume Course" | "RESUME" |
+| "Browse Catalog" | "Browse" (too vague) |
+| "Save Changes" | "Save." (no full stop) |
+| "Log In" | "Login" (two words) |
+| "Sign Up" | "Signup" (two words) |
+
+## Error messages
+
+Every error must answer three questions: What happened? Why (if knowable)? What should the learner do next?
+
+```
+Format: [What happened]. [Why, if applicable]. [Next action].
+```
+
+```tsx
+import { Surface, XStack, Typography, Button } from '@gl/elements';
+import { AlertCircle } from '@tamagui/lucide-icons';
+import { Icon } from '@gl/elements';
+
+// ✅ Error with what + next action
+<Surface backgroundColor="$errorContainer" padding="$md" borderRadius="$md">
+  <XStack gap="$sm" alignItems="flex-start">
+    <Icon icon={<AlertCircle />} color="$onErrorContainer" size={20} />
+    <Typography variant="body2" color="$onErrorContainer">
+      We couldn't save your progress. Check your connection and try again.
+    </Typography>
+  </XStack>
+  <Button variant="tonal" onPress={retry}>Try Again</Button>
+</Surface>
+
+// ❌ Unhelpful error — no cause, no next step
+<Typography color="$error">Something went wrong.</Typography>
+```
+
+Non-condescending tone — never "Oops", "Uh oh", or "Looks like you made a mistake".
+
+## Empty states
+
+Every empty list or section must explain what will appear there and offer the action that fills it. Never leave a blank surface.
+
+```tsx
+import { YStack, Typography, Button } from '@gl/elements';
+
+// ✅ Empty state — context + CTA
+<YStack alignItems="center" gap="$md" padding="$xl">
+  <Typography variant="headline5" color="$onSurface">No assignments yet</Typography>
+  <Typography variant="body2" color="$onSurfaceVariant" textAlign="center">
+    Your faculty will add assignments here once the course begins.
+  </Typography>
+</YStack>
+
+// ❌ Unhelpful — learner has no context
+<Typography variant="body2">No assignments found.</Typography>
+```
+
+## Do / Don't summary
+
+| Do ✓ | Don't ✗ |
+|---|---|
+| Sentence case for labels and body copy | UPPERCASE labels or random Title Case |
+| Title Case for CTA buttons | Full-stop at the end of a button label |
+| Active voice: "Your deadline is in 2 days" | Passive: "In 2 days, there will be a deadline" |
+| Error: what happened + what to do | "Invalid input" with no explanation |
+| Empty state: explains + offers action | Blank surface or "No data" |
+| "Log In" (two words) | "Login" (one word) |
+| Oxford comma: "students, professionals, and businesses" | Missing Oxford comma |
+| Numbers: "3 of 8 modules complete" | Percentage jargon: "37.5% done" |
+| Date: "12 May 2026" or "12th May 2026" | Ambiguous "05/12/26" |
+| Time: "4:00 PM IST" (12-hour + timezone) | "16:00" without timezone |
+| Truncate with ellipsis (…) only if limit is enforced | Truncate mid-word |
+
+## Number and date formatting
+
+| Format | Rule | Example |
+|---|---|---|
+| Progress | Completion language, not percentages | "3 of 8 modules complete" |
+| Dates (international) | Day Month Year, no superscript | "12 May 2026" |
+| Dates (domestic, India) | Day with superscript, Month Year | "12th May 2026" |
+| Time | 12-hour with AM/PM and timezone | "4:00 PM IST" |
+| Currency (INR) | ₹ symbol, not "INR" or "Rs" | "₹4,999" |
+| Large counts | Comma-separated | "8,000 graduates" |
+
+## Truncation
+
+Only truncate when a character limit is technically enforced by engineering. Use the ellipsis character (…), never three dots (...). Never truncate mid-word.
+
+```tsx
+import { Typography } from '@gl/elements';
+
+// ✅ Truncate with ellipsis, full text in accessibilityLabel
+<Typography
+  variant="subtitle1"
+  numberOfLines={1}
+  ellipsizeMode="tail"
+  accessibilityLabel={fullCourseName}
+>
+  {fullCourseName}
+</Typography>
+```
+
+## Related
+
+- [Interaction](/magna/guidelines/interaction) — error message placement, empty state layout, and form validation copy
+- [Principles](/magna/guidelines/principles) — the "warm authority" principle is what these copy rules implement
+- [Usage](/magna/guidelines/usage) — learner-posture context for why clarity outranks cleverness
+- [Accessibility](/magna/guidelines/accessibility) — `accessibilityLabel` on truncated text and icon-only buttons

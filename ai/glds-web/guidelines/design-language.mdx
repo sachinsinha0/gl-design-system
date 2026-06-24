@@ -1,0 +1,121 @@
+---
+title: Design Language
+dsId: glds-web
+tags: [design-language, brand, color, typography, scoping]
+---
+
+> **Who this is for:** Engineers and designers building GL marketing pages, landing pages, or any public-web surface.
+> **What this covers:** The brand color palette with intent (not just hex), Poppins + Material Icons, the `[data-ds="glds-web"]` scoping convention, and the base-8 spacing rhythm.
+
+## The brand palette
+
+Use colors by their **meaning**, not their hex. Emit hex only in the central token sheet as CSS custom properties.
+
+| Brand color | CSS variable | Hex | Meaning / use |
+|---|---|---|---|
+| **Freedom Blue** | `--glds-primary-500` | `#196AE5` | Primary brand — CTAs, links, focus rings |
+| **Trust Blue** | `--glds-trust-blue` | `#0E39A9` | Hover-dark, heading emphasis on light surfaces |
+| **Wisdom Indigo** | `--glds-wisdom-indigo` | `#0C1D5D` | High-contrast headlines, footer text |
+| **Creativity Purple** | `--glds-creativity-purple` | `#5C34B1` | Accent for creative / innovation themes |
+| **Intellect Mandarin** | `--glds-secondary-500` | `#FF9800` | Secondary actions, warm accent |
+| **Energy Orange** | `--glds-energy-orange` | `#FFBF00` | Highlights, alert / attention (amber) |
+| **Optimism Yellow** | `--glds-optimism-yellow` | `#FFDF00` | Bright accent — sparing use only |
+| **Balance Black** | `--glds-balance-black` | `#000000` | Maximum contrast — reserve for this alone |
+| **Purity White** | `--glds-purity-white` | `#FFFFFF` | Primary surface |
+
+**Intent rules:**
+- Freedom Blue **leads every interactive moment** — CTAs, links, focus rings. Never use it as decorative section color.
+- Warm colors (Mandarin / Orange / Yellow) are **accents**, never the primary action.
+- Headings on light backgrounds: prefer Wisdom Indigo or Primary Text `#323130`, not pure black.
+
+## Typography: Poppins
+
+**Poppins** is the sole typeface for all new work. Noto Sans is legacy — migrate to Poppins when touching old templates.
+
+```html
+<!-- Load once in <head> -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+```
+
+```css
+[data-ds="glds-web"] {
+  font-family: 'Poppins', sans-serif;
+}
+```
+
+Key type styles (desktop Web scale):
+
+| Style | Size | Weight | Line height |
+|---|---|---|---|
+| Headline 1 | 64px | SemiBold | 80px |
+| Headline 2 | 48px | SemiBold | 64px |
+| Headline 3 | 32px | SemiBold | 40px |
+| Body 1 | 16px | Regular | 24px |
+| Button | 16px | SemiBold | 16px |
+
+Mobile H1 drops to 40px. Type scale swaps at **768px** breakpoint — it does not fluidly interpolate.
+
+## Icons: Material Icons only
+
+```html
+<!-- Load once in <head> -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<!-- Usage -->
+<span class="material-icons" aria-hidden="true">arrow_forward</span>
+```
+
+Standard inline sizes are **20px** or **24px**, color-matched to adjacent text. Do not mix in Lucide, Heroicons, or any other icon library.
+
+## The `[data-ds="glds-web"]` scoping convention
+
+Every CSS selector for this system lives under the `[data-ds="glds-web"]` attribute. This attribute is applied by `<GLDSProvider>` and prevents style bleed between design systems on the same page.
+
+```html
+<!-- Provider adds data-ds automatically -->
+<div data-ds="glds-web">
+  <!-- all GLDS-Web markup goes here -->
+</div>
+```
+
+```css
+/* All component CSS is scoped — never write bare selectors */
+[data-ds="glds-web"] .glds-btn--filled {
+  background: var(--glds-primary-500);
+  color: var(--glds-purity-white);
+}
+```
+
+## Spacing system (base-8)
+
+The rhythm is **8px**. All spacing, padding, gap, and section inset values must be multiples of 8.
+
+| Token | Value | Use |
+|---|---|---|
+| `--glds-spacing-xsm` | `8px` | Tight internal padding, icon gaps |
+| `--glds-spacing-sm` | `16px` | Component padding, list gaps |
+| `--glds-spacing-md` | `24px` | Card padding, field groups |
+| `--glds-spacing-lg` | `32px` | Section sub-group separation |
+| `--glds-spacing-xl` | `48px` | Band padding (top/bottom) |
+| `--glds-spacing-2xl` | `64px` | Hero vertical rhythm |
+
+Separate page bands by alternating surface colors (`#FFFFFF` / `#F8F8F8`) — never use a border or divider for band separation.
+
+## Do / Don't
+
+| Do ✓ | Don't ✗ |
+|---|---|
+| Reference colors by CSS variable (`--glds-primary-500`) | Scatter hex literals in component CSS |
+| Use Freedom Blue only for CTAs and focus rings | Use Freedom Blue as a decorative heading or section accent |
+| Poppins for all new text | Noto Sans in new work |
+| Material Icons — always | Mix in Lucide, Font Awesome, or other icon sets |
+| `[data-ds="glds-web"]` prefix on every CSS selector | Write bare selectors that can bleed outside the provider |
+| Spacing values in multiples of 8 | One-off values like `10px`, `13px`, `22px` |
+
+## Related
+
+- [Color](/glds-web/guidelines/color) — full color ramp tables and feedback pattern
+- [Typography](/glds-web/guidelines/typography) — complete type scale, mobile vs desktop
+- [Spacing](/glds-web/guidelines/spacing) — layout breakpoints and the band model
+- [Usage](/glds-web/guidelines/usage) — CTA rules, band model, and motion constraints

@@ -11,7 +11,10 @@ import TypeGuide from '../../../../../ai/glds-web/guidelines/typography.mdx';
 import SpacingGuide from '../../../../../ai/glds-web/guidelines/spacing.mdx';
 import AccessibilityGuide from '../../../../../ai/glds-web/guidelines/accessibility.mdx';
 import UsageGuide from '../../../../../ai/glds-web/guidelines/usage.mdx';
-import ContentGuide from '../../../../../ai/_shared/guidelines/content.mdx';
+import ContentGuide from '../../../../../ai/glds-web/guidelines/content.mdx';
+import DesignLanguageGuide from '../../../../../ai/glds-web/guidelines/design-language.mdx';
+import ConversionGuide from '../../../../../ai/glds-web/guidelines/conversion.mdx';
+import InteractionGuide from '../../../../../ai/glds-web/guidelines/interaction.mdx';
 
 const wrap = (Mdx: React.ComponentType) =>
   function GuidelinePage() {
@@ -55,7 +58,10 @@ export const catalog: CatalogGroup[] = [
       { slug: 'guidelines/spacing', title: 'Spacing', Component: wrap(SpacingGuide) },
       { slug: 'guidelines/accessibility', title: 'Accessibility', Component: wrap(AccessibilityGuide) },
       { slug: 'guidelines/usage', title: 'Usage', Component: wrap(UsageGuide) },
-      { slug: 'guidelines/content', title: 'Content', Component: wrap(ContentGuide) }
+      { slug: 'guidelines/content', title: 'Content', Component: wrap(ContentGuide) },
+      { slug: 'guidelines/design-language', title: 'Design Language', Component: wrap(DesignLanguageGuide) },
+      { slug: 'guidelines/conversion', title: 'Conversion', Component: wrap(ConversionGuide) },
+      { slug: 'guidelines/interaction', title: 'Interaction', Component: wrap(InteractionGuide) }
     ]
   }
 ];
