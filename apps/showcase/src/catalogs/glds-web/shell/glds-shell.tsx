@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { GLDSProvider } from '@gl/glds-web';
+import { withBase } from '../../../platform/base';
 import { useActiveDS, useActiveDSId } from '../../../platform/ds-context';
 import { type DSId } from '../../../platform/ds-registry';
 import { useDSSearch } from '../../../platform/search-index';
@@ -42,9 +43,9 @@ function GLDSSearch() {
     setQuery('');
     setOpen(false);
     if (targetDsId !== activeId) {
-      window.location.assign(path);
+      window.location.assign(withBase(path));
     } else {
-      window.history.pushState(null, '', path);
+      window.history.pushState(null, '', withBase(path));
       window.dispatchEvent(new PopStateEvent('popstate'));
     }
   }

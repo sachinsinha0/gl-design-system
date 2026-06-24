@@ -83,18 +83,18 @@ export function SelectionControlsPage() {
 
       <DemoBlock
         title="Switch"
-        description="checked + onCheckedChange. Each toggles independently; size is a token ($3 default, $4 larger).">
+        description="checked + onCheckedChange. Sized $4 to match the GL app switch; $3 is a compact variant. Each toggles independently.">
         <VariantCell label={sw1 ? 'on' : 'off'}>
-          <Switch checked={sw1} onCheckedChange={setSw1} />
+          <Switch size="$4" checked={sw1} onCheckedChange={setSw1} />
         </VariantCell>
-        <VariantCell label="size $3">
-          <Switch size="$3" checked={sw2} onCheckedChange={setSw2} />
-        </VariantCell>
-        <VariantCell label="size $4">
-          <Switch size="$4" checked={sw3} onCheckedChange={setSw3} />
+        <VariantCell label="on">
+          <Switch size="$4" checked={sw2} onCheckedChange={setSw2} />
         </VariantCell>
         <VariantCell label="disabled">
-          <Switch disabled checked onCheckedChange={() => undefined} />
+          <Switch size="$4" disabled checked onCheckedChange={() => undefined} />
+        </VariantCell>
+        <VariantCell label="compact ($3)">
+          <Switch size="$3" checked={sw3} onCheckedChange={setSw3} />
         </VariantCell>
       </DemoBlock>
     </YStack>

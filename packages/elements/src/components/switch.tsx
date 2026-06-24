@@ -54,6 +54,10 @@ export function Switch({ checked, size = '$3', disabled, onCheckedChange, ...pro
       disabled={disabled}
       onCheckedChange={!disabled ? onCheckedChange : undefined}
       {...frame}
+      // Horizontal "safe space" so the thumb never touches the track ends.
+      // Border (2px) alone left the thumb flush under runtime Tamagui; ~3px of
+      // padding insets it to match the production switch (~5px each side).
+      paddingHorizontal={3}
       {...props}>
       <TMSwitch.Thumb
         disabled={disabled}
@@ -61,6 +65,12 @@ export function Switch({ checked, size = '$3', disabled, onCheckedChange, ...pro
         {...thumb}
         height={thumbSizeValue}
         width={thumbSizeValue}
+        // Center the fixed-height thumb vertically. The track is alignItems:
+        // "stretch", so under runtime Tamagui (no compiler) the thumb otherwise
+        // anchors to the top of the track (the production app centers it via the
+        // build-time extractor). Auto vertical margins center it regardless of
+        // the frame's flex direction, without affecting the horizontal travel.
+        marginVertical="auto"
       />
     </TMSwitch>
   );

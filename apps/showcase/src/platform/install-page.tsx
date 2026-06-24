@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 import { useState, type ComponentType, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
+import { withBase } from './base';
 
 /* ─── Inline SVG icons ──────────────────────────────────────────────────────
    No DS dependency — works in Magna (Tamagui), Jedi (MUI), and GLDS-Web.   */
@@ -130,7 +131,8 @@ export type InstallPageProps = {
 function PageUrlBar() {
   const { pathname } = useLocation();
   const [copied, setCopied] = useState(false);
-  const url = typeof window !== 'undefined' ? `${window.location.origin}${pathname}` : pathname;
+  const url =
+    typeof window !== 'undefined' ? `${window.location.origin}${withBase(pathname)}` : pathname;
 
   function copy() {
     navigator.clipboard?.writeText(url).then(() => {

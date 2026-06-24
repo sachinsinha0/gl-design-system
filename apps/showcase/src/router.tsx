@@ -24,13 +24,20 @@ function buildDSChildren(): RouteObject[] {
 
 const defaultDsId = listDesignSystems()[0]?.id ?? 'magna';
 
-export const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <AppShell />,
-    children: [
-      { index: true, element: <Navigate to={`/${defaultDsId}`} replace /> },
-      ...buildDSChildren()
-    ]
-  }
-]);
+// Vite injects BASE_URL ("/" in dev, "/gl-design-system/" on GitHub Pages).
+// Strip the trailing slash for React Router's basename ("/" stays "/").
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/';
+
+export const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <AppShell />,
+      children: [
+        { index: true, element: <Navigate to={`/${defaultDsId}`} replace /> },
+        ...buildDSChildren()
+      ]
+    }
+  ],
+  { basename }
+);

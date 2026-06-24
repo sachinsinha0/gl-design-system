@@ -1,5 +1,6 @@
 import { useState, type ComponentType, type ReactNode } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { withBase } from '../../../platform/base';
 import { JediProvider } from '@gl/jedi';
 import {
   Box,
@@ -41,9 +42,9 @@ function JediSearch() {
     setQuery('');
     setAnchor(null);
     if (targetDsId !== activeId) {
-      window.location.assign(path);
+      window.location.assign(withBase(path));
     } else {
-      window.history.pushState(null, '', path);
+      window.history.pushState(null, '', withBase(path));
       window.dispatchEvent(new PopStateEvent('popstate'));
     }
   }
