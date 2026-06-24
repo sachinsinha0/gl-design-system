@@ -61,6 +61,12 @@ export function Switch({ checked, size = '$3', disabled, onCheckedChange, ...pro
         {...thumb}
         height={thumbSizeValue}
         width={thumbSizeValue}
+        // Center the fixed-height thumb vertically. The track is alignItems:
+        // "stretch", so under runtime Tamagui (no compiler) the thumb otherwise
+        // anchors to the top of the track (the production app centers it via the
+        // build-time extractor). Auto vertical margins center it regardless of
+        // the frame's flex direction, without affecting the horizontal travel.
+        marginVertical="auto"
       />
     </TMSwitch>
   );
