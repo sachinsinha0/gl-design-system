@@ -164,25 +164,6 @@ function JediSearch() {
               <SearchIcon fontSize="small" sx={{ color: 'text.secondary' }} />
             </InputAdornment>
           ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <Box
-                component="kbd"
-                sx={{
-                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                  fontSize: 10,
-                  px: 0.75,
-                  py: 0.25,
-                  borderRadius: 0.5,
-                  border: 1,
-                  borderColor: 'divider',
-                  color: 'text.secondary'
-                }}
-              >
-                ⌘K
-              </Box>
-            </InputAdornment>
-          )
         }}
       />
       <Popper

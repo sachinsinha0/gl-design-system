@@ -150,7 +150,6 @@ function GLDSSearch() {
             setOpen(true);
           }}
         />
-        <kbd className="glds-shell__kbd" aria-hidden>⌘K</kbd>
       </label>
       {showResults ? (
         <ul className="glds-shell__search-results" role="listbox">

@@ -164,17 +164,6 @@
   font-size: 13px;
 }
 
-[data-ds='glds-web'] .glds-shell__kbd {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
-  background: #fff;
-  color: #6b6b6b;
-  flex-shrink: 0;
-}
-
 [data-ds='glds-web'] .glds-shell__search-results {
   position: absolute;
   top: 100%;

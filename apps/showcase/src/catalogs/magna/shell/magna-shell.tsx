@@ -240,21 +240,11 @@ function MagnaSearchBox() {
             outline: 'none',
             background: 'transparent',
             color: 'inherit',
-            fontFamily: 'inherit',
+            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
             fontSize: 13,
             WebkitAppearance: 'none' as never
           }}
         />
-        <Stack
-          paddingHorizontal="$1.5"
-          paddingVertical="$0.5"
-          borderRadius={4}
-          borderWidth={1}
-          borderColor="$outlineVariant"
-          opacity={0.7}
-        >
-          <Typography variant="caption2" fontFamily="$monospace">⌘K</Typography>
-        </Stack>
       </XStack>
       {showDropdown ? (
         <YStack
