@@ -11,156 +11,12 @@ import {
   Icon,
   useThemeSetting
 } from '@gl/elements';
-import { Check, ChevronsUpDown, Home, Search, Sun, Moon, Palette } from '@tamagui/lucide-icons';
-import { useActiveDS, useActiveDSId, useSetActiveDS } from '../../../platform/ds-context';
-import { listDesignSystems, hasDesignSystem, type DSId } from '../../../platform/ds-registry';
-import { equivalentSlug } from '../../../platform/ds-equivalence';
+import { Home, Search, Sun, Moon, Palette } from '@tamagui/lucide-icons';
+import { useActiveDS, useActiveDSId } from '../../../platform/ds-context';
+import { type DSId } from '../../../platform/ds-registry';
 import { useDSSearch } from '../../../platform/search-index';
 import { usePageHeader } from '../../../platform/page-header';
-
-function DSSwitchHeader() {
-  const activeId = useActiveDSId();
-  const ds = useActiveDS();
-  const setActive = useSetActiveDS();
-  const { pathname } = useLocation();
-  const systems = listDesignSystems();
-  const [open, setOpen] = useState(false);
-  const triggerRef = useRef<HTMLDivElement | null>(null);
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    function onPointerDown(e: PointerEvent) {
-      const t = e.target as Node;
-      if (
-        triggerRef.current && !triggerRef.current.contains(t) &&
-        menuRef.current && !menuRef.current.contains(t)
-      ) {
-        setOpen(false);
-      }
-    }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setOpen(false);
-    }
-    window.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('keydown', onKey);
-    return () => {
-      window.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [open]);
-
-  function switchTo(newId: DSId) {
-    setOpen(false);
-    if (newId === activeId) return;
-    const parts = pathname.split('/').filter(Boolean);
-    const [first, ...rest] = parts;
-    const currentSlug = first && hasDesignSystem(first) && rest.length > 0 ? rest.join('/') : 'home';
-    const targetSlug = equivalentSlug(activeId, currentSlug, newId);
-    if (typeof window !== 'undefined' && targetSlug !== 'home') {
-      window.localStorage.setItem('ds.pendingSlug', targetSlug);
-    }
-    setActive(newId);
-  }
-
-  return (
-    <Stack position="relative" {...({ ref: triggerRef } as any)}>
-      <XStack
-        tag="button"
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-label={`Switch design system. Current: ${ds.label}`}
-        onPress={() => setOpen((v) => !v)}
-        alignItems="center"
-        gap="$2"
-        paddingHorizontal="$3"
-        paddingVertical="$3"
-        backgroundColor={open ? '$surfaceContainerHigh' : 'transparent'}
-        hoverStyle={{ backgroundColor: '$surfaceContainerHigh' }}
-        cursor="pointer"
-        borderWidth={0}
-        width="100%"
-      >
-        <Stack
-          width={36}
-          height={36}
-          borderRadius={10}
-          backgroundColor="$primary"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Typography variant="subtitle1" color="$onPrimary">
-            {ds.label.slice(0, 2).toUpperCase()}
-          </Typography>
-        </Stack>
-        <YStack flex={1} alignItems="flex-start">
-          <Typography variant="subtitle1">{ds.label}</Typography>
-          <Typography variant="caption2" color="$onSurfaceVariant">
-            {ds.tagline}
-          </Typography>
-        </YStack>
-        <Stack opacity={0.7}>
-          <ChevronsUpDown size={16} color="$onSurfaceVariant" />
-        </Stack>
-      </XStack>
-      {open ? (
-        <YStack
-          {...({ ref: menuRef } as any)}
-          role="listbox"
-          position="absolute"
-          top="100%"
-          left="$2"
-          right="$2"
-          marginTop="$1"
-          backgroundColor="$surface"
-          borderRadius={12}
-          borderWidth={1}
-          borderColor="$outlineVariant"
-          padding="$1"
-          zIndex={1000}
-          shadowColor="rgba(0,0,0,0.18)"
-          shadowRadius={16}
-          shadowOffset={{ width: 0, height: 8 }}
-        >
-          {systems.map((d) => {
-            const active = d.id === activeId;
-            return (
-              <XStack
-                key={d.id}
-                tag="button"
-                role="option"
-                aria-selected={active}
-                onPress={() => switchTo(d.id)}
-                alignItems="center"
-                gap="$2"
-                paddingHorizontal="$2.5"
-                paddingVertical="$2"
-                borderRadius={8}
-                borderWidth={0}
-                backgroundColor={active ? '$primaryContainer' : 'transparent'}
-                hoverStyle={{ backgroundColor: active ? '$primaryContainer' : '$surfaceContainerHigh' }}
-                cursor="pointer"
-                width="100%"
-              >
-                <Stack width={20} alignItems="center">
-                  {active ? <Check size={16} color="$onPrimaryContainer" /> : null}
-                </Stack>
-                <YStack flex={1} alignItems="flex-start">
-                  <Typography variant="body2" color={active ? '$onPrimaryContainer' : '$onSurface'}>
-                    {d.label}
-                  </Typography>
-                  <Typography variant="caption2" color="$onSurfaceVariant">
-                    {d.tagline}
-                  </Typography>
-                </YStack>
-              </XStack>
-            );
-          })}
-        </YStack>
-      ) : null}
-    </Stack>
-  );
-}
+import { SharedDSSwitcher } from '../../../platform/ds-switcher';
 
 function MagnaSearchBox() {
   const activeId = useActiveDSId();
@@ -381,8 +237,8 @@ function NavRow({
         hoverStyle={{ backgroundColor: active ? '$primaryContainer' : '$surfaceContainerHigh' }}
         cursor="pointer"
       >
-        {icon ? <Stack width={18}>{icon}</Stack> : null}
-        <Typography variant="body2" color={active ? '$onPrimaryContainer' : '$onSurface'}>
+        {icon ? <Stack width={16}>{icon}</Stack> : null}
+        <Typography variant="body2" fontSize={13} color={active ? '$onPrimaryContainer' : '$onSurface'}>
           {label}
         </Typography>
       </XStack>
@@ -392,6 +248,9 @@ function NavRow({
 
 function MagnaPageHeader() {
   const { eyebrow, title } = usePageHeader();
+  const dsId = useActiveDSId();
+  const { pathname } = useLocation();
+  if (pathname === `/${dsId}` || pathname === '/') return null;
   return (
     <YStack paddingBottom="$3" gap="$0.5">
       {eyebrow ? (
@@ -415,7 +274,7 @@ function MagnaSidebar() {
       borderRightWidth={1}
       borderColor="$outlineVariant"
     >
-      <DSSwitchHeader />
+      <SharedDSSwitcher />
       <Stack paddingHorizontal="$3" paddingBottom="$3">
         <MagnaSearchBox />
       </Stack>

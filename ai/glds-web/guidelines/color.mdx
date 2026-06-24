@@ -4,14 +4,24 @@ dsId: glds-web
 tags: [foundations, color, brand]
 ---
 
-# Color
+> **Who this is for:** Anyone building or editing GL marketing pages, landing pages, or public web — engineers, content authors, designers handing off CSS.
+> **What this covers:** The brand palette by *intent* (not by hex), why Freedom Blue is reserved for CTAs, and the feedback-color pattern that keeps message text legible.
 
-GLDS-Web's palette is built on **named brand colors with intent** — use them by meaning, not by hex. **Freedom Blue (`#196AE5`) is reserved for CTAs**; using it as a decorative accent dilutes the action color.
+## Why it matters
 
-## Ramps
+Marketing visitors decide in seconds. Color is the first signal — a misuse of Freedom Blue makes "Start free trial" disappear into a decorative wash; a red headline reads as an error. The palette below isn't taste; it's the contract that lets the eye find the CTA in any band, in any browser, with any background image.
 
-The Primary UI Action (Freedom Blue) ramp `50–900` powers buttons, links, focus rings. Hover steps to `600`; pressed/active to `700`/`800`; tints/backgrounds to `50`/`100`.
+## Core principles
 
+1. **Freedom Blue is reserved for CTAs.** `var(--glds-primary-500)`. Don't use it as a decorative section accent.
+2. **Body ink is `#323130`, not `#000`.** Use `var(--glds-grey-primary-text)`; pure black reserved for max-contrast moments only.
+3. **Feedback colors aren't text colors.** Error / Alert / Success 500 values fail WCAG as text on white. Message text is grey 800; the 500 color is icon / border / accent only.
+4. **Course Card colors are paired** — always use a background with its matched foreground.
+5. **Use CSS variables, never hardcoded hex** in component CSS. Hex centralizes in the token sheet only.
+
+## How to implement
+
+### CTA (Freedom Blue, reserved)
 ```css
 [data-ds="glds-web"] .glds-btn--filled {
   background: var(--glds-primary-500);
@@ -21,29 +31,42 @@ The Primary UI Action (Freedom Blue) ramp `50–900` powers buttons, links, focu
 [data-ds="glds-web"] .glds-btn--filled:active { background: var(--glds-primary-700); }
 ```
 
-## Body ink is `#323130`, not `#000`
+### Feedback message (bg-50, icon-500, text-800)
+```html
+<div class="glds-alert glds-alert--error">
+  <span class="material-icons" aria-hidden="true">error</span>
+  <p class="glds-alert__message">We couldn't load this page. Try again in a moment.</p>
+</div>
+```
 
-Use `--glds-grey-primary-text` (`#323130`) for body and headings — softer on long marketing copy than pure black. Use `--glds-grey-pure-contrast` only where maximum contrast is intended.
+```css
+[data-ds="glds-web"] .glds-alert--error {
+  background: var(--glds-feedback-error-50);
+  border-left: 3px solid var(--glds-feedback-error-500);
+}
+[data-ds="glds-web"] .glds-alert--error .material-icons { color: var(--glds-feedback-error-500); }
+[data-ds="glds-web"] .glds-alert__message            { color: var(--glds-feedback-error-800); }
+```
 
-## UI Feedback colors aren't text colors
+### Feedback colors at a glance
 
-| Type | 50 (bg) | 500 (main) | 800 (text) |
+| Type | 50 (bg) | 500 (icon / border) | 800 (text) |
 |---|---|---|---|
 | Error | `#FFEBEE` | `#FF3333` | `#323130` |
 | Alert | `#FFF8E1` | `#FFBF00` | `#323130` |
 | Success | `#E7F7E7` | `#22BB33` | `#323130` |
 
-Pattern: tint-50 background, 500 for icon/border, dark grey 800 for the **message text**. The 500 values fail WCAG as text on white.
-
-## Course Card pairs
-
-Cool & Warm course-card colors are **always used as background + foreground pairs** so text/icon contrast holds on the tinted card. Never use a foreground alone or mix unmatched pairs.
-
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | Freedom Blue (`--glds-primary-500`) for CTAs only | Use Freedom Blue as a decorative section accent |
 | Body copy in `--glds-grey-primary-text` | Body copy in `#000` |
-| Error message text in `--glds-feedback-error-800` (grey) | Error message text in `--glds-feedback-error-500` (red) |
+| Error message text in `--glds-feedback-error-800` | Error message text in `--glds-feedback-error-500` (red) |
 | Use a Course Card bg with its matched fg | Pair `cool20-bg` with `warm30-fg` |
+
+## Related
+
+- [Accessibility](/glds-web/guidelines/accessibility) — feedback-color rule has an a11y origin
+- [Typography](/glds-web/guidelines/typography) — body ink color goes with Poppins body
+- [Usage](/glds-web/guidelines/usage) — the band model and CTA repetition rules

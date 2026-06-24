@@ -84,7 +84,10 @@ export function useSetActiveDS(): (id: DSId) => void {
       if (typeof window === 'undefined') return;
       const first = location.pathname.split('/')[1];
       const target = first && hasDesignSystem(first) ? `/${id}` : `/${id}`;
-      window.location.assign(target);
+      // Fade out before hard reload so the brief error screen doesn't flash.
+      document.body.style.transition = 'opacity 0.12s ease';
+      document.body.style.opacity = '0';
+      setTimeout(() => window.location.assign(target), 120);
     },
     [setActiveId, location.pathname]
   );

@@ -4,22 +4,25 @@ dsId: jedi
 tags: [usage, sovereign, internal, partner]
 ---
 
-# Usage — sovereign posture
+> **Who this is for:** Anyone deciding whether a screen belongs in Jedi and how the screen should *behave* for power users.
+> **What this covers:** The sovereign-posture rules — one primary action, flat outlined cards, scannable density, defaults that do the work.
 
-Jedi is the **sovereign** posture (Cooper). One codebase serves all internal/partner surfaces; users live in it for long stretches and become intermediate users fast. Optimize for the returning user, density is acceptable, keyboard navigation is expected, minimal onboarding chrome.
+## Why it matters
 
-## Posture rules
+Jedi is the **sovereign** posture (Cooper): one codebase serves all internal/partner surfaces; users live in it for long stretches and become intermediate users fast. Optimize for the **returning** user — density is acceptable, keyboard navigation is expected, onboarding chrome is minimal. The design choices below all serve "you've been here before; let's get to work."
 
-- **One primary action per view.** Exactly one `contained` button; everything else `outlined` or `text` (Behavioral rule B4).
-- **Defaults do the work.** Pre-select the most common option; prefill from data the app already has.
-- **Forms: 7±2 visible fields per step (max 9).** Beyond that, split into steps with a visible progress indicator.
-- **Destructive actions confirm; reversible actions don't.** Delete/cancel get a confirm step naming the consequence; everything reversible executes immediately with an undo path.
-- **Empty states are starting points.** Every empty list explains what belongs there and offers the action that fills it.
+## Core principles
 
-## Flat, outlined, no elevation
+1. **One primary action per view.** Exactly one `contained` button; everything else `outlined` or `text`.
+2. **Defaults do the work.** Pre-select the most common option; prefill from data the app already has.
+3. **Forms: 7±2 visible fields per step (max 9).** Beyond that, split into steps with a visible progress indicator.
+4. **Destructive actions confirm; reversible actions don't.** Delete/cancel get a confirm step naming the consequence; reversible actions execute immediately with undo.
+5. **Empty states are starting points** — explain what belongs there and offer the action that fills it.
+6. **Flat, outlined, no elevation.** Cards always `variant="outlined"` — no shadows. Shadows belong to true overlays (menus, dialogs, popovers).
 
-Cards are always `variant="outlined"` — no shadows, no raised elevation, in either mode. Shadows belong to true overlays (menus, dialogs, popovers). Never raise a card.
+## How to implement
 
+### Flat outlined card
 ```tsx
 import { Card, CardContent, Stack, Typography, Button } from '@mui/material';
 
@@ -28,13 +31,35 @@ import { Card, CardContent, Stack, Typography, Button } from '@mui/material';
     <Stack spacing={2}>
       <Typography variant="h5">Pending reviews</Typography>
       <Typography color="text.secondary">8 applications waiting on you.</Typography>
-      <Button>Open queue</Button>
+      <Button>Open queue</Button>   {/* single primary */}
     </Stack>
   </CardContent>
 </Card>
 ```
 
-## Scannability rules (information density is fine; chaos isn't)
+### Don't raise cards
+```tsx
+<Card elevation={4}>...</Card>     {/* ❌ shadows belong to overlays */}
+<Card>...</Card>                    {/* ✅ outlined */}
+```
+
+### Scannable table
+```tsx
+import { Table, TableHead, TableRow, TableCell } from '@mui/material';
+
+<Table size="small">
+  <TableHead>
+    <TableRow>
+      <TableCell>Cohort</TableCell>
+      <TableCell align="right">Learners</TableCell>
+      <TableCell align="right">Revenue</TableCell>
+    </TableRow>
+  </TableHead>
+  {/* numeric columns right-aligned with tabular figures */}
+</Table>
+```
+
+## Scannability rules
 
 - Tables scan **down columns** — right-align numbers, left-align text, tabular figures.
 - Front-load the distinguishing word ("Annual report 2024", not "Report (annual), 2024").
@@ -44,9 +69,15 @@ import { Card, CardContent, Stack, Typography, Button } from '@mui/material';
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | Use `variant="outlined"` on cards | Add `elevation={4}` for emphasis |
 | Right-align numeric table columns | Left-align money columns |
-| Confirm destructive actions (delete) | Confirm dialogs on save/edit |
+| Confirm destructive actions (delete) | Confirm dialogs on save / edit |
 | Build flows in steps with progress | One giant 25-field scroll-form |
+
+## Related
+
+- [Color](/jedi/guidelines/color) — one loud blue carries the action
+- [Spacing](/jedi/guidelines/spacing) — density-by-posture
+- [Accessibility](/jedi/guidelines/accessibility) — focus, semantic elements, labels

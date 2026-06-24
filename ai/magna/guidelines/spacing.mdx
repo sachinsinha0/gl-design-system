@@ -1,17 +1,30 @@
 ---
 title: Spacing
 dsId: magna
-tags: [foundations, spacing, layout]
+tags: [foundations, spacing, layout, touch-targets]
 ---
 
-# Spacing
+> **Who this is for:** Engineers laying out screens, cards, and lists with `YStack` / `XStack` / `Surface` from `@gl/elements`.
+> **What this covers:** Magna's spacing tokens, why surfaces breathe (vs. Jedi's density), and the 48dp mobile touch-target rule.
 
-Magna uses Tamagui's spacing tokens. Reach for the `$`-prefixed scale (`$xs`, `$sm`, `$md`, `$lg`, `$xl`, `$1`–`$10`) rather than raw pixel numbers, so layouts stay on-grid across web and native.
+## Why it matters
 
+Spacing is how a learner-facing surface signals calm. Tight gaps read as "system" or "admin"; generous gaps read as "course material". Magna is mobile-first — the gap between two cards is the difference between a confident swipe and a mis-tap.
+
+## Core principles
+
+1. **Use the `$` scale, never raw px.** `$xs`, `$sm`, `$md`, `$lg`, `$xl`, `$1`–`$10`. Off-grid values like `11px` are a smell.
+2. **Surfaces breathe.** `$md`+ gap between cards, `$lg`+ section padding, `$xl` between page bands.
+3. **Touch targets ≥ 48×48dp** — larger than Jedi's 44 because Magna is mobile-first.
+4. **Spacing between targets ≥ 8dp** so a thumb doesn't catch two at once.
+5. **Use `gap`, not `marginBottom` between siblings.** `YStack`/`XStack` is the right tool.
+
+## How to implement
+
+### Page section
 ```tsx
-import { YStack, XStack, Surface, Typography } from '@gl/elements';
+import { YStack, XStack, Typography } from '@gl/elements';
 
-// Page section
 <YStack gap="$lg" padding="$xl">
   <Typography variant="h3">Your enrolled courses</Typography>
   <XStack gap="$md" flexWrap="wrap">
@@ -20,19 +33,26 @@ import { YStack, XStack, Surface, Typography } from '@gl/elements';
 </YStack>
 ```
 
-## Learner-first density
+### Mobile touch target
+```tsx
+import { Button } from '@gl/elements';
 
-Magna surfaces breathe — don't pack content. This is the deliberate inverse of Jedi's density allowance. Generous spacing between cards (`$md`+ gap), `$lg`+ section padding, and `$xl` between page bands keeps the learner's eye relaxed.
-
-## Touch targets
-
-Touch targets are **≥ 48×48dp** on Magna (M3 standard; larger than Jedi's 44 because Magna is mobile-first for learners). Spacing between targets is ≥ 8dp.
+<Button onPress={enroll} size="large">  {/* ≥ 48dp height */}
+  Enroll
+</Button>
+```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | `gap="$md"` between cards | `gap={11}` |
 | `padding="$lg"` for section padding | `paddingLeft: '17px'` |
 | Use `YStack` / `XStack` with `gap` | Add `marginBottom` between siblings |
 | Target ≥ 48×48dp | Ship a 32px tap target on mobile |
+
+## Related
+
+- [Accessibility](/magna/guidelines/accessibility) — touch target ≥ 48dp is an a11y rule
+- [Usage](/magna/guidelines/usage) — "surfaces breathe" is a posture rule, not just visual
+- [Color](/magna/guidelines/color) — use `$surfaceContainer` tonal steps instead of dividers

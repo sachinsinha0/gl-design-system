@@ -96,15 +96,26 @@ export function InstallationPage() {
         },
         {
           id: 'non-dev',
-          label: 'Non-devs',
+          label: 'Rails / Ruby',
           body: (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
-                <strong>For designers, PMs, and partners.</strong> Same as the dev pull plus{' '}
-                <code style={mono}>components/*.json</code> (machine-readable specs) and{' '}
-                <code style={mono}>components.md</code> (one human-readable page covering every component — anatomy, props, variants, states, a11y, examples, do-nots).
-              </p>
-              <GitInstallBlock dsId="glds-web" branch="non-dev" variant="non-dev" />
+              <div style={{
+                padding: '16px 20px',
+                background: '#f0fdf4',
+                border: '1px solid #bbf7d0',
+                borderRadius: 12,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+              }}>
+                <span style={{ fontSize: 28 }}>💎</span>
+                <div>
+                  <p style={{ margin: '0 0 2px', fontWeight: 600, fontSize: 14, color: '#166534' }}>Ruby gem — coming soon</p>
+                  <p style={{ margin: 0, fontSize: 13, color: '#15803d' }}>
+                    Until then, use the <strong>Skill (.md)</strong> tab above — download the skill or context file.
+                  </p>
+                </div>
+              </div>
             </div>
           ),
         },

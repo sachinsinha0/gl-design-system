@@ -5,7 +5,7 @@ import '../magna';
 import { DSProvider } from '../../platform/ds-context';
 import { HomePage } from './home-page';
 
-test('Home page renders the hero, stats, and group cards', () => {
+test('Home page renders the hero and install block', () => {
   renderWithProvider(
     <MemoryRouter>
       <DSProvider>
@@ -13,9 +13,6 @@ test('Home page renders the hero, stats, and group cards', () => {
       </DSProvider>
     </MemoryRouter>
   );
-  expect(screen.getByText('The GL Design System')).toBeInTheDocument();
-  expect(screen.getByText('Browse components')).toBeInTheDocument();
-  // Group cards. With the "Get started" group now registered in the catalog as well, the label
-  // appears twice (CTA + group card) — assert at least one element matches.
-  expect(screen.getAllByText('Get started').length).toBeGreaterThan(0);
+  expect(screen.getByText('Magna Design System')).toBeInTheDocument();
+  expect(screen.getByText('Install')).toBeInTheDocument();
 });

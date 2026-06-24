@@ -4,14 +4,25 @@ dsId: jedi
 tags: [foundations, typography, inter]
 ---
 
-# Typography
+> **Who this is for:** Engineers picking type styles for internal / partner / admin surfaces with `@gl/jedi`.
+> **What this covers:** The Inter scale, why headings are 600 with tight tracking, and the mobile rules that diverge from Magna.
 
-**Single family: Inter.** Weights 400 / 500 / 600 — load only those three. Hierarchy comes from weight and size, not color: headings are the same ink as body.
+## Why it matters
 
-## Variants
+Hierarchy in Jedi comes from **weight and size**, not color — headings are the same ink as body. That discipline is what lets information-dense screens stay scannable without screaming. The 600-weight, -0.4px-tracking headline is the recognizable Jedi shape; mess with it and the system stops looking like itself.
 
-`h1`–`h5` (no `h6`), `subtitle1`/`2`, `body1`/`2`, `caption`, `overline`, `button`. The variant `h6` does not exist — if a sixth heading level feels necessary, the page hierarchy is too deep.
+## Core principles
 
+1. **Single family: Inter.** Weights 400 / 500 / 600 — load only those three.
+2. **Variants are closed.** `h1`–`h5` (no `h6`), `subtitle1`/`2`, `body1`/`2`, `caption`, `overline`, `button`. A sixth heading level = the hierarchy is too deep.
+3. **Headings 600 weight with -0.4px letter-spacing.** Compact, modern, product-y. Keep headlines short.
+4. **UPPERCASE only on buttons and overlines.** Everything else is sentence/title case.
+5. **Mobile body shrinks** (unlike Magna): below `md`, `body1` → 14/20, `body2` → 12/16, letter-spacing relaxes to 0.
+6. **Dark mode flips Button weight to 600 automatically.** Don't override.
+
+## How to implement
+
+### Headings + body + label
 ```tsx
 import { Typography, Stack } from '@mui/material';
 
@@ -22,27 +33,29 @@ import { Typography, Stack } from '@mui/material';
 </Stack>
 ```
 
-## SemiBold, negative tracking
+### Section heading (closed scale)
+```tsx
+<Typography variant="h5">Deepest heading level</Typography>  {/* ✅ */}
+<Typography variant="h6">Deepest heading level</Typography>  {/* ❌ doesn't exist */}
+```
 
-Headings are 600 weight with **-0.4px letter-spacing** — compact, modern, product-y. Keep headlines short; tight tracking punishes long ones.
-
-## UPPERCASE only on buttons and overlines
-
-Everything else is sentence/title case. No uppercase headings.
-
-## Dark-mode buttons step up to 600
-
-Light strokes on dark surfaces read thinner — the Button override flips weight automatically in dark mode. Don't ask devs to remember it; trust the theme.
-
-## Mobile body shrinks (unlike Magna)
-
-Below `md`, `body1` → 14px / 20px, `body2` → 12px / 16px. Letter-spacing also relaxes to 0 on mobile — tight tracking hurts small-screen legibility.
+### Don't reintroduce the family
+```tsx
+<Typography sx={{ fontFamily: 'Roboto' }}>…</Typography>     {/* ❌ */}
+<Typography>…</Typography>                                   {/* ✅ inherits Inter */}
+```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | `<Typography variant="h5">` for the deepest heading | `<Typography variant="h6">` (doesn't exist) |
-| Use `subtitle1`/`subtitle2` for labels | Use `body1` bolded as a label |
+| Use `subtitle1` / `subtitle2` for labels | Use `body1` bolded as a label |
 | Stick to Inter | Set `fontFamily: 'Roboto'` |
-| UPPERCASE only on buttons + overline | Uppercase headings or chips |
+| UPPERCASE only on buttons + overline | UPPERCASE headings or chips |
+
+## Related
+
+- [Color](/jedi/guidelines/color) — headings are the same ink as body
+- [Spacing](/jedi/guidelines/spacing) — non-linear `theme.spacing()` scale
+- [Accessibility](/jedi/guidelines/accessibility) — heading order, label rules

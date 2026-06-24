@@ -1,4 +1,4 @@
-import { useMemo, useState, type ComponentType, type ReactNode } from 'react';
+import { useState, type ComponentType, type ReactNode } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { JediProvider } from '@gl/jedi';
 import {
@@ -11,8 +11,6 @@ import {
   ListItemIcon,
   ListItemText,
   ListSubheader,
-  Menu,
-  MenuItem,
   Paper,
   Popper,
   Stack,
@@ -22,109 +20,15 @@ import {
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
-import ExpandMoreIcon from '@mui/icons-material/UnfoldMore';
-import CheckIcon from '@mui/icons-material/Check';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import { useActiveDS, useActiveDSId, useSetActiveDS } from '../../../platform/ds-context';
-import { listDesignSystems, hasDesignSystem, type DSId } from '../../../platform/ds-registry';
-import { equivalentSlug } from '../../../platform/ds-equivalence';
+import { useActiveDS, useActiveDSId } from '../../../platform/ds-context';
+import { type DSId } from '../../../platform/ds-registry';
 import { useDSSearch } from '../../../platform/search-index';
 import { usePageHeader } from '../../../platform/page-header';
+import { SharedDSSwitcher } from '../../../platform/ds-switcher';
 
 const SIDEBAR_WIDTH = 264;
-
-function DSSwitcher() {
-  const activeId = useActiveDSId();
-  const ds = useActiveDS();
-  const setActive = useSetActiveDS();
-  const { pathname } = useLocation();
-  const systems = listDesignSystems();
-  const [anchor, setAnchor] = useState<HTMLElement | null>(null);
-  const open = Boolean(anchor);
-  const theme = useTheme();
-
-  function switchTo(newId: DSId) {
-    setAnchor(null);
-    if (newId === activeId) return;
-    const parts = pathname.split('/').filter(Boolean);
-    const [first, ...rest] = parts;
-    const currentSlug = first && hasDesignSystem(first) && rest.length > 0 ? rest.join('/') : 'home';
-    const targetSlug = equivalentSlug(activeId, currentSlug, newId);
-    if (typeof window !== 'undefined' && targetSlug !== 'home') {
-      window.localStorage.setItem('ds.pendingSlug', targetSlug);
-    }
-    setActive(newId);
-  }
-
-  return (
-    <>
-      <ListItemButton
-        onClick={(e) => setAnchor(e.currentTarget)}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-label={`Switch design system. Current: ${ds.label}`}
-        sx={{ p: 1.5, gap: 1.25, flexGrow: 0, flexShrink: 0 }}
-      >
-        <Box
-          sx={{
-            width: 36,
-            height: 36,
-            borderRadius: 1.25,
-            bgcolor: 'primary.main',
-            color: 'primary.contrastText',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 600,
-            fontSize: 14
-          }}
-        >
-          {ds.label.slice(0, 2).toUpperCase()}
-        </Box>
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography variant="subtitle2" sx={{ lineHeight: 1.2 }}>{ds.label}</Typography>
-          <Typography variant="caption" color="text.secondary">{ds.tagline}</Typography>
-        </Box>
-        <ExpandMoreIcon fontSize="small" sx={{ color: 'text.secondary' }} />
-      </ListItemButton>
-      <Menu
-        anchorEl={anchor}
-        open={open}
-        onClose={() => setAnchor(null)}
-        slotProps={{ paper: { sx: { width: SIDEBAR_WIDTH - 24, mt: 0.5 } } }}
-        MenuListProps={{ role: 'listbox', dense: true }}
-      >
-        {systems.map((d) => {
-          const isActive = d.id === activeId;
-          return (
-            <MenuItem
-              key={d.id}
-              role="option"
-              aria-selected={isActive}
-              selected={isActive}
-              onClick={() => switchTo(d.id)}
-              sx={{ alignItems: 'flex-start', py: 1.25 }}
-            >
-              <ListItemIcon sx={{ minWidth: 28, mt: 0.5 }}>
-                {isActive ? <CheckIcon fontSize="small" color="primary" /> : null}
-              </ListItemIcon>
-              <ListItemText
-                primary={d.label}
-                secondary={d.tagline}
-                primaryTypographyProps={{
-                  variant: 'body2',
-                  sx: { color: isActive ? theme.palette.primary.main : 'text.primary', fontWeight: isActive ? 600 : 400 }
-                }}
-                secondaryTypographyProps={{ variant: 'caption' }}
-              />
-            </MenuItem>
-          );
-        })}
-      </Menu>
-    </>
-  );
-}
 
 function JediSearch() {
   const activeId = useActiveDSId();
@@ -191,8 +95,7 @@ function JediSearch() {
   );
 }
 
-function JediThemeSwitcher() {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+function JediThemeSwitcher({ mode, setMode }: { mode: 'light' | 'dark'; setMode: (m: 'light' | 'dark') => void }) {
   const isDark = mode === 'dark';
   return (
     <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ width: '100%' }}>
@@ -220,12 +123,12 @@ function JediSidebarNav() {
           component={RouterLink}
           to={homePath}
           selected={pathname === homePath}
-          sx={{ mx: 1, borderRadius: 1 }}
+          sx={{ mx: 1, borderRadius: 1, py: '8px', px: '10px' }}
         >
-          <ListItemIcon sx={{ minWidth: 32 }}>
-            <HomeIcon fontSize="small" />
+          <ListItemIcon sx={{ minWidth: 28 }}>
+            <HomeIcon sx={{ fontSize: 16 }} />
           </ListItemIcon>
-          <ListItemText primary="Home" primaryTypographyProps={{ variant: 'body2' }} />
+          <ListItemText primary="Home" primaryTypographyProps={{ sx: { fontSize: 13 } }} />
         </ListItemButton>
         {ds.registry.map((group) => {
           const GroupIcon = group.icon as ComponentType<{ size?: number; color?: string }> | undefined;
@@ -259,11 +162,11 @@ function JediSidebarNav() {
                     component={RouterLink}
                     to={to}
                     selected={selected}
-                    sx={{ mx: 1, borderRadius: 1 }}
+                    sx={{ mx: 1, borderRadius: 1, py: '8px', px: '10px' }}
                   >
                     <ListItemText
                       primary={entry.title}
-                      primaryTypographyProps={{ variant: 'body2' }}
+                      primaryTypographyProps={{ sx: { fontSize: 13 } }}
                     />
                   </ListItemButton>
                 );
@@ -278,6 +181,9 @@ function JediSidebarNav() {
 
 function JediPageHeader() {
   const { eyebrow, title } = usePageHeader();
+  const dsId = useActiveDSId();
+  const { pathname } = useLocation();
+  if (pathname === `/${dsId}` || pathname === '/') return null;
   return (
     <Box sx={{ pb: 2 }}>
       {eyebrow ? (
@@ -294,7 +200,7 @@ function JediPageHeader() {
   );
 }
 
-function JediShellInner({ children }: { children: ReactNode }) {
+function JediShellInner({ children, mode, setMode }: { children: ReactNode; mode: 'light' | 'dark'; setMode: (m: 'light' | 'dark') => void }) {
   const theme = useTheme();
   return (
     <Stack direction="row" sx={{ height: '100vh', bgcolor: 'background.default' }}>
@@ -313,7 +219,7 @@ function JediShellInner({ children }: { children: ReactNode }) {
           bgcolor: theme.palette.mode === 'dark' ? 'background.paper' : 'grey.50'
         }}
       >
-        <DSSwitcher />
+        <SharedDSSwitcher />
         <Box sx={{ px: 2, pb: 1.5 }}>
           <JediSearch />
         </Box>
@@ -321,10 +227,10 @@ function JediShellInner({ children }: { children: ReactNode }) {
         <JediSidebarNav />
         <Divider />
         <Box sx={{ p: 1.5 }}>
-          <JediThemeSwitcher />
+          <JediThemeSwitcher mode={mode} setMode={setMode} />
         </Box>
       </Paper>
-      <Box component="main" sx={{ flex: 1, overflow: 'auto' }}>
+      <Box component="main" sx={{ flex: 1, minWidth: 0, overflow: 'auto' }}>
         <Box
           sx={{
             display: 'flex',
@@ -333,7 +239,7 @@ function JediShellInner({ children }: { children: ReactNode }) {
             py: 4.5
           }}
         >
-          <Box sx={{ width: '100%', maxWidth: 1180 }}>
+          <Box sx={{ width: '100%', maxWidth: 1180, minWidth: 0 }}>
             <JediPageHeader />
             {children}
           </Box>
@@ -344,9 +250,10 @@ function JediShellInner({ children }: { children: ReactNode }) {
 }
 
 export function JediShell({ children }: { children: ReactNode }) {
+  const [mode, setMode] = useState<'light' | 'dark'>('light');
   return (
-    <JediProvider>
-      <JediShellInner>{children}</JediShellInner>
+    <JediProvider mode={mode}>
+      <JediShellInner mode={mode} setMode={setMode}>{children}</JediShellInner>
     </JediProvider>
   );
 }
