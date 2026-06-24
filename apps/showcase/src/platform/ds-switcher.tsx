@@ -26,37 +26,6 @@ function CheckIcon() {
 
 const S: Record<string, React.CSSProperties> = {
   root: { position: 'relative', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' },
-  brand: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 10,
-    padding: '14px 12px 10px',
-  },
-  brandLogo: {
-    width: 28,
-    height: 28,
-    flexShrink: 0,
-    display: 'block',
-  },
-  brandText: {
-    display: 'flex',
-    flexDirection: 'column',
-    lineHeight: 1.2,
-    minWidth: 0,
-  },
-  brandName: {
-    fontWeight: 600,
-    fontSize: 13,
-    color: 'inherit',
-    letterSpacing: '-0.01em',
-  },
-  brandSub: {
-    fontSize: 10.5,
-    color: '#6b7280',
-    marginTop: 1,
-    letterSpacing: '0.02em',
-    textTransform: 'uppercase',
-  },
   trigger: {
     display: 'flex',
     alignItems: 'center',
@@ -81,6 +50,11 @@ const S: Record<string, React.CSSProperties> = {
     fontSize: 13,
     flexShrink: 0,
     color: '#fff',
+  },
+  avatarLogo: {
+    width: 24,
+    height: 24,
+    display: 'block',
   },
   nameWrap: { flex: 1, minWidth: 0, textAlign: 'left' },
   name: { display: 'block', fontWeight: 600, fontSize: 14, lineHeight: 1.3, color: 'inherit' },
@@ -170,16 +144,6 @@ export function SharedDSSwitcher() {
 
   return (
     <div ref={rootRef} style={S.root}>
-      <div style={S.brand}>
-        <picture>
-          <source srcSet="/brand/great-learning-dark.svg" media="(prefers-color-scheme: dark)" />
-          <img src="/brand/great-learning-light.svg" alt="Great Learning" style={S.brandLogo} />
-        </picture>
-        <span style={S.brandText}>
-          <span style={S.brandName}>Great Learning</span>
-          <span style={S.brandSub}>Design Repository</span>
-        </span>
-      </div>
       <button
         type="button"
         style={{ ...S.trigger, background: open ? 'rgba(0,0,0,0.04)' : 'transparent' }}
@@ -191,7 +155,7 @@ export function SharedDSSwitcher() {
         onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = open ? 'rgba(0,0,0,0.04)' : 'transparent'; }}
       >
         <span style={{ ...S.avatar, background: avatarBg }}>
-          {ds.label.slice(0, 2).toUpperCase()}
+          <img src="/brand/great-learning-dark.svg" alt="Great Learning" style={S.avatarLogo} />
         </span>
         <span style={S.nameWrap}>
           <strong style={S.name}>{ds.label}</strong>
