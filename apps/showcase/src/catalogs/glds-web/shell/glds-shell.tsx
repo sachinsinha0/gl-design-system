@@ -111,7 +111,7 @@ function GLDSPageHeader() {
   const { pathname } = useLocation();
   if (pathname === `/${dsId}` || pathname === '/') return null;
   return (
-    <div>
+    <div className="glds-shell__page-header">
       {eyebrow ? <span className="glds-shell__eyebrow">{eyebrow}</span> : null}
       <h1 className="glds-shell__title">{title}</h1>
     </div>

@@ -93,12 +93,15 @@ const components = {
   blockquote: ({ children }: { children?: ReactNode }) => (
     <Box
       sx={{
-        borderLeft: 3,
-        borderColor: 'primary.main',
-        pl: 2,
-        py: 1,
-        my: 2,
-        bgcolor: 'action.hover',
+        my: 3,
+        px: 2.5,
+        py: 2,
+        background: 'linear-gradient(135deg, #e8f0fe 0%, #f5f8ff 100%)',
+        border: '1px solid',
+        borderColor: 'primary.100',
+        borderRadius: 2.5,
+        '& p': { mb: 0, '& + p': { mt: 1 } },
+        '& strong': { color: 'primary.dark' },
       }}
     >
       {children}

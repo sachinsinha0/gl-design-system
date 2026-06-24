@@ -76,12 +76,13 @@ const components: Record<string, ComponentType<{ children?: ReactNode }>> = {
   ),
   blockquote: ({ children }) => (
     <YStack
-      borderLeftWidth={3}
-      borderColor="$primary"
-      paddingLeft="$3"
-      paddingVertical="$2"
-      marginVertical="$2"
-      backgroundColor="$primaryContainer"
+      marginVertical="$3"
+      paddingHorizontal="$4"
+      paddingVertical="$3"
+      backgroundColor="$primaryFixedOpacity16P"
+      borderRadius={16}
+      borderWidth={1}
+      borderColor="$primaryFixed"
     >
       {children}
     </YStack>

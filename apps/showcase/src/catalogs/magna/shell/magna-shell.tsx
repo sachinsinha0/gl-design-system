@@ -253,9 +253,23 @@ function MagnaPageHeader() {
   const { pathname } = useLocation();
   if (pathname === `/${dsId}` || pathname === '/') return null;
   return (
-    <YStack paddingBottom="$3" gap="$0.5">
+    <YStack
+      paddingBottom="$4"
+      marginBottom="$4"
+      borderBottomWidth={1}
+      borderColor="$outlineVariant"
+      gap="$2"
+    >
       {eyebrow ? (
-        <Typography variant="overline" color="$onSurfaceVariant">{eyebrow}</Typography>
+        <XStack
+          alignSelf="flex-start"
+          backgroundColor="$primaryFixed"
+          paddingHorizontal="$2.5"
+          paddingVertical="$1"
+          borderRadius={8}
+        >
+          <Typography variant="overline" color="$onPrimaryFixed">{eyebrow}</Typography>
+        </XStack>
       ) : null}
       <Typography variant="h4">{title}</Typography>
     </YStack>

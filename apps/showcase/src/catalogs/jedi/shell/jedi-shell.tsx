@@ -186,17 +186,30 @@ function JediPageHeader() {
   const { pathname } = useLocation();
   if (pathname === `/${dsId}` || pathname === '/') return null;
   return (
-    <Box sx={{ pb: 2 }}>
+    <Box sx={{ mb: 4, pb: 3, borderBottom: '1px solid', borderColor: 'divider' }}>
       {eyebrow ? (
-        <Typography
-          variant="overline"
-          color="text.secondary"
-          sx={{ display: 'block', lineHeight: 1.6 }}
+        <Box
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            mb: 1.5,
+            px: 1.25,
+            py: 0.5,
+            bgcolor: 'primary.50',
+            border: '1px solid',
+            borderColor: 'primary.100',
+            borderRadius: 1.5,
+          }}
         >
-          {eyebrow}
-        </Typography>
+          <Typography
+            variant="caption"
+            sx={{ color: 'primary.main', fontWeight: 600, fontSize: 11, letterSpacing: '0.03em' }}
+          >
+            {eyebrow}
+          </Typography>
+        </Box>
       ) : null}
-      <Typography variant="h4" sx={{ fontWeight: 600 }}>{title}</Typography>
+      <Typography variant="h4" sx={{ fontWeight: 700, lineHeight: 1.2 }}>{title}</Typography>
     </Box>
   );
 }
