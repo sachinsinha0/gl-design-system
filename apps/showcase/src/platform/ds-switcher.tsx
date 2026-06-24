@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { withBase } from './base';
 import { useActiveDS, useActiveDSId, useSetActiveDS } from './ds-context';
 import { listDesignSystems, hasDesignSystem, type DSId } from './ds-registry';
 import { equivalentSlug } from './ds-equivalence';
@@ -155,7 +156,7 @@ export function SharedDSSwitcher() {
         onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = open ? 'rgba(0,0,0,0.04)' : 'transparent'; }}
       >
         <span style={{ ...S.avatar, background: avatarBg }}>
-          <img src="/brand/great-learning-dark.svg" alt="Great Learning" style={S.avatarLogo} />
+          <img src={withBase('/brand/great-learning-dark.svg')} alt="Great Learning" style={S.avatarLogo} />
         </span>
         <span style={S.nameWrap}>
           <strong style={S.name}>{ds.label}</strong>
