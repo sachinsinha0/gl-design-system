@@ -92,17 +92,19 @@ const components = {
   ),
   blockquote: ({ children }: { children?: ReactNode }) => (
     <Box
-      sx={{
+      sx={(theme) => ({
         my: 3,
         px: 2.5,
         py: 2,
-        background: 'linear-gradient(135deg, #e8f0fe 0%, #f5f8ff 100%)',
+        background: theme.palette.mode === 'dark'
+          ? 'rgba(25,106,229,0.12)'
+          : 'linear-gradient(135deg, #e8f0fe 0%, #f5f8ff 100%)',
         border: '1px solid',
-        borderColor: 'primary.100',
+        borderColor: theme.palette.mode === 'dark' ? 'rgba(25,106,229,0.28)' : '#c5d5fb',
         borderRadius: 2.5,
         '& p': { mb: 0, '& + p': { mt: 1 } },
-        '& strong': { color: 'primary.dark' },
-      }}
+        '& strong': { color: theme.palette.mode === 'dark' ? 'primary.light' : 'primary.dark' },
+      })}
     >
       {children}
     </Box>

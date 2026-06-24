@@ -349,8 +349,12 @@
 }
 
 /* ── MDX prose ──────────────────────────────────────────────── */
+/* Tamagui's global reset does `all: unset` on p, ul, ol, li, pre —
+   which sets display to its initial value (inline). Every class here
+   must explicitly restore display: block / list-item as needed. */
 
 [data-ds='glds-web'] .glds-h1 {
+  display: block;
   margin: 0 0 20px;
   font-size: 32px;
   font-weight: 800;
@@ -360,6 +364,7 @@
 }
 
 [data-ds='glds-web'] .glds-h2 {
+  display: block;
   margin: 36px 0 12px;
   font-size: 20px;
   font-weight: 700;
@@ -368,6 +373,7 @@
 }
 
 [data-ds='glds-web'] .glds-h3 {
+  display: block;
   margin: 28px 0 8px;
   font-size: 16px;
   font-weight: 700;
@@ -376,6 +382,7 @@
 }
 
 [data-ds='glds-web'] .glds-h4 {
+  display: block;
   margin: 20px 0 6px;
   font-size: 14px;
   font-weight: 600;
@@ -384,6 +391,7 @@
 }
 
 [data-ds='glds-web'] .glds-body1 {
+  display: block;
   margin: 0 0 14px;
   font-size: 15px;
   line-height: 1.72;
@@ -391,9 +399,9 @@
 }
 
 [data-ds='glds-web'] .glds-list {
+  display: block;
   margin: 0 0 16px;
   padding-left: 24px;
-  display: block;
   list-style-type: disc;
 }
 
@@ -407,6 +415,7 @@
 }
 
 [data-ds='glds-web'] .glds-list .glds-body1 {
+  display: inline;
   margin: 0;
 }
 
@@ -420,6 +429,7 @@
 }
 
 [data-ds='glds-web'] .glds-pre {
+  display: block;
   margin: 16px 0 20px;
   padding: 18px 20px;
   background: #0f172a;
@@ -440,6 +450,7 @@
 }
 
 [data-ds='glds-web'] .glds-blockquote {
+  display: block;
   margin: 20px 0 24px;
   padding: 16px 20px;
   background: linear-gradient(135deg, #fff7ed 0%, #fffdf9 100%);

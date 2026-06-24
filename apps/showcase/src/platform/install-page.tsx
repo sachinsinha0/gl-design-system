@@ -150,17 +150,17 @@ function PageUrlBar() {
         alignItems: 'center',
         gap: 6,
         padding: '5px 10px',
-        background: '#f1f5f9',
-        border: '1px solid #e2e8f0',
+        background: 'var(--action-hover, #f1f5f9)',
+        border: '1px solid var(--other-divider, #e2e8f0)',
         borderRadius: 20,
         cursor: 'pointer',
         fontSize: 12,
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-        color: '#475569',
+        color: 'var(--text-secondary, #475569)',
         lineHeight: 1,
       }}
     >
-      <span style={{ color: '#94a3b8', display: 'flex' }}><IconLink /></span>
+      <span style={{ color: 'var(--text-disabled, #94a3b8)', display: 'flex' }}><IconLink /></span>
       <span>{url}</span>
       <span style={{ color: copied ? '#22c55e' : '#94a3b8', display: 'flex', marginLeft: 2 }}>
         {copied ? <IconCheck /> : <IconCopy />}
@@ -211,7 +211,7 @@ export function CopyCodeBlock({ children, label }: { children: string; label?: s
           style={{
             fontSize: 11,
             fontWeight: 600,
-            color: '#64748b',
+            color: 'var(--text-secondary, #64748b)',
             textTransform: 'uppercase',
             letterSpacing: 0.6,
           }}
@@ -313,10 +313,10 @@ export function GitInstallBlock({
   cp -r ${subdir} ../${target} && cd .. && rm -rf .gl-tmp`;
   const monoChip: React.CSSProperties = {
     fontFamily: 'ui-monospace, Menlo, monospace',
-    background: '#f1f5f9',
+    background: 'var(--action-hover, #f1f5f9)',
     padding: '1px 5px',
     borderRadius: 4,
-    color: '#475569',
+    color: 'var(--text-secondary, #475569)',
   };
   // What ships in the pulled folder for each branch variant.
   const ships =
@@ -327,16 +327,16 @@ export function GitInstallBlock({
         : ['skills/', 'guidelines/', 'components/', 'tokens/'];
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+      <p style={{ margin: 0, fontSize: 14, color: 'var(--text-primary, #374151)' }}>
         The repo <strong>is</strong> the distribution — there is no npm package. Pull just <code style={monoChip}>{subdir}/</code> from branch <code style={monoChip}>{branch}</code> into your project with one command.
       </p>
       <CopyCodeBlock label="Recommended · degit (no .git history)">{degit}</CopyCodeBlock>
       <CopyCodeBlock label="Alternate · sparse-checkout (keeps git history)">{sparse}</CopyCodeBlock>
-      <p style={{ margin: 0, fontSize: 12, color: '#64748b' }}>
+      <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary, #64748b)' }}>
         <strong>Update later:</strong> re-run the degit command. It overwrites the target folder with the latest <code style={monoChip}>{branch}</code>.
       </p>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' }}>
-        <span style={{ fontSize: 12, color: '#64748b' }}>Ships under <code style={monoChip}>{subdir}/</code>:</span>
+        <span style={{ fontSize: 12, color: 'var(--text-secondary, #64748b)' }}>Ships under <code style={monoChip}>{subdir}/</code>:</span>
         {ships.map((s) => (
           <code key={s} style={{ ...monoChip, fontSize: 12 }}>{s}</code>
         ))}
@@ -360,10 +360,10 @@ export function AssetCard({ asset }: { asset: InstallAsset }) {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 16,
-        border: '1px solid #e2e8f0',
+        border: '1px solid var(--other-divider, #e2e8f0)',
         borderRadius: 12,
         gap: 12,
-        background: '#f8fafc',
+        background: 'var(--background-paper-elevation-0, #f8fafc)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 0 }}>
@@ -372,11 +372,11 @@ export function AssetCard({ asset }: { asset: InstallAsset }) {
             width: 40,
             height: 40,
             borderRadius: 10,
-            background: '#eff6ff',
+            background: 'var(--action-selected, #eff6ff)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#2563eb',
+            color: 'var(--primary-main, #2563eb)',
             flexShrink: 0,
           }}
         >
@@ -387,7 +387,7 @@ export function AssetCard({ asset }: { asset: InstallAsset }) {
             style={{
               fontWeight: 600,
               fontSize: 14,
-              color: '#0f172a',
+              color: 'var(--text-primary, #0f172a)',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -399,10 +399,10 @@ export function AssetCard({ asset }: { asset: InstallAsset }) {
                 style={{
                   marginLeft: 8,
                   padding: '2px 6px',
-                  background: '#f1f5f9',
+                  background: 'var(--action-hover, #f1f5f9)',
                   borderRadius: 4,
                   fontSize: 11,
-                  color: '#64748b',
+                  color: 'var(--text-secondary, #64748b)',
                   fontWeight: 500,
                 }}
               >
@@ -410,9 +410,9 @@ export function AssetCard({ asset }: { asset: InstallAsset }) {
               </span>
             ) : null}
           </div>
-          <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>
+          <div style={{ fontSize: 12, color: 'var(--text-secondary, #64748b)', marginTop: 2 }}>
             {asset.description}
-            {asset.size ? <span style={{ marginLeft: 4, color: '#94a3b8' }}>· {asset.size}</span> : null}
+            {asset.size ? <span style={{ marginLeft: 4, color: 'var(--text-disabled, #94a3b8)' }}>· {asset.size}</span> : null}
           </div>
         </div>
       </div>
@@ -420,10 +420,10 @@ export function AssetCard({ asset }: { asset: InstallAsset }) {
         <span
           style={{
             padding: '6px 12px',
-            background: '#f1f5f9',
+            background: 'var(--action-hover, #f1f5f9)',
             borderRadius: 8,
             fontSize: 12,
-            color: '#94a3b8',
+            color: 'var(--text-disabled, #94a3b8)',
             flexShrink: 0,
           }}
         >
@@ -439,7 +439,7 @@ export function AssetCard({ asset }: { asset: InstallAsset }) {
             gap: 6,
             padding: '9px 16px',
             borderRadius: 8,
-            background: '#2563eb',
+            background: 'var(--primary-main, #2563eb)',
             color: '#fff',
             border: 'none',
             fontWeight: 600,
@@ -473,7 +473,7 @@ export function InstallPage(props: InstallPageProps) {
         flexDirection: 'column',
         gap: 24,
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        color: '#0f172a',
+        color: 'var(--text-primary, #0f172a)',
         width: '100%',
       }}
     >
@@ -481,7 +481,7 @@ export function InstallPage(props: InstallPageProps) {
       <div>
         <div
           role="tablist"
-          style={{ display: 'flex', borderBottom: '1px solid #e2e8f0' }}
+          style={{ display: 'flex', borderBottom: '1px solid var(--other-divider, #e2e8f0)' }}
         >
           {tabs.map((t) => {
             const isActive = t.id === active?.id;
@@ -518,7 +518,7 @@ export function InstallPage(props: InstallPageProps) {
 
       {installCommand && packageName ? (
         <>
-          <hr style={{ border: 'none', borderTop: '1px solid #e2e8f0', margin: 0 }} />
+          <hr style={{ border: 'none', borderTop: '1px solid var(--other-divider, #e2e8f0)', margin: 0 }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <p
               style={{
@@ -527,21 +527,21 @@ export function InstallPage(props: InstallPageProps) {
                 fontWeight: 700,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: '#94a3b8',
+                color: 'var(--text-disabled, #94a3b8)',
               }}
             >
               Install the package
             </p>
-            <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+            <p style={{ margin: 0, fontSize: 14, color: 'var(--text-primary, #374151)' }}>
               Inside any workspace that consumes {dsLabel}:
             </p>
             <CodeBlock>{installCommand}</CodeBlock>
-            <p style={{ margin: 0, fontSize: 12, color: '#64748b' }}>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary, #64748b)' }}>
               Package:{' '}
               <code
                 style={{
                   fontFamily: 'ui-monospace, Menlo, monospace',
-                  background: '#f1f5f9',
+                  background: 'var(--action-hover, #f1f5f9)',
                   padding: '1px 5px',
                   borderRadius: 4,
                 }}
@@ -555,7 +555,7 @@ export function InstallPage(props: InstallPageProps) {
 
       {howToUse ? (
         <>
-          <hr style={{ border: 'none', borderTop: '1px solid #e2e8f0', margin: 0 }} />
+          <hr style={{ border: 'none', borderTop: '1px solid var(--other-divider, #e2e8f0)', margin: 0 }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <p
               style={{
@@ -564,7 +564,7 @@ export function InstallPage(props: InstallPageProps) {
                 fontWeight: 700,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: '#94a3b8',
+                color: 'var(--text-disabled, #94a3b8)',
               }}
             >
               How to use

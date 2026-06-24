@@ -60,16 +60,16 @@ const S: Record<string, React.CSSProperties> = {
   },
   nameWrap: { flex: 1, minWidth: 0, textAlign: 'left' },
   name: { display: 'block', fontWeight: 600, fontSize: 14, lineHeight: 1.3, color: 'inherit' },
-  tagline: { display: 'block', fontSize: 11, color: '#6b7280', marginTop: 1 },
-  chevron: { color: '#9ca3af', flexShrink: 0, display: 'flex' },
+  tagline: { display: 'block', fontSize: 11, color: 'var(--text-secondary, #6b7280)', marginTop: 1 },
+  chevron: { color: 'var(--text-disabled, #9ca3af)', flexShrink: 0, display: 'flex' },
   menu: {
     position: 'absolute',
     top: '100%',
     left: 8,
     right: 8,
     marginTop: 4,
-    background: '#fff',
-    border: '1px solid #e5e7eb',
+    background: 'var(--background-paper-elevation-0, #fff)',
+    border: '1px solid var(--other-divider, #e5e7eb)',
     borderRadius: 12,
     boxShadow: '0 10px 32px rgba(0,0,0,0.13)',
     padding: 4,
@@ -89,11 +89,11 @@ const S: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
     textAlign: 'left',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-    color: '#111827',
+    color: 'var(--text-primary, #111827)',
   },
   checkCol: { width: 16, flexShrink: 0, marginTop: 2, display: 'flex' },
   itemName: { display: 'block', fontWeight: 600, fontSize: 13, lineHeight: 1.3 },
-  itemTagline: { display: 'block', fontSize: 11, color: '#6b7280', marginTop: 2 },
+  itemTagline: { display: 'block', fontSize: 11, color: 'var(--text-secondary, #6b7280)', marginTop: 2 },
 };
 
 /** Avatar background per DS id — keeps each DS visually distinct in the switcher. */
@@ -179,8 +179,10 @@ export function SharedDSSwitcher() {
                   aria-selected={isActive}
                   style={{
                     ...S.item,
-                    background: isActive ? '#eff6ff' : isHovered ? '#f3f4f6' : 'transparent',
-                    color: isActive ? '#1d4ed8' : '#111827',
+                    background: isActive
+                      ? 'var(--action-selected, #eff6ff)'
+                      : isHovered ? 'var(--action-hover, #f3f4f6)' : 'transparent',
+                    color: isActive ? 'var(--primary-main, #1d4ed8)' : 'var(--text-primary, #111827)',
                   }}
                   onMouseEnter={() => setHovered(d.id)}
                   onMouseLeave={() => setHovered(null)}

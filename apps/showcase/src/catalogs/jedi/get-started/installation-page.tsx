@@ -9,7 +9,7 @@ import skillUrl from '../../../../../../ai/jedi/skills/jedi-design-system/SKILL.
 import contextUrl from '../../../../../../ai/jedi/skills/jedi-design-system/context.md?url';
 import referenceUrl from '../../../../../../ai/jedi/skills/jedi-design-system/reference.md?url';
 
-const dim = { margin: 0, fontSize: 12, color: '#64748b' };
+const dim = { margin: 0, fontSize: 12, color: 'var(--text-secondary, #64748b)' };
 
 export function InstallationPage() {
   return (
@@ -31,14 +31,14 @@ export function InstallationPage() {
           },
           body: (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+              <p style={{ margin: 0, fontSize: 14, color: 'var(--text-primary, #374151)' }}>
                 Drop the file into your project at:
               </p>
               <CodeBlock>{'.claude/skills/jedi-design-system/SKILL.md'}</CodeBlock>
               <p style={dim}>
                 Triggers on any staff / partner-admin UI task. Don&apos;t cross-fire with Magna or GLDS-Web skills.
               </p>
-              <hr style={{ border: 'none', borderTop: '1px solid #e2e8f0', margin: '4px 0' }} />
+              <hr style={{ border: 'none', borderTop: '1px solid var(--other-divider, #e2e8f0)', margin: '4px 0' }} />
               <p
                 style={{
                   margin: 0,
@@ -46,7 +46,7 @@ export function InstallationPage() {
                   fontWeight: 700,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
-                  color: '#94a3b8',
+                  color: 'var(--text-disabled, #94a3b8)',
                 }}
               >
                 Also ships in the same folder
@@ -78,12 +78,12 @@ export function InstallationPage() {
           label: 'Devs',
           body: (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+              <p style={{ margin: 0, fontSize: 14, color: 'var(--text-primary, #374151)' }}>
                 <strong>For engineers wiring Jedi components.</strong> Pulls{' '}
-                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>skills/</code>,{' '}
-                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>guidelines/</code>, and{' '}
-                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>tokens/</code>{' '}
-                — no component spec files (devs read the source under <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>packages/jedi/</code>).
+                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: 'var(--action-hover, #f1f5f9)', padding: '1px 5px', borderRadius: 4 }}>skills/</code>,{' '}
+                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: 'var(--action-hover, #f1f5f9)', padding: '1px 5px', borderRadius: 4 }}>guidelines/</code>, and{' '}
+                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: 'var(--action-hover, #f1f5f9)', padding: '1px 5px', borderRadius: 4 }}>tokens/</code>{' '}
+                — no component spec files (devs read the source under <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: 'var(--action-hover, #f1f5f9)', padding: '1px 5px', borderRadius: 4 }}>packages/jedi/</code>).
               </p>
               <GitInstallBlock dsId="jedi" branch="dev" variant="dev" />
             </div>
