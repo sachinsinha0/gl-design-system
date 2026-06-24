@@ -56,6 +56,7 @@ const S: Record<string, React.CSSProperties> = {
     width: 24,
     height: 24,
     display: 'block',
+    filter: 'brightness(0) invert(1)',
   },
   nameWrap: { flex: 1, minWidth: 0, textAlign: 'left' },
   name: { display: 'block', fontWeight: 600, fontSize: 14, lineHeight: 1.3, color: 'inherit' },
