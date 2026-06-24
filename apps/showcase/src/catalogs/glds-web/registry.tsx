@@ -11,6 +11,7 @@ import TypeGuide from '../../../../../ai/glds-web/guidelines/typography.mdx';
 import SpacingGuide from '../../../../../ai/glds-web/guidelines/spacing.mdx';
 import AccessibilityGuide from '../../../../../ai/glds-web/guidelines/accessibility.mdx';
 import UsageGuide from '../../../../../ai/glds-web/guidelines/usage.mdx';
+import ContentGuide from '../../../../../ai/_shared/guidelines/content.mdx';
 
 const wrap = (Mdx: React.ComponentType) =>
   function GuidelinePage() {
@@ -47,13 +48,14 @@ export const catalog: CatalogGroup[] = [
     id: 'guidelines',
     label: 'Guidelines',
     icon: BookOpen,
-    description: 'GLDS-Web design rules — color, typography, spacing, accessibility, usage.',
+    description: 'GLDS-Web design rules — color, typography, spacing, accessibility, usage, content.',
     entries: [
       { slug: 'guidelines/color', title: 'Color', Component: wrap(ColorGuide) },
       { slug: 'guidelines/typography', title: 'Typography', Component: wrap(TypeGuide) },
       { slug: 'guidelines/spacing', title: 'Spacing', Component: wrap(SpacingGuide) },
       { slug: 'guidelines/accessibility', title: 'Accessibility', Component: wrap(AccessibilityGuide) },
-      { slug: 'guidelines/usage', title: 'Usage', Component: wrap(UsageGuide) }
+      { slug: 'guidelines/usage', title: 'Usage', Component: wrap(UsageGuide) },
+      { slug: 'guidelines/content', title: 'Content', Component: wrap(ContentGuide) }
     ]
   }
 ];

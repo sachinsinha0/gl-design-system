@@ -230,7 +230,7 @@ function JediShellInner({ children, mode, setMode }: { children: ReactNode; mode
           <JediThemeSwitcher mode={mode} setMode={setMode} />
         </Box>
       </Paper>
-      <Box component="main" sx={{ flex: 1, overflow: 'auto' }}>
+      <Box component="main" sx={{ flex: 1, minWidth: 0, overflow: 'auto' }}>
         <Box
           sx={{
             display: 'flex',
@@ -239,7 +239,7 @@ function JediShellInner({ children, mode, setMode }: { children: ReactNode; mode
             py: 4.5
           }}
         >
-          <Box sx={{ width: '100%', maxWidth: 1180 }}>
+          <Box sx={{ width: '100%', maxWidth: 1180, minWidth: 0 }}>
             <JediPageHeader />
             {children}
           </Box>

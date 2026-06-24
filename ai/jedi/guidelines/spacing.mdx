@@ -1,15 +1,29 @@
 ---
 title: Spacing
 dsId: jedi
-tags: [foundations, spacing, layout]
+tags: [foundations, spacing, layout, touch-targets]
 ---
 
-# Spacing
+> **Who this is for:** Engineers laying out forms, tables, and dashboards with `@gl/jedi`.
+> **What this covers:** Jedi's **non-linear** spacing scale (the famous "`theme.spacing(3)` ≠ 24px" trap), density-by-posture, and the 44px touch-target rule for partner-facing surfaces.
 
-Jedi's spacing scale is **indexed and non-linear**: `[0, 4, 8, 16, 24, 32, 40, 48, 64, 96, 128]`. `theme.spacing(3)` returns **16px**, NOT MUI's default 24px (`8 × n`). The non-linear jump (`…48 → 64 → 96 → 128`) exists so large layout gaps come from a sanctioned set, not arbitrary multiples.
+## Why it matters
 
+Jedi's spacing scale is **indexed and non-linear**: `[0, 4, 8, 16, 24, 32, 40, 48, 64, 96, 128]`. `theme.spacing(3)` returns **16px**, NOT MUI's default 24px (`8 × n`). Devs coming from stock MUI get this wrong every time — the non-linear jump at the top (`…48 → 64 → 96 → 128`) exists so big layout gaps come from a sanctioned set, not arbitrary multiples.
+
+## Core principles
+
+1. **Always reference the indexed scale.** `sx={{ p: 4 }}` (= 24px), not `sx={{ p: '24px' }}`.
+2. **Never use magic numbers.** `13px`, `15px`, `17px`, `20px`, `22px` are off-grid and forbidden.
+3. **Density by posture.** Internal (staff) = compact. Partner (semi-external) = standard. Never mix in one view.
+4. **Touch targets ≥ 44×44px** on partner-facing surfaces.
+5. **`<Stack spacing={…}>` over hand-spaced siblings.** No `marginBottom` between siblings.
+
+## How to implement
+
+### Read the scale (avoid the gotcha)
 ```tsx
-import { Stack, Box, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 const t = useTheme();
 t.spacing(0); // '0px'
@@ -17,38 +31,35 @@ t.spacing(1); // '4px'
 t.spacing(2); // '8px'
 t.spacing(3); // '16px'  ⚠️ NOT 24px
 t.spacing(4); // '24px'
+```
 
-<Stack spacing={3} sx={{ p: 4 }}>
-  ...
+### Layout with `Stack`
+```tsx
+import { Stack, Typography } from '@mui/material';
+
+<Stack spacing={3} sx={{ p: 4 }}>   {/* 16px gap, 24px padding */}
+  <Typography variant="h5">Settings</Typography>
+  <Typography>Manage your team and billing.</Typography>
 </Stack>
 ```
 
-## Density by posture
-
-- **Internal** (staff/admin): density allowed; compact tables, dense menu items.
-- **Partner** (semi-external): standard density; extra legibility.
-
-Never mix densities in one view.
-
-## Touch targets ≥ 44×44px
-
-On partner-facing surfaces, every interactive element must be at least 44×44px. Small Buttons (12px label) belong in internal data-dense views only.
-
-## Magic numbers are forbidden
-
+### Off-grid is forbidden
 ```tsx
-// ❌ off-grid magic numbers
-<Box sx={{ mt: '20px', pl: '13px' }}>...</Box>
-
-// ✅ indexed scale
-<Box sx={{ mt: 4, pl: 2 }}>...</Box>
+<Box sx={{ mt: '20px', pl: '13px' }}>...</Box>  {/* ❌ off-grid */}
+<Box sx={{ mt: 4, pl: 2 }}>...</Box>            {/* ✅ on-grid */}
 ```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | `sx={{ p: 4 }}` (= 24px) | `sx={{ p: '24px' }}` |
 | `<Stack spacing={3}>` (= 16px gap) | Hand-spaced `<Box mt="16px">` between siblings |
-| Use `sm`/`md`/`lg` Button per posture | Ship 12px labels on a partner-facing page |
-| Match the array exactly | Reach for 13/15/17/22px |
+| Use `sm` / `md` / `lg` Button per posture | Ship 12px labels on a partner-facing page |
+| Match the array exactly | Reach for 13 / 15 / 17 / 22px |
+
+## Related
+
+- [Usage](/jedi/guidelines/usage) — density-by-posture is a usage rule
+- [Accessibility](/jedi/guidelines/accessibility) — 44px touch target on partner surfaces
+- [Typography](/jedi/guidelines/typography) — paired with this spacing scale

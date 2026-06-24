@@ -96,53 +96,26 @@ export function InstallationPage() {
         },
         {
           id: 'non-dev',
-          label: 'Rails / Non-JS',
+          label: 'Rails / Ruby',
           body: (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div style={{
-                padding: '12px 16px',
-                background: '#fff7ed',
-                border: '1px solid #fed7aa',
-                borderRadius: 10,
-                display: 'flex',
-                gap: 10,
-                alignItems: 'flex-start',
-              }}>
-                <span style={{ fontSize: 18, lineHeight: 1.2, flexShrink: 0 }}>⚠️</span>
-                <div>
-                  <p style={{ margin: '0 0 4px', fontWeight: 600, fontSize: 14, color: '#9a3412' }}>
-                    npm / Yarn won&apos;t work for Rails apps
-                  </p>
-                  <p style={{ margin: 0, fontSize: 13, color: '#7c2d12' }}>
-                    GLDS-Web ships as plain HTML + CSS, not a JS package. There&apos;s no <code style={mono}>npm install @gl/glds-web</code> that
-                    works in a Rails asset pipeline. Use the Skill or context.md files above instead — download from the <strong>Skill (.md)</strong> tab.
-                  </p>
-                </div>
-              </div>
-              <div style={{
-                padding: '12px 16px',
+                padding: '16px 20px',
                 background: '#f0fdf4',
                 border: '1px solid #bbf7d0',
-                borderRadius: 10,
+                borderRadius: 12,
                 display: 'flex',
-                gap: 10,
-                alignItems: 'flex-start',
+                alignItems: 'center',
+                gap: 12,
               }}>
-                <span style={{ fontSize: 18, lineHeight: 1.2, flexShrink: 0 }}>💎</span>
+                <span style={{ fontSize: 28 }}>💎</span>
                 <div>
-                  <p style={{ margin: '0 0 4px', fontWeight: 600, fontSize: 14, color: '#166534' }}>
-                    Ruby gem — coming soon
-                  </p>
+                  <p style={{ margin: '0 0 2px', fontWeight: 600, fontSize: 14, color: '#166534' }}>Ruby gem — coming soon</p>
                   <p style={{ margin: 0, fontSize: 13, color: '#15803d' }}>
-                    A <code style={mono}>gl-glds-web</code> Ruby gem will let you drop GLDS-Web into any Rails app via the asset pipeline.
-                    Until then, copy the CSS recipes directly from the <strong>Components</strong> section above, or pull the AI skill with degit.
+                    Until then, use the <strong>Skill (.md)</strong> tab above — download the skill or context file.
                   </p>
                 </div>
               </div>
-              <p style={{ margin: 0, fontSize: 13, color: '#64748b' }}>
-                For non-JS contexts that still want AI-assisted design, pull the full AI context via degit below:
-              </p>
-              <GitInstallBlock dsId="glds-web" branch="non-dev" variant="non-dev" />
             </div>
           ),
         },

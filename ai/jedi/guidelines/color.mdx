@@ -4,46 +4,60 @@ dsId: jedi
 tags: [foundations, color, mui, tokens]
 ---
 
-# Color
+> **Who this is for:** Engineers building internal tools, partner dashboards, and admin UIs with `@gl/jedi`.
+> **What this covers:** The "one loud blue, calm ink" palette — when to use `.main` vs `.dark`, why `secondary` is decorative-only, and the tinted-surface recipe for alerts and banners.
 
-Jedi is **one loud blue, calm ink**. Near-black `#212121` ink at high alpha, quiet 6% dividers, white paper — Primary blue carries every interactive moment. Secondary orange appears rarely as warmth, **never** as a competing voice or a status meaning.
+## Why it matters
 
-Source of truth: `getColors(mode)`. Never paste a hex into component code.
+Staff and partners live in Jedi for hours. Color noise compounds — every red border, every orange chip drains attention. Jedi is built so that one color (Primary blue) carries every interactive moment, ink stays near-black, and feedback always passes contrast. The discipline isn't aesthetic — it's measured: `error.main` only scores 3.64:1 on white, which **fails** AA for text.
 
+## Core principles
+
+1. **Source of truth: `getColors(mode)`.** Never paste a hex into component code.
+2. **Status text uses `.dark`** in light mode — `primary.main` (4.96:1) and `error.dark` (5.55:1) pass AA; `error.main` / `success.main` / `warning.main` do not.
+3. **Tinted alerts use the 160p / 190p recipe** — `<Alert>` already does this for you.
+4. **Secondary (orange) is decorative warmth, not caution.** Caution belongs to `warning` via the tint recipe.
+5. **Dividers are sparse (6% by design).** Default to whitespace; reach for `<Divider>` only when spacing + outlined surface won't do.
+
+## How to implement
+
+### Status text
 ```tsx
-import { useTheme, Stack, Typography, Alert } from '@mui/material';
+import { Typography } from '@mui/material';
 
-const theme = useTheme();
-const primary = theme.palette.primary.main; // -> #196AE5 (light)
-
-// ✅ Status text uses .dark (AA on white)
-<Typography color="error.dark">Could not save changes.</Typography>
-
-// ✅ Tinted alert uses 160p/190p
-<Alert severity="success">Application submitted.</Alert>
+<Typography color="error.dark">Could not save changes.</Typography>     {/* ✅ */}
+<Typography color="error.main">Could not save changes.</Typography>     {/* ❌ 3.64:1 fails */}
 ```
 
-## Status: text-safe colors are `.dark`
+### Tinted alert / banner
+```tsx
+import { Alert, AlertTitle } from '@mui/material';
 
-`primary.main` (4.96:1) and `error.dark` (5.55:1) pass AA on white. **`error.main`, `success.main`, `warning.main` and `warning.dark` do NOT pass for text** — use them for fills/icons/large text only. Colored text in light mode uses the `.dark` variant.
+<Alert severity="success">
+  <AlertTitle>Application submitted</AlertTitle>
+  We'll email you when the review starts.
+</Alert>
+```
 
-## Tinted surfaces (alerts, banners)
+### Reading a color from the theme
+```tsx
+import { useTheme } from '@mui/material';
 
-Standard recipe: background `shades-190-p`, text/icon `shades-160-p`. All pairs measured AA+. Use `<Alert>` and let it pick the right tokens.
-
-## Secondary is orange — and it's decorative
-
-`secondary` is the warm support accent. It is **not a status color** — caution belongs to `warning` via the 160/190 tint recipe. Never reach for `secondary` to mean "be careful".
-
-## Dividers are 6% by design
-
-Light-mode `other.divider` is 6% — lighter than MUI's default 12%. Don't "darken" it. Default to whitespace; reach for a divider only when grouping cannot be achieved by spacing or an outlined surface.
+const theme = useTheme();
+const accent = theme.palette.primary.main;   // → #196AE5 in light mode
+```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | `color="error.dark"` for inline error text | `color="error.main"` for inline error text |
-| Use `<Alert severity="warning">` for amber notices | Set `color="warning.main"` on `<Typography>` (1.65:1 — fails) |
+| Use `<Alert severity="warning">` for amber notices | `color="warning.main"` on `<Typography>` (1.65:1 — fails) |
 | Use `secondary` for decorative warmth | Use `secondary` to mean caution |
-| Keep dividers sparse | Add a `<Divider>` between every list item |
+| Default to whitespace; sparse `<Divider>` | A `<Divider>` between every list item |
+
+## Related
+
+- [Accessibility](/jedi/guidelines/accessibility) — full contrast rules, including `.dark` requirements
+- [Typography](/jedi/guidelines/typography) — hierarchy from weight + size, not color
+- [Usage](/jedi/guidelines/usage) — sovereign-posture rules

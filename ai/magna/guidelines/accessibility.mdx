@@ -1,43 +1,77 @@
 ---
 title: Accessibility
 dsId: magna
-tags: [a11y, contrast, wcag]
+tags: [a11y, contrast, wcag, m3]
 ---
 
-# Accessibility
+> **Who this is for:** Engineers shipping learner-facing UI — every screen, every state.
+> **What this covers:** The non-negotiable rules that come for free if you respect M3 role pairing, plus semantic markup, focus, and touch targets.
 
-Because M3 pairs roles for contrast, **following the role pairing IS the accessibility rule**. Measured pairs (blue-primary, light mode): `onPrimary` on `primary` 6.48:1 ✅, `onSurface` on `surface` 16.4:1 ✅, `primary` on `surface` 6.18:1 ✅, `onError` on `error` 6.47:1 ✅.
+## Why it matters
 
-## Non-negotiable rules
+Learners include students using screen readers, students on bus Wi-Fi, students in bright sunlight on cheap phones. Following M3 role pairing isn't decoration — it's the contrast contract. Measured pairs (blue-primary, light mode): `onPrimary` on `primary` **6.48:1** ✅, `onSurface` on `surface` **16.4:1** ✅, `primary` on `surface` **6.18:1** ✅, `onError` on `error` **6.47:1** ✅.
+
+## Core principles
 
 1. **Always use a role with its paired `on-` role.** Text on `$primary` = `$onPrimary`; on `$errorContainer` = `$onErrorContainer`.
 2. **`$outline` is for borders and large/decorative text only** (4.3:1). Body text is always `$onSurface` / `$onSurfaceVariant`.
-3. **Never communicate state by color alone.** Every error has icon + message.
+3. **Never communicate state by color alone.** Every error pairs icon + message.
 4. **Touch targets ≥ 48×48dp**; spacing between targets ≥ 8dp.
 5. **Body text never below 14px** on learner surfaces.
-6. **Respect the elevation model** — raise importance with `surfaceContainer*` tonal steps, not heavy shadows.
+6. **Raise importance with `$surfaceContainer*` tonal steps**, not heavy shadows.
 7. **Disabled = M3 38% emphasis**, never a custom grey.
+8. **One `<h1>` per screen**; descend without skipping heading levels.
 
-## Semantic elements
+## How to implement
 
+### Semantic elements
 ```tsx
+import { Button, Link } from '@gl/elements';
+
 // ✅ Action — Button
 <Button onPress={enroll}>Enroll now</Button>
 
 // ✅ Navigation — Link
 <Link href={`/courses/${id}`}>View course</Link>
 
-// ❌ A pressable Text with onPress wired as navigation
+// ❌ Don't: a pressable Text wired as navigation
 <Text onPress={goToCourse}>View course</Text>
 ```
 
-One `<h1>` per page (use `<Typography variant="h1">`); descend without skipping levels. Form fields always have associated labels.
+### Icon-only controls
+```tsx
+import { IconButton } from '@gl/elements';
+import { X } from '@tamagui/lucide-icons';
+
+<IconButton accessibilityLabel="Close dialog" onPress={close}>
+  <X />
+</IconButton>
+```
+
+### Error pattern (icon + message + role)
+```tsx
+import { Surface, XStack, Typography, Icon } from '@gl/elements';
+import { AlertCircle } from '@tamagui/lucide-icons';
+
+<Surface backgroundColor="$errorContainer" padding="$md" borderRadius="$md">
+  <XStack gap="$sm" alignItems="center">
+    <Icon icon={<AlertCircle />} color="$onErrorContainer" />
+    <Typography color="$onErrorContainer">Couldn't save your progress.</Typography>
+  </XStack>
+</Surface>
+```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | Pair every role with its `on-` role | Put `$onSurface` text on a `$primary` button |
 | Add an icon to every error | Communicate error with red border only |
 | Use the `disabled` prop on `Button` | Wrap a button in `<View style={{ opacity: 0.5 }}>` |
 | Set `accessibilityLabel` on icon-only buttons | Ship an icon button with no label |
+
+## Related
+
+- [Color](/magna/guidelines/color) — role pairing IS the contrast rule
+- [Typography](/magna/guidelines/typography) — 14px body minimum, one `h1` per screen
+- [Spacing](/magna/guidelines/spacing) — ≥ 48dp touch targets

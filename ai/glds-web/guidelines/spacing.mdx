@@ -4,27 +4,36 @@ dsId: glds-web
 tags: [foundations, spacing, layout, breakpoints]
 ---
 
-# Spacing
+> **Who this is for:** Anyone laying out marketing bands, hero blocks, or component spacing in CSS for GL public pages.
+> **What this covers:** The base-8 spacing tokens, the three-band breakpoint model (mobile / tablet / desktop), and the mobile-first tap-target rules.
 
-Base-8 rhythm with named tokens: `xsm 8 · sm 16 · md 24 · lg 32 · xl 48 · 2xl 64`. Continue the 8px rhythm for any in-between values; never invent off-grid spacing per-component.
+## Why it matters
 
+Marketing pages are stitched together from many bands authored by different people across time. If everyone reaches for their own padding number, the page becomes a stack of inconsistent rhythms — readable at a glance, but never crisp. Base-8 tokens + variable-driven breakpoints turn "what padding should this section have?" into a single named choice.
+
+## Core principles
+
+1. **Base-8 rhythm.** Named tokens: `xsm 8 · sm 16 · md 24 · lg 32 · xl 48 · 2xl 64`. Continue the 8px rhythm for in-betweens; never invent off-grid spacing.
+2. **Breakpoints are variables.** Define `$breakpoint-md: 768px` and `$breakpoint-lg: 1024px` once; reference them everywhere — never hardcode the numbers per-component.
+3. **Three device bands.** Mobile (< 768px), Tablet (768–1024px), Desktop (> 1024px).
+4. **Mobile-first.** Tap targets ≥ 48px, ≥ 8px apart. Hero value + primary CTA visible without scrolling.
+5. **Layout = bands.** Marketing sections are full-width bands with a centered max-width column. Alternate `#FFFFFF` and `#F8F8F8` surfaces to separate bands — don't draw `<hr>`s.
+
+## How to implement
+
+### Section padding with tokens
 ```css
 [data-ds="glds-web"] .glds-section {
   padding: var(--glds-space-2xl) var(--glds-space-md);
 }
-[data-ds="glds-web"] .glds-stack { display: flex; flex-direction: column; gap: var(--glds-space-sm); }
+[data-ds="glds-web"] .glds-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--glds-space-sm);
+}
 ```
 
-## Breakpoints — variables, not magic numbers
-
-Three device bands:
-
-- **Mobile:** below **768px**
-- **Tablet:** **768px – 1024px**
-- **Desktop:** above **1024px**
-
-Define `$breakpoint-md: 768px` and `$breakpoint-lg: 1024px` once and reference them everywhere — never hardcode the numbers per-component.
-
+### Responsive with variables (no magic numbers)
 ```scss
 @use 'breakpoints' as *;
 
@@ -37,21 +46,26 @@ Define `$breakpoint-md: 768px` and `$breakpoint-lg: 1024px` once and reference t
 }
 ```
 
-## Mobile-first
-
-- CTAs are thumb-reachable; tap targets **≥ 48px**, ≥ 8px apart.
-- The hero value proposition + primary CTA must be visible **without scrolling** on a typical phone viewport.
-- No hover-dependent content — touch has no hover; anything behind a hover must also be reachable on tap/focus.
-
-## Layout = bands
-
-Marketing sections are full-width bands with a centered max-width content column. Alternate Primary Surface (`#FFFFFF`) and Secondary Surface (`#F8F8F8`) to separate bands rather than drawing dividers.
+### Mobile CTA hit area
+```css
+[data-ds="glds-web"] .glds-btn--large {
+  min-height: 48px;
+  min-width: 48px;
+  padding: 12px 24px;
+}
+```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | `padding: var(--glds-space-lg)` | `padding: 33px` |
 | `@media (min-width: $breakpoint-md)` | `@media (min-width: 760px)` |
 | Alternate `#FFFFFF` / `#F8F8F8` bands | Draw `<hr>` between sections |
 | Tap targets ≥ 48px on mobile | 32px tap targets on a mobile CTA |
+
+## Related
+
+- [Typography](/glds-web/guidelines/typography) — type swap happens at the same 768px
+- [Usage](/glds-web/guidelines/usage) — the band model is the layout contract
+- [Accessibility](/glds-web/guidelines/accessibility) — tap-target sizing is also an a11y rule

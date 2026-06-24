@@ -4,44 +4,71 @@ dsId: magna
 tags: [usage, learner, posture]
 ---
 
-# Usage — learner posture
+> **Who this is for:** Anyone deciding *whether* a screen belongs in Magna (vs. Jedi or GLDS-Web) and *how* it should feel.
+> **What this covers:** The learner-posture rules — one primary action, generous spacing, explicit state, empty states as starting points.
 
-Magna is for **learners** (students, consumers). Surfaces shipped here serve people who arrive with motivation but limited context — clarity, warmth, and confidence outrank density.
+## Why it matters
 
-## Posture rules
+Magna is for **learners** — students and consumers who arrive motivated but with limited context. Clarity, warmth, and confidence outrank density. A screen that looks like an admin console makes learners feel they're in the wrong place.
 
-- **One primary action per screen.** Exactly one `$primary` button; supporting actions are tonal/outlined/text. If two actions feel equally primary, the screen is doing two jobs — split it.
-- **Generous spacing, modest density.** Magna surfaces breathe (`gap="$md"`+, `padding="$lg"`+). The opposite of Jedi's density allowance.
-- **Status and progress are explicit.** A learner who can't tell what's loading, completed, or locked has bounced. Every async action over ~400ms shows skeleton + state.
-- **Empty states are starting points, not dead ends.** Every empty list explains what belongs there and offers the action that fills it.
+## Core principles
 
-## Build from `@gl/elements`, never raw React Native
+1. **One primary action per screen.** Exactly one `$primary` button; supporting actions are tonal / outlined / text. Two equally-primary actions = the screen is doing two jobs — split it.
+2. **Generous spacing, modest density.** `gap="$md"`+, `padding="$lg"`+. The deliberate inverse of Jedi.
+3. **Status and progress are explicit.** Every async ≥ 400ms shows a skeleton or progress state. Locked / completed / in-progress are visually distinct.
+4. **Empty states are starting points, not dead ends.** Every empty list explains what belongs there and offers the action that fills it.
+5. **Build from `@gl/elements`, never raw RN.** Raw `<View>` / `<Text>` skips theming and breaks contrast contracts.
+6. **Icons are Lucide.** `@tamagui/lucide-icons` or `@gl/elements/icons`. The legacy `<Icon icon="play_arrow" />` string-name API is shimmed and renders nothing on web.
 
+## How to implement
+
+### A learner card
 ```tsx
-// ✅ Use the design-system surface + typography components
 import { YStack, Surface, Typography, Button } from '@gl/elements';
 
 <YStack gap="$lg" padding="$xl">
   <Typography variant="h3">Welcome back</Typography>
   <Surface backgroundColor="$surfaceContainer" padding="$md" borderRadius="$lg">
     <Typography variant="body1">Pick up where you left off.</Typography>
-    <Button onPress={resume}>Resume Lesson 4</Button>
+    <Button onPress={resume}>Resume Lesson 4</Button>   {/* ← single primary action */}
   </Surface>
 </YStack>
-
-// ❌ Don't drop down to raw RN primitives
-import { View, Text } from 'react-native';
 ```
 
-## Icons: Lucide only
+### Empty state
+```tsx
+import { YStack, Typography, Button } from '@gl/elements';
 
-Use `@tamagui/lucide-icons` (or `@gl/elements/icons`). Material string-name icons (`icon="play_arrow"`) render nothing on web — they're shimmed.
+<YStack gap="$md" alignItems="center" padding="$xl">
+  <Typography variant="h4">No courses yet</Typography>
+  <Typography variant="body1" color="$onSurfaceVariant" textAlign="center">
+    Browse the catalog to enroll in your first program.
+  </Typography>
+  <Button onPress={browse}>Browse catalog</Button>
+</YStack>
+```
+
+### Lucide icon (correct API)
+```tsx
+import { Button, Icon } from '@gl/elements';
+import { Play } from '@tamagui/lucide-icons';
+
+<Button onPress={play} startIcon={<Icon icon={<Play />} />}>
+  Continue lesson
+</Button>
+```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | Build from `@gl/elements` components | Drop into raw `<View>` / `<Text>` |
 | Use Lucide icons | Pass `"play_arrow"` as an icon name string |
 | One filled button per view | Stack two filled buttons in a card footer |
 | Show skeleton on every async ≥ 400ms | Leave a blank screen until data arrives |
+
+## Related
+
+- [Color](/magna/guidelines/color) — `$primary` is the one-per-screen action color
+- [Spacing](/magna/guidelines/spacing) — "surfaces breathe" is the spacing manifestation of this posture
+- [Content](/magna/guidelines/content) — voice for empty states, errors, CTAs

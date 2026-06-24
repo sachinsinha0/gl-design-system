@@ -1,7 +1,6 @@
 import { catalog, allEntries } from './registry';
-test('catalog has the five top-level groups', () => {
+test('catalog has the four top-level groups', () => {
   expect(catalog.map((g) => g.id)).toEqual([
-    'get-started',
     'foundations',
     'components',
     'prototypes',

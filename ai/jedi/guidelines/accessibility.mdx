@@ -4,29 +4,33 @@ dsId: jedi
 tags: [a11y, contrast, wcag]
 ---
 
-# Accessibility
+> **Who this is for:** Engineers shipping internal / partner / admin UIs — every form, every alert, every interactive control.
+> **What this covers:** Rules derived from **measured contrast ratios of the shipped Jedi values** — they're facts of this system, not generic web advice.
 
-These rules are derived from **measured contrast ratios of the shipped Jedi values** — they're facts of this system, not generic advice.
+## Why it matters
 
-## The rules
+Partner-facing UIs are the only Great Learning surface where regulators and procurement teams ask for WCAG conformance reports. The rules below come from running every shipped color through a contrast checker — `error.main` is 3.64:1 on white, so it **fails AA for text** no matter how official it looks. Following the rule is faster than re-litigating it per ticket.
 
-1. **Colored text in light mode uses `.dark`** — never `.main`. `error.main` (3.64:1) and `success.main` (2.55:1) fail AA for text.
+## Core principles
+
+1. **Colored text in light mode uses `.dark`** — never `.main`.
 2. **Warning has no text-safe solid in light mode.** Use `text.primary` plus a warning-colored icon, or the 160p/190p tint recipe.
-3. **Secondary (orange) is decorative, not semantic.** Never use it to mean caution.
+3. **Secondary (orange) is decorative, not semantic.** Never used to mean caution.
 4. **Tinted surfaces:** bg `shades-190-p`, text `shades-160-p`.
 5. **Never communicate state through color alone.** Every error has icon + message.
 6. **Focus must be visible.** Don't suppress MUI's focus ring.
 7. **Touch targets ≥ 44×44px** on partner-facing surfaces.
 8. **Disabled = `action.disabled` + `action.disabled-background`**, never `opacity: 0.5`.
 9. **Body text below 12px is forbidden** on partner-facing surfaces.
+10. **One `<h1>` per page**; descend without skipping heading levels.
 
-## Semantic elements
+## How to implement
 
-Links navigate; buttons act. Pick by **behavior**, not appearance.
-
+### Semantic markup (links navigate, buttons act)
 ```tsx
-// ✅ Action that looks like a link
 import { Link, Button } from '@mui/material';
+
+// ✅ Action that looks like a link
 <Link component="button" onClick={showMore}>Show more</Link>
 
 // ✅ Real navigation
@@ -36,17 +40,43 @@ import { Link, Button } from '@mui/material';
 <a href="#" onClick={showMore}>Show more</a>
 ```
 
-`IconButton` always carries `aria-label` (and usually a `Tooltip`). For primary or destructive actions, a labeled `Button` beats an `IconButton`.
+### Icon-only controls
+```tsx
+import { IconButton, Tooltip } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
-## Headings & forms
+<Tooltip title="Close">
+  <IconButton aria-label="Close dialog" onClick={close}>
+    <CloseIcon />
+  </IconButton>
+</Tooltip>
+```
 
-One `<h1>` per page; descend without skipping. Form fields always have `<label>`s (MUI's `TextField label="…"` does this for you). Meaningful images have `alt`; decorative ones `alt=""`.
+### Disabled (use the prop)
+```tsx
+<Button disabled>Save</Button>                          {/* ✅ */}
+<Box sx={{ opacity: 0.5, pointerEvents: 'none' }}>...</Box>  {/* ❌ */}
+```
+
+### Warning copy (no text-safe main)
+```tsx
+import { Alert } from '@mui/material';
+
+<Alert severity="warning">This action affects 42 learners.</Alert>     {/* ✅ tint recipe */}
+<Typography color="warning.main">This action affects 42 learners.</Typography>  {/* ❌ 1.65:1 fails */}
+```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | `<Alert severity="warning">` for caution copy | `<Typography color="warning.main">Caution</Typography>` |
 | `<IconButton aria-label="Close">…</IconButton>` | `<IconButton>…</IconButton>` |
 | `<Link component="button">Edit</Link>` for inline action | `<a href="#" onClick={edit}>Edit</a>` |
 | Use the `disabled` prop | `sx={{ opacity: 0.5, pointerEvents: 'none' }}` |
+
+## Related
+
+- [Color](/jedi/guidelines/color) — the `.dark` vs `.main` rule is rooted here
+- [Spacing](/jedi/guidelines/spacing) — 44px touch target on partner surfaces
+- [Usage](/jedi/guidelines/usage) — one primary action, scannable layouts

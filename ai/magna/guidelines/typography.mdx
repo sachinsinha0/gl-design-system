@@ -4,16 +4,24 @@ dsId: magna
 tags: [foundations, typography, inter]
 ---
 
-# Typography
+> **Who this is for:** Engineers and designers picking type styles for learner-facing screens in `gl-app-native`.
+> **What this covers:** The Inter scale Magna ships, naming conventions for variants, and the rules that diverge from Jedi (mobile body, title-case buttons).
 
-Magna ships **Inter** in weights 400/500/600. The scale matches Jedi's so the two systems feel related, but Magna leans on the larger end for learner legibility — and **body text does not shrink on mobile**.
+## Why it matters
 
-## Variants (real names)
+Learners read in motion — on phones, between classes, sometimes with one hand. Type that shrinks on mobile or hides hierarchy behind weight loses them. Magna picks a closed, predictable scale so devs spend zero cognitive energy on font choices and learners get the same readable surface every screen.
 
-`h1`–`h5` · `subtitle1` / `subtitle2` · `body1` / `body2` · `caption` · `overline` · `buttonLarge` / `buttonMedium` / `buttonSmall`.
+## Core principles
 
-There is no `headline1`/`headline2`/etc. in the Tamagui `Typography` API — those names exist only in M3 docs. There is also no `h6`.
+1. **One family, three weights.** Inter at 400 / 500 / 600 — never load 300 or 800.
+2. **The variant names are fixed.** `h1`–`h5`, `subtitle1`/`2`, `body1`/`2`, `caption`, `overline`, `buttonLarge`/`Medium`/`Small`. No `h6`, no `headline1`.
+3. **Body stays 16/14 on mobile.** Unlike Jedi, Magna does not shrink body text — learner legibility wins over density.
+4. **Title-case buttons** (only `overline` is uppercased).
+5. **Hierarchy comes from variant + role color** (not arbitrary `fontSize` / `fontWeight` overrides).
 
+## How to implement
+
+### Headings, body, metadata
 ```tsx
 import { Typography } from '@gl/elements';
 
@@ -22,19 +30,25 @@ import { Typography } from '@gl/elements';
 <Typography variant="caption" color="$onSurfaceVariant">Updated 2 hours ago</Typography>
 ```
 
-## Title-case buttons
+### Button text (title case)
+```tsx
+import { Button } from '@gl/elements';
 
-Buttons in Magna are **Title Case**, not UPPERCASE — learner-facing buttons read as friendlier in Title Case. Only `overline` is uppercased.
-
-## Mobile body stays at 16/14
-
-Unlike Jedi, `body1` stays 16px and `body2` stays 14px on mobile. Learners read on phones; legibility wins over density.
+<Button onPress={save}>Save changes</Button>      {/* ✅ Title Case */}
+<Button onPress={save}>SAVE CHANGES</Button>      {/* ❌ Don't UPPERCASE */}
+```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | `variant="h3"` for a section heading | `variant="headline3"` (not exported) |
-| `variant="buttonMedium"` for button text | `variant="buttonMedium"` then UPPERCASE the label |
-| Use `caption` for metadata under content | Reach for 13/15/17px — the scale is closed |
+| Title-case button labels | UPPERCASE button labels |
+| Use `caption` for metadata | Reach for 13/15/17px — the scale is closed |
 | Stick to weights 400/500/600 | Load 300 (Light) or 800 (ExtraBold) |
+
+## Related
+
+- [Color](/magna/guidelines/color) — text color always references a role
+- [Accessibility](/magna/guidelines/accessibility) — minimum body size 14px, heading order
+- [Content](/magna/guidelines/content) — voice and tone for learner copy

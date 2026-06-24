@@ -475,26 +475,6 @@ export function InstallPage(props: InstallPageProps) {
         width: '100%',
       }}
     >
-      {/* Header */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-        <p style={{ margin: 0, fontSize: 14, color: '#64748b' }}>{tagline}</p>
-        {sourcePath ? (
-          <p
-            style={{
-              margin: 0,
-              fontSize: 11,
-              color: '#94a3b8',
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-            }}
-          >
-            Source · {sourcePath}
-          </p>
-        ) : null}
-        <div style={{ marginTop: 4 }}>
-          <PageUrlBar />
-        </div>
-      </div>
-
       {/* Tabs */}
       <div>
         <div

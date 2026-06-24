@@ -4,45 +4,77 @@ dsId: glds-web
 tags: [a11y, contrast, wcag]
 ---
 
-# Accessibility
+> **Who this is for:** Anyone shipping GL marketing or public-web HTML/CSS — pages, components, embedded widgets.
+> **What this covers:** The lighter-than-app a11y baseline for static content, plus the rules that *don't* relax (semantic markup, focus, color-plus-message).
 
-Marketing pages are mostly static, so the rules are lighter than the app systems — but these still hold.
+## Why it matters
 
-## The rules
+Marketing pages are mostly static so the rules are lighter than the app systems — but the surface is more public. The first impression on a public page belongs to everyone, including users on a keyboard, screen reader, or in a high-contrast OS. The rules below are the floor.
 
-1. **One primary call-to-action per section** (one `filled` button; supporting actions are outlined/text/linkbutton).
-2. **Links navigate, buttons act.** A link goes to a URL (`<a href>`); an action that looks like a link is a **linkbutton** (`<button>` styled as a link), **never** an `<a>` with a JS click handler.
-3. **Material icon-only controls require an `aria-label`.**
-4. **Interaction states are mandatory:** every interactive element defines `:hover`, `:focus-visible` (visible ring — never `outline: none` without a replacement), `:active`, and `[disabled]`.
+## Core principles
+
+1. **One primary call-to-action per section** (one `filled` button; supporting actions are outlined / text / linkbutton).
+2. **Links navigate, buttons act.** A link goes to a URL (`<a href>`); an action that looks like a link is a **linkbutton** (`<button>` styled as a link). **Never** an `<a href="#">` with a JS click handler.
+3. **Material icon-only controls require `aria-label`**, and the icon itself uses `aria-hidden="true"`.
+4. **Interaction states are mandatory.** Every interactive element defines `:hover`, `:focus-visible` (visible ring — never `outline: none` without a replacement), `:active`, `[disabled]`.
 5. **Forms:** real `<label>` per field; validate on blur; errors pair color + message (never color alone) and preserve entered values on failed submit.
-6. **Feedback color is never text color.** Error/Alert/Success message text is grey 800; the 500 color is for icon/border/accent only.
+6. **Feedback color is never text color.** Error / Alert / Success message text is grey 800; the 500 color is for icon / border / accent only.
 7. **Body text uses Primary Text `#323130`** (≈12:1 on white). Never set body copy in a brand accent or feedback color.
-8. **Heading order:** one `<h1>` per page (usually the hero), descend without skipping levels.
+8. **One `<h1>` per page** (usually the hero); descend without skipping levels.
 9. **Respect `prefers-reduced-motion`;** marketing animation must degrade gracefully and never block content.
 
-## Examples
+## How to implement
 
+### Inline action that *looks* like a link
 ```html
-<!-- ✅ Inline action that looks like a link -->
+<!-- ✅ Linkbutton -->
 <button class="glds-btn glds-btn--linkbutton" type="button">Show more</button>
-
-<!-- ✅ Real navigation -->
-<a href="/courses/data-science" class="glds-link">View course</a>
 
 <!-- ❌ A non-navigating anchor with onclick -->
 <a href="#" onclick="showMore()">Show more</a>
+```
 
-<!-- ✅ Icon-only control with aria-label -->
+### Real navigation
+```html
+<a href="/courses/data-science" class="glds-link">View course</a>
+```
+
+### Icon-only control
+```html
 <button class="glds-icon-btn" aria-label="Close menu" type="button">
   <span class="material-icons" aria-hidden="true">close</span>
 </button>
 ```
 
+### Focus ring (never `outline: none` alone)
+```css
+[data-ds="glds-web"] .glds-btn:focus-visible {
+  outline: 2px solid var(--glds-primary-500);
+  outline-offset: 2px;
+}
+```
+
+### Form with label + error message
+```html
+<label for="email" class="glds-label">Email</label>
+<input id="email" type="email" class="glds-input" aria-describedby="email-error" />
+<p id="email-error" class="glds-form-error">
+  <span class="material-icons" aria-hidden="true">error</span>
+  Enter a valid email address.
+</p>
+```
+
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | Real `<label for>` on every input | Placeholder used as label |
 | `:focus-visible` ring on every interactive element | `outline: none` without a replacement |
 | Linkbutton (`<button>`) for inline actions | `<a href="#">` with a JS handler |
 | Error message text in grey 800 + paired icon | Error text in `--glds-feedback-error-500` |
+
+## Related
+
+- [Color](/glds-web/guidelines/color) — feedback-color rule (text vs icon) lives here too
+- [Usage](/glds-web/guidelines/usage) — one primary CTA per band
+- [Spacing](/glds-web/guidelines/spacing) — ≥ 48px tap targets on mobile

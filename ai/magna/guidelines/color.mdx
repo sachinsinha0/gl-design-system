@@ -4,44 +4,61 @@ dsId: magna
 tags: [foundations, color, m3, tokens]
 ---
 
-# Color
+> **Who this is for:** Engineers building learner-facing UI in `gl-app-native` with `@gl/elements`.
+> **What this covers:** When to reach for which color role, how M3 pairing keeps contrast safe by default, and how to express elevation tonally.
 
-Magna uses **Material 3 (M3) role tokens** — never raw hex. Every color exists as a *semantic role*, and roles come in **pairs**: a container/surface role and its `on-` role that's contrast-engineered to sit on top. Pick the role for the job, then put its paired `on-` role on top, and accessibility is handled for free.
+## Why it matters
 
-## The pairing rule
+Magna is the learner surface. Learners decide in seconds whether they trust a screen — colors that *look* like buttons, alerts, or progress carry meaning before the copy is read. M3 role tokens are the only way that meaning stays consistent across light and dark, across screens, and across team members.
 
-Text on `$primary` is `$onPrimary`. Text on `$surface` is `$onSurface`. Text on `$primaryContainer` is `$onPrimaryContainer`. There are no exceptions — and never put `$onSurface` text on a `$primary` fill.
+## Core principles
 
+1. **Use role tokens, never raw hex.** Hex disappears the moment a designer ships a new palette; the role survives.
+2. **Pair roles.** Text on `$primary` is `$onPrimary`. Text on `$surfaceContainer` is `$onSurface`. Pairing is the accessibility rule.
+3. **Express elevation tonally.** Step up `$surfaceContainer` → `$surfaceContainerHigh` instead of adding shadows.
+4. **Status colors come from extended `magnaColors`.** Success/warning/info already ship with container + on-container pairs — don't invent loose greens or ambers.
+5. **Light/dark flips for free.** Reference the role; the theme handles the mode.
+
+## How to implement
+
+### Surfaces and text
 ```tsx
-import { Button, Surface, Typography } from '@gl/elements';
+import { Surface, Typography } from '@gl/elements';
 
-// ✅ role + matching on-role
 <Surface backgroundColor="$surfaceContainer" padding="$md">
   <Typography variant="subtitle1" color="$onSurface">Course title</Typography>
   <Typography variant="body2" color="$onSurfaceVariant">12 lessons · 4h 30m</Typography>
 </Surface>
+```
 
-// ✅ button uses primary + onPrimary automatically
+### Interactive (button)
+```tsx
+import { Button } from '@gl/elements';
+
+// $primary fill + $onPrimary text are wired by the component
 <Button onPress={enroll}>Enroll</Button>
 ```
 
-## Surfaces & elevation
+### Status (use the extended role)
+```tsx
+import { Surface, Typography } from '@gl/elements';
 
-M3 expresses elevation through **tonal surfaces**, not shadows. The default Magna card is `$surfaceContainer`; raise to `$surfaceContainerHigh` only when the card needs to read as raised. Pick the container by elevation role, not by guessing a grey.
-
-## Status colors
-
-M3 has only one built-in status role: `$error`. For success/warning/info, use the `magnaColors` extended hues with their container + on-container pairs so contrast holds — never invent a loose green or amber text color.
-
-## Light / dark
-
-Roles flip correctly between modes automatically. Always reference the role token, never a mode-specific hex, and light/dark is handled for free.
+<Surface backgroundColor="$successContainer" padding="$md" borderRadius="$lg">
+  <Typography color="$onSuccessContainer">Lesson 4 complete</Typography>
+</Surface>
+```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | `color="$onSurface"` for body text | `color="#1A1B1E"` |
 | `backgroundColor="$primaryContainer"` for tonal fills | `backgroundColor="lightblue"` |
-| Raise cards by stepping up `$surfaceContainer*` | Add `boxShadow` to highlight a card |
+| Raise cards by stepping `$surfaceContainer*` | Add a `boxShadow` to highlight a card |
 | `<Typography color="$onPrimary">` inside a `$primary` button | `<Typography color="$onSurface">` inside a `$primary` button |
+
+## Related
+
+- [Accessibility](/magna/guidelines/accessibility) — the role-pairing rule is what makes contrast safe
+- [Typography](/magna/guidelines/typography) — text colors reference these roles
+- [Usage](/magna/guidelines/usage) — posture for learner-facing surfaces

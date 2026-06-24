@@ -4,11 +4,23 @@ dsId: glds-web
 tags: [foundations, typography, poppins]
 ---
 
-# Typography
+> **Who this is for:** Anyone authoring or styling marketing copy — engineers, content editors, designers shipping new landing pages.
+> **What this covers:** The Poppins scale, the discrete mobile/desktop swap at 768px (not fluid `clamp()`), and the UPPERCASE-only-on-buttons rule.
 
-**Poppins** throughout for all new work, in 400 / 500 / 600. The legacy GLDS scale (Poppins headings + Noto Sans body) is for maintaining existing pages only — migrate to the Web scale when touching old templates.
+## Why it matters
 
-## Web scale (Desktop, Poppins)
+Marketing copy lives on every kind of device, browser, and ad-network embed. A fluid `clamp()` scale looks elegant in a designer's browser and falls apart in a Facebook in-app webview. GLDS-Web ships two **discrete** scales that **swap** at 768px — predictable, debuggable, copy-pastable into any stack.
+
+## Core principles
+
+1. **Poppins for all new work**, weights 400 / 500 / 600. Legacy is Poppins headings + Noto Sans body — migrate to the Web scale when touching old templates.
+2. **Type swaps at 768px** (`--glds-breakpoint-md`). It does **not** fluidly interpolate. `1024px` governs layout (columns, max-widths), not type.
+3. **Keep headlines short.** H1 must survive 40px on mobile.
+4. **UPPERCASE only on Button and Overline.** Headlines and body are sentence/title case.
+
+## How to implement
+
+### Desktop scale (Poppins)
 
 | Style | Size | Weight | Line height | Letter spacing | Case |
 |---|---|---|---|---|---|
@@ -19,30 +31,40 @@ tags: [foundations, typography, poppins]
 | Button | 16px | 600 | 16px | 0.5px | UPPERCASE |
 | Overline | 12px | 600 | 16px | 20% | UPPERCASE |
 
-## Mobile scales down hard
-
-H1 drops `64 → 40`; use the responsive pair (`@media` swap at `--glds-breakpoint-md`, 768px), not a single fluid value, unless you implement `clamp()` carefully.
-
+### Responsive swap (mobile-first)
 ```css
-.glds-hero__title { font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: -0.02em; }
+.glds-hero__title {
+  font-family: var(--glds-font-family);
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
 @media (min-width: 768px) {
-  .glds-hero__title { font-size: 64px; line-height: 80px; }
+  .glds-hero__title {
+    font-size: 64px;
+    line-height: 80px;
+  }
 }
 ```
 
-## Type swap, not fluid interpolation
-
-The file ships two discrete scales. Type **swaps at 768px**, it does not fluidly interpolate. `1024px` governs **layout** (columns, max-widths), not type.
-
-## UPPERCASE: buttons and overlines only
-
-Headlines and body are sentence/title case.
+### Don't reintroduce the family
+```css
+.headline { font-family: 'Roboto'; }                /* ❌ */
+.headline { font-family: var(--glds-font-family); } /* ✅ */
+```
 
 ## Do / Don't
 
-| ✅ Do | ❌ Don't |
+| Do | Don't |
 |---|---|
 | `font-family: var(--glds-font-family)` (Poppins) | `font-family: 'Roboto'` (or Noto Sans for new work) |
 | Use the responsive pair for headlines | One giant `clamp()` per heading |
-| UPPERCASE only on Button + Overline | Uppercase the headline for emphasis |
-| Keep H1 short — it must survive 40px on mobile | A 12-word hero headline that wraps awkwardly on phones |
+| UPPERCASE only on Button + Overline | UPPERCASE the headline for emphasis |
+| Keep H1 short — survives 40px on mobile | A 12-word hero headline that wraps awkwardly on phones |
+
+## Related
+
+- [Color](/glds-web/guidelines/color) — body ink is grey 800, not pure black
+- [Spacing](/glds-web/guidelines/spacing) — 768px and 1024px breakpoint variables
+- [Usage](/glds-web/guidelines/usage) — headline / subhead / CTA contract per band

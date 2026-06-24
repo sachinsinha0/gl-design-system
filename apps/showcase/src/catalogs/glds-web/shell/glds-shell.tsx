@@ -134,7 +134,8 @@ function GLDSSidebar() {
             className="glds-shell__nav-link"
             aria-current={pathname === homePath ? 'page' : undefined}
           >
-            <span aria-hidden>⌂</span> Home
+            <span aria-hidden className="material-icons glds-shell__nav-icon">home</span>
+            Home
           </Link>
         </li>
         {ds.registry.map((group) => {
