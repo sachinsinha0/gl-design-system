@@ -188,28 +188,11 @@ function JediPageHeader() {
   return (
     <Box sx={{ mb: 4, pb: 3, borderBottom: '1px solid', borderColor: 'divider' }}>
       {eyebrow ? (
-        <Box
-          sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            mb: 1.5,
-            px: 1.25,
-            py: 0.5,
-            bgcolor: 'primary.50',
-            border: '1px solid',
-            borderColor: 'primary.100',
-            borderRadius: 1.5,
-          }}
-        >
-          <Typography
-            variant="caption"
-            sx={{ color: 'primary.main', fontWeight: 600, fontSize: 11, letterSpacing: '0.03em' }}
-          >
-            {eyebrow}
-          </Typography>
-        </Box>
+        <Typography sx={{ fontSize: 12, fontWeight: 500, color: 'text.disabled', letterSpacing: '0.04em', mb: 0.75, display: 'block' }}>
+          {eyebrow}
+        </Typography>
       ) : null}
-      <Typography variant="h4" sx={{ fontWeight: 700, lineHeight: 1.2 }}>{title}</Typography>
+      <Typography variant="h4" sx={{ fontWeight: 700, lineHeight: 1.15 }}>{title}</Typography>
     </Box>
   );
 }

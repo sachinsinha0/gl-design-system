@@ -258,18 +258,10 @@ function MagnaPageHeader() {
       marginBottom="$4"
       borderBottomWidth={1}
       borderColor="$outlineVariant"
-      gap="$2"
+      gap="$1"
     >
       {eyebrow ? (
-        <XStack
-          alignSelf="flex-start"
-          backgroundColor="$primaryFixed"
-          paddingHorizontal="$2.5"
-          paddingVertical="$1"
-          borderRadius={8}
-        >
-          <Typography variant="overline" color="$onPrimaryFixed">{eyebrow}</Typography>
-        </XStack>
+        <Typography variant="overline" color="$onSurfaceVariant">{eyebrow}</Typography>
       ) : null}
       <Typography variant="h4">{title}</Typography>
     </YStack>
