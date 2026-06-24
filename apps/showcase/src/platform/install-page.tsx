@@ -171,16 +171,22 @@ export function CodeBlock({ children }: { children: string }) {
   return (
     <pre
       style={{
+        // A global reset on the page forces <pre> to display: inline, which
+        // makes `whiteSpace: pre` paint the background per line-box and
+        // produces a stair-stepped look on multi-line commands. Pin to block.
+        display: 'block',
         background: '#1e293b',
         color: '#e2e8f0',
         borderRadius: 10,
-        padding: '14px 18px',
+        padding: '14px 80px 14px 18px',
         margin: 0,
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
         fontSize: 13,
         lineHeight: 1.65,
         overflowX: 'auto',
         whiteSpace: 'pre',
+        boxSizing: 'border-box',
+        width: '100%',
       }}
     >
       {children}
