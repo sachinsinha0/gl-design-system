@@ -64,7 +64,7 @@ function DSSwitcher() {
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={`Switch design system. Current: ${ds.label}`}
-        sx={{ p: 1.5, gap: 1.25 }}
+        sx={{ p: 1.5, gap: 1.25, flexGrow: 0, flexShrink: 0 }}
       >
         <Box
           sx={{
