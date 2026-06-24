@@ -3,7 +3,6 @@ import {
   ASSET_ICONS,
   AssetCard,
   CodeBlock,
-  ComponentsBlock,
   GitInstallBlock,
 } from '../../../platform/install-page';
 import skillUrl from '../../../../../../ai/jedi/skills/jedi-design-system/SKILL.md?url';
@@ -75,14 +74,36 @@ export function InstallationPage() {
           ),
         },
         {
-          id: 'git',
-          label: 'Devs · Git',
-          body: <GitInstallBlock dsId="jedi" />,
+          id: 'dev',
+          label: 'Devs',
+          body: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+                <strong>For engineers wiring Jedi components.</strong> Pulls{' '}
+                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>skills/</code>,{' '}
+                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>guidelines/</code>, and{' '}
+                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>tokens/</code>{' '}
+                — no component spec files (devs read the source under <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>packages/jedi/</code>).
+              </p>
+              <GitInstallBlock dsId="jedi" branch="dev" variant="dev" />
+            </div>
+          ),
         },
         {
-          id: 'components',
-          label: 'Non-devs · Components',
-          body: <ComponentsBlock dsId="jedi" />,
+          id: 'non-dev',
+          label: 'Non-devs',
+          body: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+                <strong>For designers, PMs, and partners.</strong> Same as the dev pull plus{' '}
+                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>components/*.json</code>{' '}
+                (machine-readable specs) and{' '}
+                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>components.md</code>{' '}
+                (one human-readable page covering every component — anatomy, props, variants, states, a11y, examples, do-nots).
+              </p>
+              <GitInstallBlock dsId="jedi" branch="non-dev" variant="non-dev" />
+            </div>
+          ),
         },
       ]}
     />

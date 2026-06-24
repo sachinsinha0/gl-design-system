@@ -3,7 +3,6 @@ import {
   ASSET_ICONS,
   AssetCard,
   CodeBlock,
-  ComponentsBlock,
   GitInstallBlock,
 } from '../../../platform/install-page';
 import skillUrl from '../../../../../../ai/glds-web/skills/glds-web-design-system/SKILL.md?url';
@@ -82,14 +81,32 @@ export function InstallationPage() {
           ),
         },
         {
-          id: 'git',
-          label: 'Devs · Git',
-          body: <GitInstallBlock dsId="glds-web" />,
+          id: 'dev',
+          label: 'Devs',
+          body: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+                <strong>For engineers wiring GLDS-Web markup.</strong> Pulls{' '}
+                <code style={mono}>skills/</code>, <code style={mono}>guidelines/</code>, and <code style={mono}>tokens/</code>{' '}
+                — no component spec files (devs read the source under <code style={mono}>packages/glds-web/</code>).
+              </p>
+              <GitInstallBlock dsId="glds-web" branch="dev" variant="dev" />
+            </div>
+          ),
         },
         {
-          id: 'components',
-          label: 'Non-devs · Components',
-          body: <ComponentsBlock dsId="glds-web" />,
+          id: 'non-dev',
+          label: 'Non-devs',
+          body: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+                <strong>For designers, PMs, and partners.</strong> Same as the dev pull plus{' '}
+                <code style={mono}>components/*.json</code> (machine-readable specs) and{' '}
+                <code style={mono}>components.md</code> (one human-readable page covering every component — anatomy, props, variants, states, a11y, examples, do-nots).
+              </p>
+              <GitInstallBlock dsId="glds-web" branch="non-dev" variant="non-dev" />
+            </div>
+          ),
         },
       ]}
     />

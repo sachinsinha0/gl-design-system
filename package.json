@@ -19,6 +19,7 @@
     "ai:tokens:sync": "tsx scripts/sync-tokens.ts",
     "ai:tokens:check": "tsx scripts/check-tokens.ts",
     "ai:lint": "tsx scripts/validate-ai.ts",
+    "ai:components:md": "tsx scripts/build-components-md.ts",
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "changeset:publish": "changeset publish",
