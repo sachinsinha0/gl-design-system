@@ -1,6 +1,5 @@
 import type { CatalogGroup } from '../_shared/types';
-import { Palette, Boxes, BookOpen, Rocket } from 'lucide-react';
-import { InstallationPage } from './get-started/installation-page';
+import { Palette, Boxes, BookOpen } from 'lucide-react';
 import { TokensPage } from './foundations/tokens-page';
 import { TypographyPage } from './foundations/typography-page';
 import { ButtonPage } from './components/button-page';
@@ -23,15 +22,6 @@ const wrap = (Mdx: React.ComponentType) =>
   };
 
 export const catalog: CatalogGroup[] = [
-  {
-    id: 'get-started',
-    label: 'Get started',
-    icon: Rocket,
-    description: 'Install @gl/glds-web, download the Claude skill or the Markdown spec.',
-    entries: [
-      { slug: 'installation', title: 'Installation', Component: InstallationPage }
-    ]
-  },
   {
     id: 'foundations',
     label: 'Foundations',

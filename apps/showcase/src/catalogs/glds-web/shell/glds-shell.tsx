@@ -1,94 +1,12 @@
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { GLDSProvider } from '@gl/glds-web';
-import { useActiveDS, useActiveDSId, useSetActiveDS } from '../../../platform/ds-context';
-import { listDesignSystems, hasDesignSystem, type DSId } from '../../../platform/ds-registry';
-import { equivalentSlug } from '../../../platform/ds-equivalence';
+import { useActiveDS, useActiveDSId } from '../../../platform/ds-context';
+import { type DSId } from '../../../platform/ds-registry';
 import { useDSSearch } from '../../../platform/search-index';
 import { usePageHeader } from '../../../platform/page-header';
+import { SharedDSSwitcher } from '../../../platform/ds-switcher';
 import './glds-shell.css';
-
-function DSSwitcher() {
-  const activeId = useActiveDSId();
-  const ds = useActiveDS();
-  const setActive = useSetActiveDS();
-  const { pathname } = useLocation();
-  const systems = listDesignSystems();
-  const [open, setOpen] = useState(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function onClick(e: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) setOpen(false);
-    }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setOpen(false);
-    }
-    document.addEventListener('mousedown', onClick);
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('mousedown', onClick);
-      window.removeEventListener('keydown', onKey);
-    };
-  }, []);
-
-  function switchTo(newId: DSId) {
-    setOpen(false);
-    if (newId === activeId) return;
-    const parts = pathname.split('/').filter(Boolean);
-    const [first, ...rest] = parts;
-    const currentSlug = first && hasDesignSystem(first) && rest.length > 0 ? rest.join('/') : 'home';
-    const targetSlug = equivalentSlug(activeId, currentSlug, newId);
-    if (typeof window !== 'undefined' && targetSlug !== 'home') {
-      window.localStorage.setItem('ds.pendingSlug', targetSlug);
-    }
-    setActive(newId);
-  }
-
-  return (
-    <div ref={wrapperRef} style={{ position: 'relative' }}>
-      <button
-        type="button"
-        className="glds-shell__ds-switch"
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-label={`Switch design system. Current: ${ds.label}`}
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span className="glds-shell__avatar">{ds.label.slice(0, 2).toUpperCase()}</span>
-        <span className="glds-shell__ds-name">
-          <strong>{ds.label}</strong>
-          <span>{ds.tagline}</span>
-        </span>
-        <span className="glds-shell__chevron" aria-hidden>⇅</span>
-      </button>
-      {open ? (
-        <ul className="glds-shell__menu" role="listbox">
-          {systems.map((d) => {
-            const isActive = d.id === activeId;
-            return (
-              <li key={d.id}>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={isActive}
-                  className="glds-shell__menu-item"
-                  onClick={() => switchTo(d.id)}
-                >
-                  <span className="glds-shell__check" aria-hidden>{isActive ? '✓' : ''}</span>
-                  <span style={{ flex: 1, minWidth: 0 }}>
-                    <strong>{d.label}</strong>
-                    <span>{d.tagline}</span>
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      ) : null}
-    </div>
-  );
-}
 
 function GLDSSearch() {
   const activeId = useActiveDSId();
@@ -188,6 +106,9 @@ function GLDSThemeSwitcher() {
 
 function GLDSPageHeader() {
   const { eyebrow, title } = usePageHeader();
+  const dsId = useActiveDSId();
+  const { pathname } = useLocation();
+  if (pathname === `/${dsId}` || pathname === '/') return null;
   return (
     <div>
       {eyebrow ? <span className="glds-shell__eyebrow">{eyebrow}</span> : null}
@@ -203,7 +124,7 @@ function GLDSSidebar() {
   const homePath = `/${dsId}`;
   return (
     <aside className="glds-shell__aside">
-      <DSSwitcher />
+      <SharedDSSwitcher />
       <GLDSSearch />
       <hr className="glds-shell__divider" />
       <ul className="glds-shell__nav">

@@ -1,10 +1,11 @@
 import type { ComponentType } from 'react';
 import { Link } from 'react-router-dom';
-import { YStack, XStack, Stack, Typography, Container, Button, Icon } from '@gl/elements';
-import { ArrowRight, Sparkles, Rocket, Palette } from '@tamagui/lucide-icons';
+import { YStack, XStack, Stack, Typography, Container, Button, Icon, Separator } from '@gl/elements';
+import { ArrowRight, Sparkles, Palette } from '@tamagui/lucide-icons';
 import { catalog } from './registry';
 import type { CatalogGroup } from '../_shared/types';
 import { useActiveDSId } from '../../platform/ds-context';
+import { InstallationPage } from './get-started/installation-page';
 
 const THEME_COUNT = 22;
 
@@ -184,29 +185,12 @@ export function HomePage() {
         </XStack>
       </YStack>
 
-      {/* Getting started */}
-      <Container container="lowest" outlined borderRadius={18} padding="$4" gap="$3">
-        <XStack alignItems="center" gap="$2">
-          <Icon icon={<Rocket />} size={18} color="$primary" />
-          <Typography variant="h5">Get started</Typography>
-        </XStack>
-        <Typography variant="body2" color="$onSurfaceVariant">
-          Run the catalog locally, then add a component page or copy a prototype to start
-          designing. Use the theme switcher in the top bar to preview any of the {THEME_COUNT}{' '}
-          color themes in light or dark.
-        </Typography>
-        <Container backgroundColor="$surfaceContainerHigh" borderRadius={12} padding="$3" gap="$0.5">
-          <Typography variant="caption2" color="$onSurfaceVariant">
-            install &amp; run
-          </Typography>
-          <Typography variant="body2" color="$onSurface">
-            npm install --legacy-peer-deps
-          </Typography>
-          <Typography variant="body2" color="$onSurface">
-            npm run dev
-          </Typography>
-        </Container>
-      </Container>
+      {/* Installation */}
+      <Separator />
+      <YStack gap="$2">
+        <Typography variant="overline" color="$onSurfaceVariant">Get started</Typography>
+        <InstallationPage />
+      </YStack>
     </YStack>
   );
 }

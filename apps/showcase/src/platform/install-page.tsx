@@ -477,7 +477,6 @@ export function InstallPage(props: InstallPageProps) {
     >
       {/* Header */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-        <h2 style={{ margin: 0, fontSize: 26, fontWeight: 700, lineHeight: 1.25 }}>{dsLabel}</h2>
         <p style={{ margin: 0, fontSize: 14, color: '#64748b' }}>{tagline}</p>
         {sourcePath ? (
           <p

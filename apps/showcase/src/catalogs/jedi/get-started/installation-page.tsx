@@ -89,22 +89,6 @@ export function InstallationPage() {
             </div>
           ),
         },
-        {
-          id: 'non-dev',
-          label: 'Non-devs',
-          body: (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
-                <strong>For designers, PMs, and partners.</strong> Same as the dev pull plus{' '}
-                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>components/*.json</code>{' '}
-                (machine-readable specs) and{' '}
-                <code style={{ fontFamily: 'ui-monospace, Menlo, monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 4 }}>components.md</code>{' '}
-                (one human-readable page covering every component — anatomy, props, variants, states, a11y, examples, do-nots).
-              </p>
-              <GitInstallBlock dsId="jedi" branch="non-dev" variant="non-dev" />
-            </div>
-          ),
-        },
       ]}
     />
   );
