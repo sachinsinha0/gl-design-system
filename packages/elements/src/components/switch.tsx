@@ -54,6 +54,10 @@ export function Switch({ checked, size = '$3', disabled, onCheckedChange, ...pro
       disabled={disabled}
       onCheckedChange={!disabled ? onCheckedChange : undefined}
       {...frame}
+      // Horizontal "safe space" so the thumb never touches the track ends.
+      // Border (2px) alone left the thumb flush under runtime Tamagui; ~3px of
+      // padding insets it to match the production switch (~5px each side).
+      paddingHorizontal={3}
       {...props}>
       <TMSwitch.Thumb
         disabled={disabled}
