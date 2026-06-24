@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { withBase } from '../../../platform/base';
 import {
   Provider as MagnaProvider,
   YStack,
@@ -197,10 +198,10 @@ function MagnaSearchBox() {
     setOpen(false);
     setQuery('');
     if (targetDsId !== activeId) {
-      window.location.assign(path);
+      window.location.assign(withBase(path));
     } else {
       // Same DS: soft nav via Link.
-      window.history.pushState(null, '', path);
+      window.history.pushState(null, '', withBase(path));
       window.dispatchEvent(new PopStateEvent('popstate'));
     }
   }

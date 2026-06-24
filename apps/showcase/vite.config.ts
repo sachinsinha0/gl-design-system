@@ -6,6 +6,10 @@ import { tamaguiPlugin } from '@tamagui/vite-plugin';
 import path from 'node:path';
 
 export default defineConfig({
+  // Served at "/" locally; the GitHub Pages workflow sets VITE_BASE to
+  // "/gl-design-system/" so asset URLs and the router basename resolve under
+  // the project-pages subpath.
+  base: process.env.VITE_BASE || '/',
   plugins: [
     {
       enforce: 'pre',

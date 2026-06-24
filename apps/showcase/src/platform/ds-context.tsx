@@ -15,6 +15,7 @@ import {
   hasDesignSystem,
   listDesignSystems
 } from './ds-registry';
+import { pathWithoutBase, withBase } from './base';
 
 const STORAGE_KEY = 'ds.active';
 const DEFAULT_DS: DSId = 'magna';
@@ -28,8 +29,8 @@ const DSContext = createContext<DSContextValue | null>(null);
 
 function readInitialActiveId(): DSId {
   if (typeof window === 'undefined') return DEFAULT_DS;
-  // URL wins on first paint: /:dsId/...
-  const urlFirst = window.location.pathname.split('/')[1];
+  // URL wins on first paint: /:dsId/... (strip the Vite base on GitHub Pages).
+  const urlFirst = pathWithoutBase(window.location.pathname).split('/')[1];
   if (urlFirst && hasDesignSystem(urlFirst)) return urlFirst;
   const stored = window.localStorage.getItem(STORAGE_KEY);
   if (stored && hasDesignSystem(stored)) return stored;
@@ -82,9 +83,7 @@ export function useSetActiveDS(): (id: DSId) => void {
       // To avoid mounting multiple framework providers simultaneously, switching DSes
       // hard-reloads the page so only the destination DS's Shell + Provider mount fresh.
       if (typeof window === 'undefined') return;
-      const first = location.pathname.split('/')[1];
-      const target = first && hasDesignSystem(first) ? `/${id}` : `/${id}`;
-      window.location.assign(target);
+      window.location.assign(withBase(`/${id}`));
     },
     [setActiveId, location.pathname]
   );
