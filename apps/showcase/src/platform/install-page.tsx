@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import { useState, type ComponentType, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -117,8 +118,8 @@ export type InstallTab = {
 export type InstallPageProps = {
   dsLabel: string;
   tagline: string;
-  packageName: string;
-  installCommand: string;
+  packageName?: string;
+  installCommand?: string;
   sourcePath?: string;
   tabs: InstallTab[];
   howToUse?: ReactNode;
@@ -314,7 +315,263 @@ export function GitInstallBlock({ dsId }: { dsId: string }) {
   );
 }
 
-function AssetCard({ asset }: { asset: InstallAsset }) {
+/* ─── Components JSON block (for designers, PMs, Figma plugin authors) ──── */
+
+// Eager-load every DS's component JSON files + the shared schema. Vite
+// requires glob patterns to be string literals; one wide pattern then filter.
+// Path is relative to THIS file: src/platform → repo root is 4 levels up.
+const COMPONENT_RAW = import.meta.glob('../../../../ai/*/components/*.json', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+
+const SCHEMA_RAW_MAP = import.meta.glob('../../../../ai/_schema/component.schema.json', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+const SCHEMA_RAW = Object.values(SCHEMA_RAW_MAP)[0] ?? '';
+
+function downloadBlob(content: string, filename: string, mime: string) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+type ComponentEntry = { filename: string; raw: string; name: string; summary: string };
+
+function collectComponents(dsId: string): ComponentEntry[] {
+  // Keys look like `../../../../ai/<dsId>/components/<file>.json` (relative
+  // to this file, normalised by Vite). Match on the `/ai/<dsId>/components/`
+  // segment so we're tolerant of how Vite formats the key.
+  const segment = `/ai/${dsId}/components/`;
+  return Object.entries(COMPONENT_RAW)
+    .filter(([k]) => k.includes(segment))
+    .map(([k, raw]) => {
+      const filename = k.slice(k.indexOf(segment) + segment.length);
+      let name = filename.replace(/\.json$/, '');
+      let summary = '';
+      try {
+        const parsed = JSON.parse(raw);
+        name = parsed.name ?? name;
+        summary = parsed.summary ?? '';
+      } catch {
+        /* keep defaults */
+      }
+      return { filename, raw, name, summary };
+    })
+    .sort((a, b) => a.filename.localeCompare(b.filename));
+}
+
+export function ComponentsBlock({ dsId }: { dsId: string }) {
+  const entries = collectComponents(dsId);
+  const bundleName = `${dsId}-components.json`;
+  const monoChip: React.CSSProperties = {
+    fontFamily: 'ui-monospace, Menlo, monospace',
+    background: '#f1f5f9',
+    padding: '1px 5px',
+    borderRadius: 4,
+    color: '#475569',
+    fontSize: 12,
+  };
+
+  function downloadAll() {
+    const payload = {
+      dsId,
+      generatedAt: new Date().toISOString(),
+      schemaUrl: rawGithubUrl('ai/_schema', 'component.schema.json'),
+      count: entries.length,
+      components: entries.map((e) => {
+        try {
+          return JSON.parse(e.raw);
+        } catch {
+          return null;
+        }
+      }).filter(Boolean),
+    };
+    downloadBlob(JSON.stringify(payload, null, 2), bundleName, 'application/json');
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+        <strong>For designers, PMs, and Figma / tooling authors</strong> — every component in this DS is described as a JSON spec (anatomy, props, variants, states, a11y, examples, do-nots). Validate against{' '}
+        <code style={monoChip}>ai/_schema/component.schema.json</code>.
+      </p>
+
+      {/* Primary action: bundle */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: 16,
+          border: '1px solid #2563eb',
+          borderRadius: 12,
+          gap: 12,
+          background: '#eff6ff',
+        }}
+      >
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontWeight: 600, fontSize: 14, color: '#0f172a' }}>{bundleName}</div>
+          <div style={{ fontSize: 12, color: '#475569', marginTop: 2 }}>
+            All {entries.length} component{entries.length === 1 ? '' : 's'} bundled into one JSON file — drop into Figma plugins, design audits, or LLM context.
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={downloadAll}
+          disabled={entries.length === 0}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '9px 16px',
+            borderRadius: 8,
+            background: entries.length === 0 ? '#cbd5e1' : '#2563eb',
+            color: '#fff',
+            border: 'none',
+            fontWeight: 600,
+            fontSize: 13,
+            cursor: entries.length === 0 ? 'not-allowed' : 'pointer',
+            flexShrink: 0,
+            fontFamily: 'inherit',
+          }}
+        >
+          <IconDownload size={15} />
+          Download bundle
+        </button>
+      </div>
+
+      {/* Per-component list */}
+      {entries.length > 0 ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <p
+            style={{
+              margin: 0,
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: '#94a3b8',
+            }}
+          >
+            Or grab one file
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {entries.map((e) => (
+              <div
+                key={e.filename}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '10px 14px',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: 10,
+                  gap: 12,
+                  background: '#f8fafc',
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>
+                    {e.name}
+                    <span style={{ marginLeft: 8, fontSize: 11, color: '#94a3b8', fontFamily: 'ui-monospace, Menlo, monospace', fontWeight: 400 }}>
+                      {e.filename}
+                    </span>
+                  </div>
+                  {e.summary ? (
+                    <div style={{ fontSize: 12, color: '#64748b', marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                      {e.summary}
+                    </div>
+                  ) : null}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => downloadBlob(e.raw, e.filename, 'application/json')}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    padding: '6px 10px',
+                    borderRadius: 6,
+                    background: '#fff',
+                    color: '#2563eb',
+                    border: '1px solid #cbd5e1',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    cursor: 'pointer',
+                    flexShrink: 0,
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  <IconDownload size={12} />
+                  JSON
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <p style={{ margin: 0, fontSize: 12, color: '#94a3b8' }}>
+          No component JSON files found under <code style={monoChip}>ai/{dsId}/components/</code> yet.
+        </p>
+      )}
+
+      {/* Schema */}
+      {SCHEMA_RAW ? (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '10px 14px',
+            border: '1px dashed #cbd5e1',
+            borderRadius: 10,
+            gap: 12,
+            background: '#fff',
+          }}
+        >
+          <div style={{ fontSize: 12, color: '#475569' }}>
+            <strong>Validation schema</strong> — same shape for all three DSes.
+            <span style={{ marginLeft: 6, ...monoChip }}>ai/_schema/component.schema.json</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => downloadBlob(SCHEMA_RAW, 'component.schema.json', 'application/json')}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              padding: '6px 10px',
+              borderRadius: 6,
+              background: '#fff',
+              color: '#64748b',
+              border: '1px solid #cbd5e1',
+              fontWeight: 600,
+              fontSize: 12,
+              cursor: 'pointer',
+              flexShrink: 0,
+              fontFamily: 'inherit',
+            }}
+          >
+            <IconDownload size={12} />
+            schema.json
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+export function AssetCard({ asset }: { asset: InstallAsset }) {
   const Icon = asset.icon ?? IconFileCode;
   const disabled = !asset.href;
   return (
@@ -501,40 +758,42 @@ export function InstallPage(props: InstallPageProps) {
         </div>
       </div>
 
-      <hr style={{ border: 'none', borderTop: '1px solid #e2e8f0', margin: 0 }} />
-
-      {/* Install the package */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color: '#94a3b8',
-          }}
-        >
-          Install the package
-        </p>
-        <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
-          Inside any workspace that consumes {dsLabel}:
-        </p>
-        <CodeBlock>{installCommand}</CodeBlock>
-        <p style={{ margin: 0, fontSize: 12, color: '#64748b' }}>
-          Package:{' '}
-          <code
-            style={{
-              fontFamily: 'ui-monospace, Menlo, monospace',
-              background: '#f1f5f9',
-              padding: '1px 5px',
-              borderRadius: 4,
-            }}
-          >
-            {packageName}
-          </code>
-        </p>
-      </div>
+      {installCommand && packageName ? (
+        <>
+          <hr style={{ border: 'none', borderTop: '1px solid #e2e8f0', margin: 0 }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <p
+              style={{
+                margin: 0,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#94a3b8',
+              }}
+            >
+              Install the package
+            </p>
+            <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
+              Inside any workspace that consumes {dsLabel}:
+            </p>
+            <CodeBlock>{installCommand}</CodeBlock>
+            <p style={{ margin: 0, fontSize: 12, color: '#64748b' }}>
+              Package:{' '}
+              <code
+                style={{
+                  fontFamily: 'ui-monospace, Menlo, monospace',
+                  background: '#f1f5f9',
+                  padding: '1px 5px',
+                  borderRadius: 4,
+                }}
+              >
+                {packageName}
+              </code>
+            </p>
+          </div>
+        </>
+      ) : null}
 
       {howToUse ? (
         <>
